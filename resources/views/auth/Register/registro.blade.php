@@ -15,22 +15,50 @@
         <h1 class="text-center">Registro</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
+                <form class= "form mt-5" action="{{route('register')}}" method="post">
+                    @csrf
                 <form>
                     <div class="mb-3">
-                        <label for="username" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" id="username" placeholder="Escriba su nombre de usuario">
+                        <label for="firstname" class="form-label">Primer Nombre</label>
+                        <input type="text" name="ufirst_name" class="form-control" id="ufirst_name" class="Escriba su primer nombre">
+                        @error('ufirst_name')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Ultimo Nombre</label>
+                        <input type="text" name="ulast_name" class="form-control" id="ulast_name" class="Escriba su ultimo nombre">
+                        @error('ulast_name')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" placeholder="Escriba su correo electrónico">
+                        <input type="email" name="uemail" class="form-control" id="uemail" placeholder="Escriba su correo electrónico">
+                        @error('uemail')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" placeholder="Escriba su contraseñá">
+                        <input type="password" name="upassword" class="form-control" id="upassword" placeholder="Escriba su contraseñá">
+                        @error('upassword')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm-password" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" name="upassword_confirmation" class="form-control" id="confirm-upassword" placeholder="Confirme su contraseñá">
+                        @error('upassword_confirmation')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Número de Teléfono</label>
-                        <input type="text" class="form-control" id="phone" placeholder="Escriba su número de telefono">
+                        <input type="text" name="uphone_number" class="form-control" id="uphone_number" placeholder="Escriba su número de telefono">
+                        @error('uphone_number')
+                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="access-code" class="form-label">Código de Acceso</label>

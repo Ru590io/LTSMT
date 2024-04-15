@@ -27,6 +27,7 @@ class User extends Authenticatable
         'uphone_number',
         'upassword',
         'uis_active',
+        'remember_token',
     ];
 
     /**

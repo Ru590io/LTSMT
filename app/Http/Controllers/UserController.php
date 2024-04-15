@@ -12,29 +12,31 @@ class UserController extends Controller
     public function indexs()
     {
         $users = User::all();
-        return view('users.indexs', compact('users'));
+        return view('auth.Register.registro', compact('users'));
     }
 
     public function create()
     {
-        return view('users.creates');
+        return view('auth.Register.registro');
     }
 
     // Store a newly created user in storage.
     public function stores(Request $request)
     {
-        $messages = [
+        $message = [
             'upassword.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'ufirst_name.regex' => 'El nombre no puede tener numeros',
+            'ulast_name.regex' => 'El segundo nombre no puede tener numeros',
         ];
         $validatedData = $request->validate([
-            'ufirst_name' => 'required|string|max:25|alpha',
-            'ulast_name' => 'required|string|max:25|alpha',
-            'uemail' => 'required|string|email|max:20|unique:users,uemail|ends_with:@upr.edu',
+            'ufirst_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'ulast_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'uemail' => 'required|string|email|max:50|unique:users,uemail|ends_with:@upr.edu',
             'uphone_number' => 'required|string|digits:10|numeric|unique:users,uphone_number',
-            'upassword' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-        ], $messages);
+            'upassword' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        ], $message);
 
-        $validatedData['urole'] = $this->determineRole($request); // Example function to determine role
+        $validatedData['urole'] = 'Atleta'; // Example function to determine role
         $validatedData['uis_active'] = true; // Always true as specified
         $validatedData['remember_token'] = Str::random(10); // Random remember token, length adjusted to 10 for better security
         $validatedData['upassword'] = bcrypt($validatedData['upassword']); // Encrypt the password
@@ -43,14 +45,15 @@ class UserController extends Controller
 
         User::create($validatedData);
 
-        return redirect()->route('users.indexs')->with('Exito', 'Usuario Agregado.');
+
+        return redirect()->route('login')->with('Exito', 'Usuario Agregado.');
     }
 
-    private function determineRole($request)
+   /* private function determineRole($request)
     {
     // Example condition to determine the role
     return $request->has('special_condition') ? 'Coach' : 'Athlete';
-    }
+    }*/
 
     // Display the specified user.
     public function shows(User $user)

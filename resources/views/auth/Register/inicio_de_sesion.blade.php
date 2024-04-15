@@ -29,6 +29,9 @@
                     El correo electrónico debe terminar en "@upr.edu".
                 </div>
                 <!-- Login form -->
+                <form class= "form mt-5" action="{{route('login')}}" method="post">
+                    @csrf
+                <form>
                 <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
