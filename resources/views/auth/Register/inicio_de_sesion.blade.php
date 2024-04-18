@@ -16,18 +16,7 @@
         <h1 class="text-center">Inicio de Sesión</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <!-- Alert for incorrect email or password -->
-                <div id="loginAlert" class="alert alert-danger d-none" role="alert">
-                    Contraseñá incorrecta. Por favor, trate nuevamente.
-                </div>
-                <!-- Alert for missing email or password -->
-                <div id="missingFieldAlert" class="alert alert-warning d-none" role="alert">
-                    Complete ambos campos de correo electrónico y contraseña.
-                </div>
-                <!-- Alert for invalid email format -->
-                <div id="invalidEmailAlert" class="alert alert-warning d-none" role="alert">
-                    El correo electrónico debe terminar en "@upr.edu".
-                </div>
+
                 <!-- Login form -->
                 <form class= "form mt-5" action="{{route('login')}}" method="post">
                     @csrf
@@ -35,15 +24,36 @@
                 <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" placeholder="Escriba su correo electrónico">
+                        <input type="email" class="form-control" name="uemail" id="uemail" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
+                        @error('uemail')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" placeholder="Escriba su contraseña">
+                        <input type="password" class="form-control" name="upassword" id="upassword" placeholder="Escriba su contraseña" value="{{ old('upassword') }}" required autocomplete="upassword" autofocus>
+                        @error('upassword')
+                                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 offset-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                                <label class="form-check-label" for="remember">
+                                    {{ __('Recuerdame') }}
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                    <a href="/signup.html" class="btn btn-primary">Registrarse</a>
-                    <a href="/forgot_password.html" class="btn btn-link">Olvidó su Contraseña?</a>
+                    <a href="/register" class="btn btn-primary">Registrarse</a>
+                    @if (Route::has('password.request'))
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Se le olvido la contraseña?') }}
+                                    </a>
+                    @endif
                 </form>
             </div>
         </div>

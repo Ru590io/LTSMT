@@ -9,24 +9,62 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+
+    //Registro//
+    public function create()
+    {
+        return view('auth.Register.registro');
+    }
+    //ver_Inicio_de_sesion//
+    public function viewlogin()
+    {
+        return view('auth.Register.inicio_de_sesion');
+    }
+
+    public function homepage()
+    {
+        return view('welcome');
+    }
+    //Inicio de sesion
+    public function login(){
+
+        $validatedData = request()->validate([
+            'uemail' => 'required|string|email|max:50',
+            'upassword' => 'required|string|min:6|max:12',
+        ]);
+
+        if (auth()->attempt($validatedData)){
+            request()->session()->regenerate();
+            return redirect()->route('home')->with('Exito', 'Inicio de sesion hecha.');
+        }
+        return redirect()->route('login')->withErrors([
+            'uemail' => "No se encontro un correo electronico o contraseña que inserto"
+        ]);
+    }
+     //Terminar sesion
+    public function logout(){
+        auth()->logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect()->route('login')->with('Exito', 'Final de sesion hecha.');
+    }
+
+    //Ver todos usarios//
     public function indexs()
     {
         $users = User::all();
         return view('auth.Register.registro', compact('users'));
     }
 
-    public function create()
-    {
-        return view('auth.Register.registro');
-    }
-
-    // Store a newly created user in storage.
+    // Crear el usuario y registrarlo
     public function stores(Request $request)
     {
         $message = [
             'upassword.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
-            'ufirst_name.regex' => 'El nombre no puede tener numeros',
-            'ulast_name.regex' => 'El segundo nombre no puede tener numeros',
+            'ufirst_name.regex' => 'El Nombre no puede tener numeros',
+            'ulast_name.regex' => 'El Apellido no puede tener numeros',
         ];
         $validatedData = $request->validate([
             'ufirst_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',

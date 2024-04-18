@@ -35,8 +35,11 @@
                 <div class="mb-4"> <!-- Added more margin for separation -->
                     <a href="/change_password.html" class="btn btn-primary">Cambiar Contraseña</a>
                 </div>
+                <form class= "form mt-5" action="{{route('logout')}}" method="post">
+                    @csrf
+                <form>
                 <div class="mb-3" >
-                    <a heref="logout" class ="btn btn-danger">Terminar Sesión</a>
+                    <a heref="/logout" button class ="btn btn-danger" type="submit">Terminar Sesión</a>
                 </div>
             </div>
         </div>
