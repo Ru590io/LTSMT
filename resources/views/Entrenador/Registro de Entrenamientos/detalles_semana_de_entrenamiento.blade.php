@@ -20,15 +20,15 @@
             <!-- Cards for each day -->
 
             <!--Lunes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Lunes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -38,15 +38,15 @@
             </div>
 
             <!--Martes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Martes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Martes</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -56,15 +56,15 @@
             </div>
 
             <!--Miercoles-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Miércoles</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Miércoles</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -74,15 +74,15 @@
             </div>
 
             <!--Jueves-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Jueves</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Jueves</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -92,15 +92,15 @@
             </div>
 
             <!--Viernes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Viernes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Viernes</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -110,15 +110,15 @@
             </div>
 
             <!--Sabado-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Sabado</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -128,15 +128,15 @@
             </div>
 
             <!--Domingo-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Domingo</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Domingo</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>

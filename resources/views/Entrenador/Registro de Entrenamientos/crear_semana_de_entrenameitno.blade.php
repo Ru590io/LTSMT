@@ -18,8 +18,8 @@
         </div>
 
             <!--Lunes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Lunes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
                 <div class="card-body">
                     <!-- Sección AM -->
                     <div class="time-of-day-section">
@@ -65,8 +65,8 @@
 
 
             <!--Martes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Martes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Martes</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -110,8 +110,8 @@
             </div>
 
             <!--Miércoles-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Miércoles</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Miercoles</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -157,8 +157,8 @@
             </div>
 
             <!--Jueves-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Jueves</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Jueves</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -204,8 +204,8 @@
             </div>
 
             <!--Viernes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Viernes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Viernes</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -251,8 +251,8 @@
             </div>
 
             <!--Sábado-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Sábado</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Sabado</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -298,8 +298,8 @@
             </div>
 
             <!--Domingo-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Domingo</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Domingo</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">

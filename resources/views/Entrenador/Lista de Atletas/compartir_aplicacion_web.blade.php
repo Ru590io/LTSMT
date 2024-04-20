@@ -19,12 +19,13 @@
         <div class="d-flex flex-column align-items-center mt-5">
             <!-- Section to copy webapp link -->
             <div class="input-group mb-3">
-                <input type="text" class="form-control" value="http://127.0.0.1:5500/login.html" id="webAppLink" readonly>
+                <label class="form-label" id="webAppLink" data-value="http://127.0.0.1:5500/login.html">Link de la pagina: http://127.0.0.1:5500/login.html</label>
+
             </div>
             <!-- Section to change and copy access code -->
             <div class="input-group mb-3">
                 <input type="text" class="form-control" value="ACCESS-CODE-1234" id="accessCode">
-                <button class="btn btn-outline-secondary" type="button" onclick="saveAccessCode()">Actualizar Codigo de Acceso</button>
+                <button class="btn btn-primary" type="button" onclick="saveAccessCode()">Actualizar Codigo de Acceso</button>
             </div>
             <!-- Button to copy both link and access code -->
             <button class="btn btn-primary mb-3" type="button" onclick="copyAllToClipboard()">Copiar Todo</button>
@@ -41,10 +42,11 @@
         }
 
         function copyAllToClipboard() {
-            const webAppLink = document.getElementById('webAppLink').value;
+            const webAppLink = document.getElementById('webAppLink').getAttribute('data-value');
             const accessCode = document.getElementById('accessCode').value;
             copyToClipboard(`Web App Link: ${webAppLink}\nAccess Code: ${accessCode}`);
         }
+
 
         function saveAccessCode() {
             const newAccessCode = document.getElementById('accessCode').value;
