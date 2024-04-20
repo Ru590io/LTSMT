@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Amdescanso;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AmdescansoController extends Controller
 {
@@ -68,13 +69,24 @@ class AmdescansoController extends Controller
     // POST /amdescansos
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'am_id' => 'required|integer|exists:am,id',
             'descanso_id' => 'required|integer|exists:descanso,id'
         ]);
 
-        $amDescanso = AmDescanso::create($validated);
-        return response()->json($amDescanso, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $am = new Amdescanso([
+            'am_id' => $validated['am_id'],
+            'descanso_id' => $validated['descanso_id'],
+        ]);
+
+        $am->save();
+
+        return response()->json("Added", 201);
     }
 
     // GET /amdescansos/{id}
@@ -88,20 +100,30 @@ class AmdescansoController extends Controller
     }
 
     // PUT /amdescansos/{id}
-    public function update(Request $request, $id)
+    public function update(Request $request, Amdescanso $amdes, $id)
     {
         $amDescanso = AmDescanso::find($id);
         if (!$amDescanso) {
             return response()->json(['message' => 'AmDescanso not found'], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'am_id' => 'required|integer|exists:am,id',
             'descanso_id' => 'required|integer|exists:descanso,id'
         ]);
 
-        $amDescanso->update($validated);
-        return response()->json(['message' => 'AmDescanso updated successfully', 'data' => $amDescanso]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $amdes->update([
+        'am_id' => $validated['am_id'],
+        'descanso_id' => $validated['descanso'],
+        ]);
+
+        return response()->json(['message' => 'Amdescanso updated successfully', 'data' => $amdes]);
     }
 
     // DELETE /amdescansos/{id}
