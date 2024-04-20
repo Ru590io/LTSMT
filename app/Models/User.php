@@ -6,13 +6,15 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,15 +22,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'urole',
-        'ufirst_name',
-        'ulast_name',
-        'uemail',
-        'uphone_number',
-        'upassword',
-        'uis_active',
+        'role',
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'password',
+        'is_active',
         'remember_token',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+    $this->notify(new CustomResetPasswordNotification($token));
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -36,7 +43,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'upassword',
+        'password',
         'remember_token',
     ];
 
@@ -57,12 +64,16 @@ class User extends Authenticatable
         return $this->hasMany(weeklyshedule::class, 'users_id');
     }
 
-    public function passwordresettoken(){
+    /*public function passwordresettoken(){
         return $this->hasMany(Passwordresettoken::class, 'users_id');
     }
 
     public function passwordreset(){
         return $this->hasMany(Passwordreset::class, 'users_id');
+    }*/
+
+    public function accesscode(){
+        return $this->hasMany(AccessCode::class, 'users_id');
     }
 
     public function competition(){

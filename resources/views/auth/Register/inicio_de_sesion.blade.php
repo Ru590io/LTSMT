@@ -16,7 +16,29 @@
         <h1 class="text-center">Inicio de Sesión</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
+                @if(session()->has('Exito'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{session('Exito')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($errors->has('email') || $errors->has('password'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('email') ?? $errors->first('password') }}
+                </div>
+                @endif
 
+                @if (session('status'))
+                <div class="alert alert-info">
+                    {{ session('status') }}
+                </div>
+                @endif
+
+                @if ($errors->has('throttle'))
+                <div class="alert alert-warning">
+                    {{ $errors->first('throttle') }}
+                </div>
+                @endif
                 <!-- Login form -->
                 <form class= "form mt-5" action="{{route('login')}}" method="post">
                     @csrf
@@ -24,15 +46,17 @@
                 <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" name="uemail" id="uemail" placeholder="Escriba su correo electrónico institucional" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
-                        @error('uemail')
+
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
+                        @error('email')
+
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="upassword" id="upassword" placeholder="Escriba su contraseña" value="{{ old('upassword') }}" required autocomplete="upassword" autofocus>
-                        @error('upassword')
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Escriba su contraseña" value="{{ old('upassword') }}" required autocomplete="upassword" autofocus>
+                        @error('password')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>

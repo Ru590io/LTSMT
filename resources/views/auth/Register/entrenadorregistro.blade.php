@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,41 +21,29 @@
                 <form>
                     <div class="mb-3">
                         <label for="firstname" class="form-label">Nombre</label>
-
-                        <input type="text" name="first_name" class="form-control" id="first_name" placeholder="Escriba su nombre (Ej. Juan Carlos)" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
+                        <input type="text" name="first_name" class="form-control" id="first_name" class="Escriba su nombre" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
                         @error('first_name')
-
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="lastname" class="form-label">Apellido</label>
-
-                        <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Escriba sus apellidos (Ej. Torrez Figueroa)" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
+                        <input type="text" name="last_name" class="form-control" id="last_name" class="Escriba sus apellidos" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
                         @error('last_name')
-                        
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-
-                        <input type="email" name="email" class="form-control" id="email" placeholder="Escriba su correo electrónico institucional (@upr.edu)" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Escriba su correo electrónico" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email')
-                        
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-
-                        <input type="password" name="password" class="form-control" id="password" placeholder="Escriba su contraseña">
-                        <label class="form-label" style="font-size: 0.8rem;">Contraseña debe tener Mayúsculas, números, símbolos y no mayor de 16 caracteres.</label>
-                        @error('password')
-
                         <input type="password" name="password" class="form-control" id="password" placeholder="Escriba su contraseñá">
                         @error('password')
-
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
@@ -69,17 +56,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Número de Teléfono</label>
-
-                        <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Escriba su número de telefono (Ej. 7872224444)" value="{{ old('phone_number') }}" required autocomplete="phone_number" autofocus>
+                        <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Escriba su número de telefono" value="{{ old('phone_number') }}" required autocomplete="phone_number" autofocus>
                         @error('phone_number')
-
-                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="access-code" class="form-label">Código de Acceso</label>
-                        <input type="text" name = "code" class="form-control" id="code" placeholder="Escriba el código de acceso">
-                        @error('code')
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>

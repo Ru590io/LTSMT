@@ -111,7 +111,6 @@ class AmController extends Controller
 
         $validator = Validator::make($request->all(), [
             'aam' => 'required|string',
-
         ]);
 
         if ($validator->fails()) {
@@ -122,12 +121,12 @@ class AmController extends Controller
 
         $am->update([
         'aam' => $validated['aam'],
-    ]);
+        ]);
 
-         return response()->json($am, 200);
+         return response()->json(['message' => 'Am updated successfully', 'data' => $am]);
      }
 
-     // DELETE /lighttrainings/{id}
+     
      public function amerase(Am $am, $id)
      {
         $am = Am::find($id);

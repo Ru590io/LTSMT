@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\AccessCode;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -15,40 +17,10 @@ class UserController extends Controller
     {
         return view('auth.Register.registro');
     }
-    //ver_Inicio_de_sesion//
-    public function viewlogin()
+
+    public function creates()
     {
-        return view('auth.Register.inicio_de_sesion');
-    }
-
-    public function homepage()
-    {
-        return view('welcome');
-    }
-    //Inicio de sesion
-    public function login(){
-
-        $validatedData = request()->validate([
-            'uemail' => 'required|string|email|max:50',
-            'upassword' => 'required|string|min:6|max:12',
-        ]);
-
-        if (auth()->attempt($validatedData)){
-            request()->session()->regenerate();
-            return redirect()->route('home')->with('Exito', 'Inicio de sesion hecha.');
-        }
-        return redirect()->route('login')->withErrors([
-            'uemail' => "No se encontro un correo electronico o contraseña que inserto"
-        ]);
-    }
-     //Terminar sesion
-    public function logout(){
-        auth()->logout();
-
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
-
-        return redirect()->route('login')->with('Exito', 'Final de sesion hecha.');
+        return view('auth.Register.entrenadorregistro');
     }
 
     //Ver todos usarios//
@@ -62,23 +34,63 @@ class UserController extends Controller
     public function stores(Request $request)
     {
         $message = [
-            'upassword.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
-            'ufirst_name.regex' => 'El Nombre no puede tener numeros',
-            'ulast_name.regex' => 'El Apellido no puede tener numeros',
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'first_name.regex' => 'El Nombre no puede tener numeros',
+            'last_name.regex' => 'El Apellido no puede tener numeros',
         ];
         $validatedData = $request->validate([
-            'ufirst_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
-            'ulast_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
-            'uemail' => 'required|string|email|max:50|unique:users,uemail|ends_with:@upr.edu',
-            'uphone_number' => 'required|string|digits:10|numeric|unique:users,uphone_number',
-            'upassword' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
+            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'code' => 'required',
         ], $message);
 
-        $validatedData['urole'] = 'Atleta'; // Example function to determine role
-        $validatedData['uis_active'] = true; // Always true as specified
+        $code = AccessCode::where('code', $request->access_code)->where('expires_at', '>', Carbon::now())->first();
+
+        if (!$code) {
+        return back()->withErrors(['access_code' => 'Invalid or expired access code.'])->withInput();
+        }
+
+        $validatedData['role'] = 'Atleta'; // Example function to determine role
+        //$validatedData['is_active'] = true; // Always true as specified
         $validatedData['remember_token'] = Str::random(10); // Random remember token, length adjusted to 10 for better security
-        $validatedData['upassword'] = bcrypt($validatedData['upassword']); // Encrypt the password
-        $validatedData['uphone_number'] = bcrypt($validatedData['uphone_number']);
+        $validatedData['password'] = bcrypt($validatedData['password']); // Encrypt the password
+        $validatedData['phone_number'] = bcrypt($validatedData['phone_number']);
+
+
+        $user = User::create($validatedData);
+
+        // Optionally invalidate the access code
+        $code->delete(); // or mark as used to prevent reuse
+
+        auth()->login($user);
+
+        return redirect()->route('login')->with('Exito', 'Usuario Agregado.');
+    }
+
+    public function coachstores(Request $request)
+    {
+        $message = [
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'first_name.regex' => 'El Nombre no puede tener numeros',
+            'last_name.regex' => 'El Apellido no puede tener numeros',
+        ];
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
+            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+
+        ], $message);
+
+        $validatedData['role'] = 'Entrenador'; // Example function to determine role
+        //$validatedData['is_active'] = true; // Always true as specified
+        $validatedData['remember_token'] = Str::random(10); // Random remember token, length adjusted to 10 for better security
+        $validatedData['password'] = bcrypt($validatedData['password']); // Encrypt the password
+        $validatedData['phone_number'] = bcrypt($validatedData['phone_number']);
 
 
         User::create($validatedData);
@@ -109,25 +121,27 @@ class UserController extends Controller
     public function updates(Request $request, User $user)
     {
         $messages = [
-            'upassword.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'first_name.regex' => 'El Nombre no puede tener numeros',
+            'last_name.regex' => 'El Apellido no puede tener numeros',
         ];
         $validatedData = $request->validate([
-            'ufirst_name' => 'required|string|max:25|alpha',
-            'ulast_name' => 'required|string|max:25|alpha',
-            'uemail' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
-            'uphone_number' => 'required|string|digits:10|numeric|unique:users,uphone_number,'.$user->id,
-            'upassword' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'email' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,'.$user->id,
+            'password' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
         ], $messages);
 
         $user->update($validatedData);
 
-        if (!empty($validatedData['upassword'])) {
-            $user->upassword = bcrypt($validatedData['upassword']);
+        if (!empty($validatedData['password'])) {
+            $user->upassword = bcrypt($validatedData['password']);
             $user->save();
          }
 
-         if (!empty($validatedData['uphone_number'])) {
-            $user->upassword = bcrypt($validatedData['uphone_number']);
+         if (!empty($validatedData['phone_number'])) {
+            $user->upassword = bcrypt($validatedData['phone_number']);
             $user->save();
          }
 
@@ -140,6 +154,19 @@ class UserController extends Controller
         $user->delete();
         return redirect('/users')->with('Exito', 'Usario Borrado.');
     }
+
+    public function restoreUser($userId)
+    {
+        $user = User::withTrashed()->where('id', $userId)->first();
+
+        if ($user) {
+            $user->restore();
+            return redirect()->back()->with('success', 'User has been restored successfully.');
+    }   else {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+    }
+
     //API///////////////////////////////////////////////////////////////////////////////////////////////////
      // GET /users
      public function index()
@@ -152,18 +179,23 @@ class UserController extends Controller
      {
 
         $messages = [
-            'upassword.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'first_name.regex' => 'El Nombre no puede tener numeros',
+            'last_name.regex' => 'El Apellido no puede tener numeros',
         ];
 
         $validator = Validator::make($request->all(), [
-            'urole' => 'required|string',
-            'ufirst_name' => 'required|string',
-            'ulast_name' => 'required|string',
-            'uemail' => 'required|string|email|unique:users,uemail|ends_with:@upr.edu',
-            'uphone_number' => 'required|string|digits:10|numeric|unique:users,uphone_number',
-            'upassword' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-            'uis_active' => 'required|boolean',
+            //'role' => 'required|string|in:Atleta,Entrenador',
+            'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'email' => 'required|string|email|unique:users,email|ends_with:@upr.edu',
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
+            'password' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            //'is_active' => 'required|boolean',
         ], $messages);
+
+        $validatedData['role'] = 'Entrenador'; // Example function to determine role
+        //$validatedData['is_active'] = true; // Always true as specified
 
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -171,16 +203,16 @@ class UserController extends Controller
 
         $validated = $validator->validated(); // Get validated data array
     $user = new User([
-        'urole' => $validated['urole'],
-        'ufirst_name' => $validated['ufirst_name'],
-        'ulast_name' => $validated['ulast_name'],
-        'uemail' => $validated['uemail'],
-        'uphone_number' => $validated['uphone_number'],
-        'upassword' => bcrypt($validated['upassword']),
-        'uis_active' => $validated['uis_active'],
+        //'role' => $validated['role'],
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'email' => $validated['email'],
+        'phone_number' => bcrypt($validated['phone_number']),
+        'password' => bcrypt($validated['password']),
+        //'is_active' => $validated['is_active'],
     ]);
 
-    $user->remember_token = Str::random(6);
+    $user->remember_token = Str::random(10);
     $user->save();
 
          return response()->json("Added", 201);
@@ -206,16 +238,18 @@ class UserController extends Controller
          }
 
          $messages = [
-            'upassword.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'first_name.regex' => 'El Nombre no puede tener numeros',
+            'last_name.regex' => 'El Apellido no puede tener numeros',
         ];
 
          $validator = Validator::make($request->all(), [
-            'ufirst_name' => 'required|string',
-            'ulast_name' => 'required|string',
-            'uemail' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
-            'uphone_number' => 'required|string|digits:10|numeric|unique:users,uphone_number,'.$user->id,
-            'upassword' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-            'uis_active' => 'required|boolean',
+            'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'email' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,'.$user->id,
+            'password' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            //'is_active' => 'required|boolean',
         ], $messages);
 
         if ($validator->fails()) {
@@ -225,16 +259,20 @@ class UserController extends Controller
         $validated = $validator->validated(); // Get validated data array
 
         $user->update([
-        'ufirst_name' => $validated['ufirst_name'],
-        'ulast_name' => $validated['ulast_name'],
-        'uemail' => $validated['uemail'],
-        'uphone_number' => $validated['uphone_number'],
-        'uis_active' => $validated['uis_active'],
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'email' => $validated['email'],
+        'phone_number' => $validated['phone_number'],
+        //'is_active' => $validated['is_active'],
     ]);
 
          //$user->update($validated);
-         if (!empty($validated['upassword'])) {
-            $user->upassword = $validated['upassword'];
+         if (!empty($validated['password'])) {
+            $user->password = bcrypt($validated['password']);
+            $user->save();
+         }
+         if (!empty($validated['phone_number'])) {
+            $user->password = bcrypt($validated['phone_number']);
             $user->save();
          }
          return response()->json(['message' => 'User updated successfully', 'data' => $user]);
@@ -252,4 +290,16 @@ class UserController extends Controller
 
          return response()->json(['message' => 'User deleted successfully']);
      }
+
+     public function restore($id)
+    {
+    $user = User::onlyTrashed()->find($id);
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found or not deleted.'], 404);
+    }
+
+    $user->restore();
+    return response()->json(['message' => 'User restored successfully.'], 200);
+    }
 }

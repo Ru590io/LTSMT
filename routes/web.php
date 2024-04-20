@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,17 +190,46 @@ Route::get('/sistema_de_luces', function () {
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+// For Coach specific pages
+/*Route::middleware(['auth', 'role:Entrenador'])->group(function () {
+    Route::get('/coach/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
+});
 
-Route::get('/done', [UserController::class, 'index'])->name('welcom');
+// For Athlete specific pages
+Route::middleware(['auth', 'role:Atleta'])->group(function () {
+    Route::get('/athlete/dashboard', [AthleteController::class, 'index'])->name('athlete.dashboard');
+});*/
 
-Route::get('/register', [UserController::class, 'create'])->name('register');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+});
 
-Route::post('/register', [UserController::class, 'stores'])->name('register');
+Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');
 
-//Route::get('/login', [UserController::class, 'indexs'])->name('login');
+Route::post('/register', [UserController::class, 'stores'])->name('register')->middleware('guest');
+
+Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest');
+
+Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+
+Route::get('password/reset', [PasswordResetController::class, 'showResetRequestForm'])->name('password.request');
+
+Route::post('password/email', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('password/reset/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+
+Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
+
+Route::fallback(function(){
+        return view('welcom');
+});
+
+
+
