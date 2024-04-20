@@ -14,6 +14,7 @@
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
                     <a href="menu_principal_entrenador.html" class="btn btn-primary mb-3">Regresar</a>
+                    <a href="/edit_information.html" class="btn btn-primary mb-3">Editar Información</a>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nombre:</label> <span class="form-label"> Axel Rosado</span>
@@ -24,8 +25,9 @@
                 <div class="mb-3">
                     <label class="form-label">Número de Teléfono:</label> <span class="form-label"> (787) 735 - 4444</span>
                 </div>
-                <div class="d-flex justify-content-end align-items-center mb-4">
-                    <button class="btn btn-danger">Invalidar Sesión</button>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <a href="/change_password.html" class="btn btn-primary">Cambiar Contraseña</a>
+                    <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-danger">Terminar Sesión</button>
                 </div>
                 <form id="logout-form" action="{{route('logout')}}" method="post" class="d-none">
                     @csrf

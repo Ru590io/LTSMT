@@ -55,10 +55,10 @@ h1 {
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    height: 20vh; /* Adjust height as needed */
+    height: 10vh; /* Reduced height for tighter vertical fit */
     width: fit-content; /* Adjust width to fit content */
     margin: 20px auto; /* Centering in the viewport with some margin */
-    padding: 20px; /* Padding around the logo */
+    padding: 5px; /* Reduced padding for less space above and below the text */
     border-radius: 15px; /* Rounded corners for the container */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
     border: 5px solid #0fb00c; /* Optional: border color matching the logo */
@@ -72,6 +72,12 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Shadow effect */
     letter-spacing: 2px; /* Space between letters */
 }
+
+.centered-text {
+    text-align: center;
+  }
+
+
 
 table .highlight-column {
     background-color: #7cff9a;

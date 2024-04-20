@@ -19,12 +19,12 @@
             <a href="edit_events.html" class="btn btn-primary">Editar Eventos</a>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-header">Información del Atleta</div>
+        <div class="card mb-5">
+            <div class="card-header"><h3 class="centered-text">Eventos</h3></div>
             <div class="card-body">
-                <p>Evento: 800m - Tiempo: 1:30</p>
+                <p>Evento 1: 800m - Tiempo: 1:30</p>
                 <hr>
-                <p>Evento: 1500m - Tiempo: 2:50</p>
+                <p>Evento 2: 1500m - Tiempo: 2:50</p>
             </div>
         </div>
 

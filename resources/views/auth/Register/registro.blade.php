@@ -22,21 +22,21 @@
                 <form>
                     <div class="mb-3">
                         <label for="firstname" class="form-label">Nombre</label>
-                        <input type="text" name="ufirst_name" class="form-control" id="ufirst_name" class="Escriba su nombre" value="{{ old('ufirst_name') }}" required autocomplete="ufirst_name" autofocus>
+                        <input type="text" name="ufirst_name" class="form-control" id="ufirst_name" placeholder="Escriba su nombre (Ej. Juan Carlos)" value="{{ old('ufirst_name') }}" required autocomplete="ufirst_name" autofocus>
                         @error('ufirst_name')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="lastname" class="form-label">Apellido</label>
-                        <input type="text" name="ulast_name" class="form-control" id="ulast_name" class="Escriba sus apellidos" value="{{ old('ulast_name') }}" required autocomplete="ulast_name" autofocus>
+                        <input type="text" name="ulast_name" class="form-control" id="ulast_name" placeholder="Escriba sus apellidos (Ej. Torrez Figueroa)" value="{{ old('ulast_name') }}" required autocomplete="ulast_name" autofocus>
                         @error('ulast_name')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" name="uemail" class="form-control" id="uemail" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
+                        <input type="email" name="uemail" class="form-control" id="uemail" placeholder="Escriba su correo electrónico institucional (@upr.edu)" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
                         @error('uemail')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
@@ -44,6 +44,7 @@
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
                         <input type="password" name="upassword" class="form-control" id="upassword" placeholder="Escriba su contraseñá">
+                        <label class="form-label" style="font-size: 0.8rem;">Contraseña debe tener Mayúsculas, números, símbolos y no mayor de 16 caracteres.</label>
                         @error('upassword')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
@@ -57,7 +58,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Número de Teléfono</label>
-                        <input type="text" name="uphone_number" class="form-control" id="uphone_number" placeholder="Escriba su número de telefono" value="{{ old('uphone_number') }}" required autocomplete="uphone_number" autofocus>
+                        <input type="text" name="uphone_number" class="form-control" id="uphone_number" placeholder="Escriba su número de telefono (Ej. 7872224444)" value="{{ old('uphone_number') }}" required autocomplete="uphone_number" autofocus>
                         @error('uphone_number')
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror

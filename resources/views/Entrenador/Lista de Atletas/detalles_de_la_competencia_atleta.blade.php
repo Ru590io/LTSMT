@@ -18,18 +18,20 @@
             <a href="coach_main_menu.html" class="btn btn-primary">Regresar</a>
             <a href="add_event.html" class="btn btn-primary">Editar Detalles de Competencia</a>
         </div>
-        <div class="card mb-3">
-            <div class="card-header">Información de la Competencia</div>
+        <div class="card mb-5">
+            <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
             <div class="card-body">
                 <p>Fecha y hora: 24 marzo 2024, 4:30 pm</p>
+                <hr>
                 <p>Lugar: Villalba, Puerto Rico</p>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">Eventos del Atleta</div>
+        <div class="card mb-5">
+            <div class="card-header"><h3 class="centered-text">Eventos del Atleta</h3></div>
             <div class="card-body">
                 <p>800m</p>
+                <hr>
                 <p>500m</p>
                 <!-- Más eventos pueden ser agregados aquí -->
             </div>

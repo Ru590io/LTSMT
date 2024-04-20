@@ -49,7 +49,7 @@
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -67,7 +67,7 @@
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -85,7 +85,7 @@
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -103,7 +103,7 @@
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -121,7 +121,7 @@
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -132,14 +132,14 @@
 
             <!--Sabado-->
             <div class="card mb-2">
-                <div class="card-header"><h3>Sabado</h3></div>
+                <div class="card-header"><h3>Sábado</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>
@@ -157,7 +157,7 @@
                         <div>rec. 2' + enf. 10' + flex.</div>
                     <hr>
                     <h3>PM:</h3>
-                    Descanzo
+                    Descanso
                     <hr>
                     <div class="notes-section">
                         <label for="lunes-notas"><h4>Notas:</h4></label>

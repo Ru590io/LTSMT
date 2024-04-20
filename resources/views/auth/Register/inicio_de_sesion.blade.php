@@ -24,7 +24,7 @@
                 <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" name="uemail" id="uemail" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
+                        <input type="email" class="form-control" name="uemail" id="uemail" placeholder="Escriba su correo electrónico institucional" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
                         @error('uemail')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
