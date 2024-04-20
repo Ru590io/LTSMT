@@ -4,6 +4,12 @@
 <h1 class="text-center">Menú Principal</h1>
 <div class="row justify-content-center mt-5">
     <div class="col-md-6">
+        @if(session()->has('Exito'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{session('Exito')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
         <div class="d-flex justify-content-end">
             <button id="userInfoButton" class="btn btn-primary mb-3">Información del Usuario</button>
         </div>

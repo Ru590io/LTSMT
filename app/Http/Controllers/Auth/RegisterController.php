@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,11 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function redirectPath()
+    {
+    return redirect()->route('login')->with('Exito', 'Inicio de sesion hecha.');
+    }
+
 
     /**
      * Create a new controller instance.
@@ -48,11 +53,19 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
+        $message = [
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+            'first_name.regex' => 'El Nombre no puede tener numeros',
+            'last_name.regex' => 'El Apellido no puede tener numeros',
+        ];
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
+            'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
+            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        ], $message);
     }
 
     /**
@@ -64,9 +77,15 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),  // Correctly using Hash::make for password encryption
+            'phone_number' => bcrypt($data['phone_number']),
+            'role' => 'Athlete',  // Default role
+            'is_active' => true,  // Always active
+            'remember_token' => Str::random(10)  // Generating remember token
         ]);
+        return redirect()->route('login')->with('Exito', 'Usuario Agregado.');
     }
 }

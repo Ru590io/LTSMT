@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -59,13 +58,6 @@
                         <label for="phone" class="form-label">Número de Teléfono</label>
                         <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Escriba su número de telefono" value="{{ old('phone_number') }}" required autocomplete="phone_number" autofocus>
                         @error('phone_number')
-                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="access-code" class="form-label">Código de Acceso</label>
-                        <input type="text" name = "code" class="form-control" id="code" placeholder="Escriba el código de acceso">
-                        @error('code')
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>

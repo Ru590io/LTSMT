@@ -10,12 +10,12 @@ class Passwordresettoken extends Model
     use HasFactory;
 
     protected $fillable = [
-        'users_id',
+        //'users_id',
         'email',
         'token',
     ];
 
-    public function users(){
+    /*public function users(){
         return $this->belongsTo(User::class, 'users_id');
-    }
+    }*/
 }

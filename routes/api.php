@@ -67,6 +67,8 @@ Route::delete('deletelight/{id}', [LighttrainingController::class, 'erase']);
 //Users//
 Route::apiResource('users', UserController::class);
 
+Route::post('/users/{id}/restore', [UserController::class, 'restore']);
+
 //PM//
 Route::apiResource('pm', PmController::class);
 
