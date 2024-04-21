@@ -43,31 +43,30 @@ class UserController extends Controller
             'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
-            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-            'code' => 'required',
+            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'code' => 'required|string',
         ], $message);
 
-        $code = AccessCode::where('code', $request->access_code)->where('expires_at', '>', Carbon::now())->first();
+        $code = AccessCode::where('code', $request->code)->where('expires_at', '>', Carbon::now())->first();
 
         if (!$code) {
         return back()->withErrors(['access_code' => 'Invalid or expired access code.'])->withInput();
         }
 
         $validatedData['role'] = 'Atleta'; // Example function to determine role
-        //$validatedData['is_active'] = true; // Always true as specified
-        $validatedData['remember_token'] = Str::random(10); // Random remember token, length adjusted to 10 for better security
+        $validatedData['remember_token'] = Str::random(60); // Random remember token, length adjusted to 10 for better security
         $validatedData['password'] = bcrypt($validatedData['password']); // Encrypt the password
         $validatedData['phone_number'] = bcrypt($validatedData['phone_number']);
 
 
-        $user = User::create($validatedData);
+        User::create($validatedData);
 
         // Optionally invalidate the access code
         $code->delete(); // or mark as used to prevent reuse
 
-        auth()->login($user);
+        //auth()->login($user);
 
-        return redirect()->route('login')->with('Exito', 'Usuario Agregado.');
+        return redirect()->route('login')->with('Exito', 'Atleta Agregado.');
     }
 
     public function coachstores(Request $request)
@@ -82,13 +81,12 @@ class UserController extends Controller
             'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
-            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
 
         ], $message);
 
         $validatedData['role'] = 'Entrenador'; // Example function to determine role
-        //$validatedData['is_active'] = true; // Always true as specified
-        $validatedData['remember_token'] = Str::random(10); // Random remember token, length adjusted to 10 for better security
+        $validatedData['remember_token'] = Str::random(60); // Random remember token, length adjusted to 10 for better security
         $validatedData['password'] = bcrypt($validatedData['password']); // Encrypt the password
         $validatedData['phone_number'] = bcrypt($validatedData['phone_number']);
 
@@ -96,7 +94,7 @@ class UserController extends Controller
         User::create($validatedData);
 
 
-        return redirect()->route('login')->with('Exito', 'Usuario Agregado.');
+        return redirect()->route('login')->with('Exito', 'Entrenador Agregado.');
     }
 
    /* private function determineRole($request)
@@ -106,20 +104,33 @@ class UserController extends Controller
     }*/
 
     // Display the specified user.
-    public function shows(User $user)
+    public function shows(User $user, $id)
     {
+        $item = User::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay ningun Atleta aqui.');
+        }
         return view('users.shows', compact('user'));
     }
 
     // Show the form for editing the specified user.
-    public function edits(User $user)
+    public function edits(User $user, $id)
     {
+        $item = User::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
+        }
+
+        $this->authorize('update', $user);
         return view('users.edits', compact('user'));
     }
 
     // Update the specified user in storage.
     public function updates(Request $request, User $user)
     {
+        $this->authorize('update', $user);
         $messages = [
             'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
             'first_name.regex' => 'El Nombre no puede tener numeros',
@@ -130,7 +141,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,'.$user->id,
-            'password' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
         ], $messages);
 
         $user->update($validatedData);
@@ -145,14 +156,14 @@ class UserController extends Controller
             $user->save();
          }
 
-        return redirect('/users')->with('Exito', 'Usario Actualizado.');
+        return redirect('/users')->with('Exito', 'Informacion Actualizada.');
     }
 
     // Remove the specified user from storage.
     public function destroys(User $user)
     {
         $user->delete();
-        return redirect('/users')->with('Exito', 'Usario Borrado.');
+        return redirect('/users')->with('Exito', 'Atleta Eliminado.');
     }
 
     public function restoreUser($userId)
@@ -161,9 +172,9 @@ class UserController extends Controller
 
         if ($user) {
             $user->restore();
-            return redirect()->back()->with('success', 'User has been restored successfully.');
+            return redirect()->back()->with('success', 'Atleta Restaurado.');
     }   else {
-            return redirect()->back()->with('error', 'User not found.');
+            return redirect()->back()->with('error', 'Atleta no se encontro.');
         }
     }
 
@@ -185,17 +196,23 @@ class UserController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            //'role' => 'required|string|in:Atleta,Entrenador',
+
             'first_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
             'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|unique:users,email|ends_with:@upr.edu',
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
-            'password' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-            //'is_active' => 'required|boolean',
+            'password' => 'required|string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'code' => 'required|string',
         ], $messages);
 
-        $validatedData['role'] = 'Entrenador'; // Example function to determine role
-        //$validatedData['is_active'] = true; // Always true as specified
+        $code = AccessCode::where('code', $request->code)->where('expires_at', '>', Carbon::now())->first();
+
+        if (!$code) {
+        return response()->json(['access_code' => 'Invalid or expired access code.'], 422);
+        }
+
+       $validatedData['role'] = 'Atleta'; // Example function to determine role
+
 
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -203,17 +220,18 @@ class UserController extends Controller
 
         $validated = $validator->validated(); // Get validated data array
     $user = new User([
-        //'role' => $validated['role'],
+
         'first_name' => $validated['first_name'],
         'last_name' => $validated['last_name'],
         'email' => $validated['email'],
         'phone_number' => bcrypt($validated['phone_number']),
         'password' => bcrypt($validated['password']),
-        //'is_active' => $validated['is_active'],
     ]);
 
-    $user->remember_token = Str::random(10);
-    $user->save();
+        $user->remember_token = Str::random(60);
+        $user->save();
+
+        $code->delete();
 
          return response()->json("Added", 201);
      }
@@ -248,8 +266,8 @@ class UserController extends Controller
             'last_name' => 'required|string|max:35|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,'.$user->id,
-            'password' => 'required|string|min:6|max:12|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-            //'is_active' => 'required|boolean',
+            'password' => 'required|string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+
         ], $messages);
 
         if ($validator->fails()) {
@@ -263,7 +281,7 @@ class UserController extends Controller
         'last_name' => $validated['last_name'],
         'email' => $validated['email'],
         'phone_number' => $validated['phone_number'],
-        //'is_active' => $validated['is_active'],
+
     ]);
 
          //$user->update($validated);

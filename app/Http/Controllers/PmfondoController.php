@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pmfondo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PmfondoController extends Controller
 {
@@ -69,13 +70,24 @@ class PmfondoController extends Controller
     // POST /pmfondos
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'pm_id' => 'required|exists:pm,id',
-            'fondo_id' => 'required|exists:fondo,id'
+            'fondo_id' => 'required|exists:fondo,id',
         ]);
 
-        $pmFondo = PmFondo::create($validated);
-        return response()->json($pmFondo, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $fondo = new PmFondo([
+            'pm_id' => $validated['pm_id'],
+            'fondo_id' => $validated['fondo_id'],
+        ]);
+
+        $fondo->save();
+
+        return response()->json("Added", 201);
     }
 
     // GET /pmfondos/{id}
@@ -89,20 +101,30 @@ class PmfondoController extends Controller
     }
 
     // PUT /pmfondos/{id}
-    public function update(Request $request, $id)
+    public function update(Request $request, PmFondo $fondo, $id)
     {
-        $pmFondo = PmFondo::find($id);
-        if (!$pmFondo) {
+        $fondo = PmFondo::find($id);
+        if (!$fondo) {
             return response()->json(['message' => 'PmFondo not found'], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'pm_id' => 'required|exists:pm,id',
-            'fondo_id' => 'required|exists:fondo,id'
+            'fondo_id' => 'required|exists:fondo,id',
         ]);
 
-        $pmFondo->update($validated);
-        return response()->json(['message' => 'PmFondo updated successfully', 'data' => $pmFondo]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $fondo->update([
+        'pm_id' => $validated['pm_id'],
+        'fondo_id' => $validated['fondo_id'],
+        ]);
+
+        return response()->json(['message' => 'PmFondo updated successfully', 'data' => $fondo]);
     }
 
     // DELETE /pmfondos/{id}

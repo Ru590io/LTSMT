@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PmController extends Controller
 {
@@ -63,12 +64,23 @@ class PmController extends Controller
      // POST /pms
      public function store(Request $request)
      {
-         $validated = $request->validate([
-             'ppm' => 'required|string|in:PM|min:2'
-         ]);
+        $validator = Validator::make($request->all(), [
+            'ppm' => 'required|string|min:2|in:PM',
+        ]);
 
-         $pm = Pm::create($validated);
-         return response()->json($pm, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $validated['aam'] = 'PM';
+        $am = new Pm([
+            'ppm' => $validated['ppm'],
+        ]);
+
+        $am->save();
+
+        return response()->json("Added", 201);
      }
 
      // GET /pms/{id}
@@ -82,19 +94,28 @@ class PmController extends Controller
      }
 
      // PUT /pms/{id}
-     public function update(Request $request, $id)
+     public function update(Request $request, Pm $pm, $id)
      {
-         $pm = Pm::find($id);
-         if (!$pm) {
-             return response()->json(['message' => 'PM not found'], 404);
-         }
+        $pm = Pm::find($id);
+        if (!$pm) {
+        return response()->json(['message' => 'Pm not found'], 404);
+        }
 
-         $validated = $request->validate([
-             'ppm' => 'required|string'
-         ]);
+        $validator = Validator::make($request->all(), [
+            'ppm' => 'required|string|in:PM|min:2',
+        ]);
 
-         $pm->update($validated);
-         return response()->json(['message' => 'PM updated successfully', 'data' => $pm]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $pm->update([
+        'ppm' => $validated['ppm'],
+        ]);
+
+         return response()->json(['message' => 'Pm updated successfully', 'data' => $pm]);
      }
 
      // DELETE /pms/{id}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\lighttraining;
+use Illuminate\Support\Facades\Validator;
 
 class LighttrainingController extends Controller
 {
@@ -23,8 +24,8 @@ class LighttrainingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ttime' => 'required|integer|max:10',
-            'tdistance' => 'required|string|max:100|alpha_num',
+            'ttime' => 'required|integer',
+            'tdistance' => 'required|integer',
             'users_id' => 'required|exists:users,id',
         ]);
 
@@ -33,21 +34,31 @@ class LighttrainingController extends Controller
         return redirect()->route('lighttrainings.indexs')->with('Exito', 'Entrenamiento de Luz Creado.');
     }
 
-    public function show(LightTraining $lighttraining)
+    public function show(LightTraining $lighttraining, $id)
     {
+        $item = lighttraining::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
+        }
         return view('lighttrainings.shows', compact('lighttraining'));
     }
 
-    public function edit(LightTraining $lighttraining)
+    public function edit(LightTraining $lighttraining, $id)
     {
+        $item = lighttraining::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
+        }
         return view('lighttrainings.edits', compact('lighttraining'));
     }
 
     public function update(Request $request, LightTraining $lighttraining)
     {
         $request->validate([
-            'ttime' => 'required|integer|max:10',
-            'tdistance' => 'required|string|max:100|alpha_num',
+            'ttime' => 'required|integer',
+            'tdistance' => 'required|integer',
             'users_id' => 'required|exists:users,id',
         ]);
 
@@ -76,15 +87,26 @@ class LighttrainingController extends Controller
             return response()->json(['message' => 'The specified user ID does not exist in our records.'], 404);
         }
 
-        $lightTraining = new LightTraining([
-            'ttime' => $request->ttime,
-            'tdistance' => $request->tdistance,
-            'users_id' => $request->users_id,
-        ]);
+        $validator = Validator::make($request->all(),[
+            'ttime' => 'required|integer',
+            'tdistance' => 'required|integer',
+            'users_id' => 'required|exists:users,id',
+         ]);
 
-        $lightTraining->save();
+         if ($validator->fails()) {
+             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+         }
 
-        return response()->json("Added", 201);
+         $validated = $validator->validated();
+         $am = new lighttraining([
+            'ttime' => $validated['ttime'],
+            'tdistance' => $validated['tdistance'],
+            'users_id' => $validated['users_id'],
+         ]);
+
+         $am->save();
+
+         return response()->json("Added", 201);
     }
 
     // GET /lighttrainings/{id}
@@ -112,15 +134,25 @@ class LighttrainingController extends Controller
         return response()->json(['message' => 'Light Training not found'], 404);
     }
 
-        $validated = $request->validate([
-            'ttime' => 'required|integer',
-            'tdistance' => 'required|string|max:255',
-            'users_id' => 'required|exists:users,id',
+        $validator = Validator::make($request->all(),[
+        'ttime' => 'required|integer',
+        'tdistance' => 'required|integer',
+        'users_id' => 'required|exists:users,id',
         ]);
 
-        $lightTraining->update($validated);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
 
-        return response()->json("Updated", 200);
+        $validated = $validator->validated(); // Get validated data array
+
+        $lightTraining->update([
+            'ttime' => $validated['ttime'],
+            'tdistance' => $validated['tdistance'],
+            'users_id' => $validated['users_id'],
+           ]);
+
+           return response()->json(['message' => 'Fondo updated successfully', 'data' => $lightTraining]);
     }
 
     // DELETE /lighttrainings/{id}

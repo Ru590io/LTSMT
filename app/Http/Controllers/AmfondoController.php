@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Amfondo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AmfondoController extends Controller
 {
@@ -66,14 +67,27 @@ class AmfondoController extends Controller
     // POST /amfondos
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'am_id' => 'required|exists:am,id',
-            'fondo_id' => 'required|exists:fondo,id'
+            'fondo_id' => 'required|exists:fondo,id',
         ]);
 
-        $amFondo = AmFondo::create($validated);
-        return response()->json($amFondo, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $fondo = new AmFondo([
+            'am_id' => $validated['am_id'],
+            'fondo_id' => $validated['fondo_id'],
+        ]);
+
+        $fondo->save();
+
+        return response()->json("Added", 201);
     }
+
+
 
     // GET /amfondos/{id}
     public function show($id)
@@ -86,20 +100,30 @@ class AmfondoController extends Controller
     }
 
     // PUT /amfondos/{id}
-    public function update(Request $request, $id)
+    public function update(Request $request, AmFondo $fondo, $id)
     {
-        $amFondo = AmFondo::find($id);
-        if (!$amFondo) {
-            return response()->json(['message' => 'AmFondo not found'], 404);
+        $fondo = AmFondo::find($id);
+        if (!$fondo) {
+            return response()->json(['message' => 'Fondo not found'], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'am_id' => 'required|exists:am,id',
-            'fondo_id' => 'required|exists:fondo,id'
+            'fondo_id' => 'required|exists:fondo,id',
         ]);
 
-        $amFondo->update($validated);
-        return response()->json(['message' => 'AmFondo updated successfully', 'data' => $amFondo]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $fondo->update([
+        'am_id' => $validated['am_id'],
+        'fondo_id' => $validated['fondo_id'],
+        ]);
+
+        return response()->json(['message' => 'AmFondo updated successfully', 'data' => $fondo]);
     }
 
     // DELETE /amfondos/{id}

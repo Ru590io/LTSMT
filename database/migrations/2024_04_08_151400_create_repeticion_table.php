@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('repeticion', function (Blueprint $table) {
             $table->id();
-            $table->string('Rdistancia');
+            $table->unsignedInteger('Rdistancia');
             $table->unsignedInteger('Rsets');
             $table->unsignedInteger('Rtiempoesperado');
             $table->unsignedInteger('Rrecuperacion');

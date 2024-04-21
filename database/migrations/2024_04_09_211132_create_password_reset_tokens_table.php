@@ -12,8 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            //$table->id();
-            //$table->foreignId('users_id')->constrained(table: 'users', indexName: 'password_reset_tokens_users_id');
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamps();

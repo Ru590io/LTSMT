@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\fondo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FondoController extends Controller
 {
@@ -21,7 +22,7 @@ class FondoController extends Controller
     public function stores(Request $request)
     {
         $request->validate([
-            'Fdistancia' => 'required|string|max:100|alpha_num',
+            'Fdistancia' => 'required|integer',
             'Fzona' => 'required|integer|max:2',
         ]);
 
@@ -29,20 +30,30 @@ class FondoController extends Controller
         return redirect()->route('fondos.indexs')->with('Exito', 'Fondo Creado.');
     }
 
-    public function shows(Fondo $fondo)
+    public function shows(Fondo $fondo, $id)
     {
+        $item = Fondo::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
+        }
         return view('fondos.shows', compact('fondo'));
     }
 
-    public function edits(Fondo $fondo)
+    public function edits(Fondo $fondo, $id)
     {
+        $item = Fondo::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
+        }
         return view('fondos.edits', compact('fondo'));
     }
 
     public function updates(Request $request, Fondo $fondo)
     {
         $request->validate([
-            'Fdistancia' => 'required|string|max:100|alpha_num',
+            'Fdistancia' => 'required|integer',
             'Fzona' => 'required|integer|max:2',
         ]);
 
@@ -66,13 +77,24 @@ class FondoController extends Controller
      // POST /fondos
      public function store(Request $request)
      {
-         $validated = $request->validate([
-             'Fdistancia' => 'required|string',
-             'Fzona' => 'required|integer'
+        $validator = Validator::make($request->all(),[
+            'Fdistancia' => 'required|integer',
+            'Fzona' => 'required|integer|max:2',
          ]);
 
-         $fondo = Fondo::create($validated);
-         return response()->json($fondo, 201);
+         if ($validator->fails()) {
+             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+         }
+
+         $validated = $validator->validated();
+         $am = new fondo([
+            'Fdistancia' => $validated['Fdistancia'],
+            'Fzona' => $validated['Fzona'],
+         ]);
+
+         $am->save();
+
+         return response()->json("Added", 201);
      }
 
      // GET /fondos/{id}
@@ -86,21 +108,31 @@ class FondoController extends Controller
      }
 
      // PUT /fondos/{id}
-     public function update(Request $request, $id)
-     {
-         $fondo = Fondo::find($id);
-         if (!$fondo) {
-             return response()->json(['message' => 'Fondo not found'], 404);
-         }
+     public function update(Request $request, fondo $amre, $id)
+    {
+       $amre = fondo::find($id);
+       if (!$amre) {
+           return response()->json(['message' => 'Fondo not found'], 404);
+       }
 
-         $validated = $request->validate([
-             'Fdistancia' => 'required|string',
-             'Fzona' => 'required|integer'
-         ]);
+       $validator = Validator::make($request->all(),[
+        'Fdistancia' => 'required|integer',
+        'Fzona' => 'required|integer|max:2',
+       ]);
 
-         $fondo->update($validated);
-         return response()->json(['message' => 'Fondo updated successfully', 'data' => $fondo]);
-     }
+       if ($validator->fails()) {
+           return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+       }
+
+       $validated = $validator->validated(); // Get validated data array
+
+       $amre->update([
+        'Fdistancia' => $validated['Fdistancia'],
+        'Fzona' => $validated['Fzona'],
+       ]);
+
+       return response()->json(['message' => 'Fondo updated successfully', 'data' => $amre]);
+    }
 
      // DELETE /fondos/{id}
      public function destroy($id)

@@ -110,7 +110,7 @@ class AmController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'aam' => 'required|string',
+            'aam' => 'required|string|in:AM|min:2',
         ]);
 
         if ($validator->fails()) {
@@ -126,7 +126,7 @@ class AmController extends Controller
          return response()->json(['message' => 'Am updated successfully', 'data' => $am]);
      }
 
-     
+
      public function amerase(Am $am, $id)
      {
         $am = Am::find($id);

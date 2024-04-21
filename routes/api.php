@@ -2,29 +2,32 @@
 
 use App\Models\Amfondo;
 use App\Models\Pmfondo;
+use App\Models\AccessCode;
 use App\Models\Amdescanso;
 use App\Models\Pmdescanso;
 use Illuminate\Http\Request;
 use App\Models\Pmrepeticiones;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AmController;
-use App\Http\Controllers\AmdescansoController;
-use App\Http\Controllers\AmfondoController;
 use App\Http\Controllers\PmController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DaysController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FondoController;
 use App\Http\Controllers\EventsController;
+use App\Http\Controllers\AmfondoController;
+use App\Http\Controllers\PmfondoController;
 use App\Http\Controllers\DescansoController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\AccessCodeController;
+use App\Http\Controllers\AmdescansoController;
+use App\Http\Controllers\PmdescansoController;
 use App\Http\Controllers\RepeticionController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\CompetitorsController;
 use App\Http\Controllers\LighttrainingController;
 use App\Http\Controllers\WeeklysheduleController;
 use App\Http\Controllers\AmrepeticionesController;
-use App\Http\Controllers\PmdescansoController;
-use App\Http\Controllers\PmfondoController;
 use App\Http\Controllers\PmrepeticionesController;
 
 /*
@@ -68,6 +71,8 @@ Route::delete('deletelight/{id}', [LighttrainingController::class, 'erase']);
 Route::apiResource('users', UserController::class);
 
 Route::post('/users/{id}/restore', [UserController::class, 'restore']);
+
+Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCodeAPI']);
 
 //PM//
 Route::apiResource('pm', PmController::class);

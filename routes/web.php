@@ -18,48 +18,52 @@ use App\Http\Controllers\PasswordResetController;
 |
 */
 
+Route::get('/', function () {
+    return redirect('/login');
+})->middleware('guest');
 
+Auth::routes();
 
+// For Coach specific pages
+/*Route::middleware(['auth', 'role:Entrenador'])->group(function () {
+    Route::get('/coach/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
+});
 
+// For Athlete specific pages
+Route::middleware(['auth', 'role:Atleta'])->group(function () {
+    Route::get('/athlete/dashboard', [AthleteController::class, 'index'])->name('athlete.dashboard');
+});*/
 
+Route::middleware(['auth', 'role:Entrenador'])->group(function () {
+    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+    Route::get('/generate_code', [AuthController::class, 'generateAccessCode'])->name('generate_code');
+});
 
+Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');
 
+Route::post('/register', [UserController::class, 'stores'])->name('register')->middleware('guest');
 
+Route::get('/registers', [UserController::class, 'creates'])->name('registers')->middleware('guest');
 
+Route::post('/registers', [UserController::class, 'coachstores'])->name('registers')->middleware('guest');
 
+Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest');
 
+Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
 
+Route::get('password/reset', [PasswordResetController::class, 'showResetRequestForm'])->name('password.request');
 
+Route::post('password/email', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
 
+Route::get('password/reset/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
 
+Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Route::fallback(function(){
+        return view('welcom');
+});
 
 
 //Atleta (Menú)
@@ -188,48 +192,6 @@ Route::get('/sistema_de_luces', function () {
     return view('Entrenador.Sistema de Luces.sistema_de_luces');
 });
 
-
-Route::get('/', function () {
-    return redirect('/login');
-});
-
-Auth::routes();
-
-// For Coach specific pages
-/*Route::middleware(['auth', 'role:Entrenador'])->group(function () {
-    Route::get('/coach/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
-});
-
-// For Athlete specific pages
-Route::middleware(['auth', 'role:Atleta'])->group(function () {
-    Route::get('/athlete/dashboard', [AthleteController::class, 'index'])->name('athlete.dashboard');
-});*/
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
-});
-
-Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');
-
-Route::post('/register', [UserController::class, 'stores'])->name('register')->middleware('guest');
-
-Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest');
-
-Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
-
-Route::get('password/reset', [PasswordResetController::class, 'showResetRequestForm'])->name('password.request');
-
-Route::post('password/email', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
-
-Route::get('password/reset/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
-
-Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
-
-Route::fallback(function(){
-        return view('welcom');
-});
 
 
 

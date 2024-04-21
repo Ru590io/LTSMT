@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EventsController extends Controller
 {
@@ -31,13 +32,23 @@ class EventsController extends Controller
         return redirect()->route('events.indexs')->with('Exito', 'Evento Agregado.');
     }
 
-    public function shows(Event $event)
+    public function shows(Event $event, $id)
     {
+        $item = Event::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
+        }
         return view('events.shows', compact('event'));
     }
 
-    public function edits(Event $event)
+    public function edits(Event $event, $id)
     {
+        $item = Event::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
+        }
         return view('events.edits', compact('event'));
     }
 
@@ -71,14 +82,26 @@ class EventsController extends Controller
     // POST /events
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'competitors_id' => 'required|exists:competitors,id',
             'etime_range' => 'required|integer|max:10',
             'edistance' => 'required|string|max:100|alpha_num',
-        ]);
+         ]);
 
-        $event = Event::create($validated);
-        return response()->json($event, 201);
+         if ($validator->fails()) {
+             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+         }
+
+         $validated = $validator->validated();
+         $am = new Event([
+            'competitors_id' => $validated['competitors_id'],
+            'etime_range' => $validated['etime_range'],
+            'edistance' => $validated['edistance'],
+         ]);
+
+         $am->save();
+
+         return response()->json("Added", 201);
     }
 
     // GET /events/{id}
@@ -92,21 +115,32 @@ class EventsController extends Controller
     }
 
     // PUT /events/{id}
-    public function update(Request $request, $id)
+    public function update(Request $request, Event $amre, $id)
     {
-        $event = Event::find($id);
-        if (!$event) {
-            return response()->json(['message' => 'Event not found'], 404);
-        }
+       $amre = Event::find($id);
+       if (!$amre) {
+           return response()->json(['message' => 'Evento not found'], 404);
+       }
 
-        $validated = $request->validate([
-            'competitors_id' => 'required|exists:competitors,id',
-            'etime_range' => 'required|integer|max:10',
-            'edistance' => 'required|string'
-        ]);
+       $validator = Validator::make($request->all(),[
+        'competitors_id' => 'required|exists:competitors,id',
+        'etime_range' => 'required|integer|max:10',
+        'edistance' => 'required|string|max:100|alpha_num',
+       ]);
 
-        $event->update($validated);
-        return response()->json(['message' => 'Event updated successfully', 'data' => $event]);
+       if ($validator->fails()) {
+           return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+       }
+
+       $validated = $validator->validated(); // Get validated data array
+
+       $amre->update([
+        'competitors_id' => $validated['competitors_id'],
+        'etime_range' => $validated['etime_range'],
+        'edistance' => $validated['edistance'],
+       ]);
+
+       return response()->json(['message' => 'Evento updated successfully', 'data' => $amre]);
     }
 
     // DELETE /events/{id}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\descanso;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DescansoController extends Controller
 {
@@ -29,13 +30,23 @@ class DescansoController extends Controller
         return redirect()->route('descansos.indexs')->with('Exito', 'Descanso Agregado.');
     }
 
-    public function shows(Descanso $descanso)
+    public function shows(Descanso $descanso, $id)
     {
+        $item = descanso::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
+        }
         return view('descansos.shows', compact('descanso'));
     }
 
-    public function edits(Descanso $descanso)
+    public function edits(Descanso $descanso, $id)
     {
+        $item = descanso::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
+        }
         return view('descansos.edits', compact('descanso'));
     }
 
@@ -66,12 +77,22 @@ class DescansoController extends Controller
     // POST /descansos
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'ddescanso' => 'required|string'
-        ]);
+        $validator = Validator::make($request->all(),[
+            'ddescanso' => 'required|string|in:Descanso|max:8',
+         ]);
 
-        $descanso = Descanso::create($validated);
-        return response()->json($descanso, 201);
+         if ($validator->fails()) {
+             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+         }
+
+         $validated = $validator->validated();
+         $am = new descanso([
+            'ddescanso' => $validated['ddescanso'],
+         ]);
+
+         $am->save();
+
+         return response()->json("Added", 201);
     }
 
     // GET /descansos/{id}
@@ -85,20 +106,29 @@ class DescansoController extends Controller
     }
 
     // PUT /descansos/{id}
-    public function update(Request $request, $id)
-    {
-        $descanso = Descanso::find($id);
-        if (!$descanso) {
+    public function update(Request $request, descanso $amre, $id)
+     {
+        $amre = descanso::find($id);
+        if (!$amre) {
             return response()->json(['message' => 'Descanso not found'], 404);
         }
 
-        $validated = $request->validate([
-            'ddescanso' => 'required|string'
+        $validator = Validator::make($request->all(),[
+            'ddescanso' => 'required|string|in:Descanso|max:8',
         ]);
 
-        $descanso->update($validated);
-        return response()->json(['message' => 'Descanso updated successfully', 'data' => $descanso]);
-    }
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $amre->update([
+            'ddescanso' => $validated['ddescanso'],
+        ]);
+
+        return response()->json(['message' => 'Descanso updated successfully', 'data' => $amre]);
+     }
 
     // DELETE /descansos/{id}
     public function destroy($id)

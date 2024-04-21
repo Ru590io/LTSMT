@@ -5,7 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
-
+use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     public function viewlogin()
@@ -50,7 +50,7 @@ class AuthController extends Controller
     }
 
     // If the login attempt was unsuccessful, increment the number of attempts to log in
-    RateLimiter::hit($throttleKey, 300); // 300 seconds until reset
+    RateLimiter::hit($throttleKey, 314); // 300 seconds until reset
 
     // Redirect back to the login form with an error message
     return back()->withErrors([
@@ -79,4 +79,45 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('Exito', 'Final de sesion hecha.');
     }
+
+    public function apiLogin(Request $request)
+{
+    // Throttle key based on IP and email to prevent brute force attacks
+    $throttleKey = strtolower($request->input('email')).'|'.$request->ip();
+
+    // Maximum of 5 attempts allowed every 1 minute
+    if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+        $seconds = RateLimiter::availableIn($throttleKey);
+        return response()->json([
+            'message' => "Too many login attempts. Please try again in $seconds seconds."
+        ], 429); // 429 Too Many Requests
+    }
+
+    // Validate the request
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string',
+    ]);
+
+    // Attempt to log the user in
+    if (Auth::attempt($request->only('email', 'password'))) {
+        RateLimiter::clear($throttleKey);
+
+        // Regenerate session to avoid session fixation
+        $request->session()->regenerate();
+
+        return response()->json([
+            'message' => 'Login successful.',
+            'user' => Auth::user()
+        ], 200);
+    }
+
+    // Increment the number of failed attempts to log in
+    RateLimiter::hit($throttleKey, 60);
+
+    // Return error if credentials are incorrect
+    throw ValidationException::withMessages([
+        'email' => ['The provided credentials are incorrect.'],
+    ]);
+}
 }

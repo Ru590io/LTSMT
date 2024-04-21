@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\competitors;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompetitorsController extends Controller
 {
@@ -68,13 +69,24 @@ class CompetitorsController extends Controller
     // POST /competitors
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'users_id' => 'required|exists:users,id',
-            'competition_id' => 'required|exists:competition,id'
+        $validator = Validator::make($request->all(),[
+           'users_id' => 'required|exists:users,id',
+            'competition_id' => 'required|exists:competition,id',
         ]);
 
-        $competitor = Competitors::create($validated);
-        return response()->json($competitor, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $am = new competitors([
+            'users_id' => $validated['users_id'],
+            'competition_id' => $validated['competition_id'],
+        ]);
+
+        $am->save();
+
+        return response()->json("Added", 201);
     }
 
     // GET /competitors/{id}
@@ -88,21 +100,31 @@ class CompetitorsController extends Controller
     }
 
     // PUT /competitors/{id}
-    public function update(Request $request, $id)
-    {
-        $competitor = Competitors::find($id);
-        if (!$competitor) {
-            return response()->json(['message' => 'Competitor not found'], 404);
+    public function update(Request $request, competitors $amre, $id)
+     {
+        $amre = competitors::find($id);
+        if (!$amre) {
+            return response()->json(['message' => 'Competidores not found'], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'users_id' => 'required|exists:users,id',
-            'competition_id' => 'required|exists:competition,id'
+            'competition_id' => 'required|exists:competition,id',
         ]);
 
-        $competitor->update($validated);
-        return response()->json(['message' => 'Competitor updated successfully', 'data' => $competitor]);
-    }
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $amre->update([
+            'users_id' => $validated['users_id'],
+            'competition_id' => $validated['competition_id'],
+        ]);
+
+        return response()->json(['message' => 'Competidores updated successfully', 'data' => $amre]);
+     }
 
     // DELETE /competitors/{id}
     public function destroy($id)

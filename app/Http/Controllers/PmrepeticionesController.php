@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pmrepeticiones;
+use Illuminate\Support\Facades\Validator;
 
 class PmrepeticionesController extends Controller
 {
@@ -70,13 +71,24 @@ class PmrepeticionesController extends Controller
     // POST /pmrepeticiones
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'pm_id' => 'required|exists:pm,id',
-            'repeticion_id' => 'required|exists:repeticion,id'
+            'repeticion_id' => 'required|exists:repeticion,id',
         ]);
 
-        $pmRepeticion = PmRepeticiones::create($validated);
-        return response()->json($pmRepeticion, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $am = new Pmrepeticiones([
+            'pm_id' => $validated['pm_id'],
+            'repeticion_id' => $validated['repeticion_id'],
+        ]);
+
+        $am->save();
+
+        return response()->json("Added", 201);
     }
 
     // GET /pmrepeticiones/{id}
@@ -90,21 +102,31 @@ class PmrepeticionesController extends Controller
     }
 
     // PUT /pmrepeticiones/{id}
-    public function update(Request $request, $id)
-    {
-        $pmRepeticion = PmRepeticiones::find($id);
-        if (!$pmRepeticion) {
-            return response()->json(['message' => 'PmRepeticion not found'], 404);
+    public function update(Request $request, Pmrepeticiones $amre, $id)
+     {
+        $amre = Pmrepeticiones::find($id);
+        if (!$amre) {
+            return response()->json(['message' => 'AmRepeticiones not found'], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(),[
             'pm_id' => 'required|exists:pm,id',
-            'repeticion_id' => 'required|exists:repeticion,id'
+            'repeticion_id' => 'required|exists:repeticion,id',
         ]);
 
-        $pmRepeticion->update($validated);
-        return response()->json(['message' => 'PmRepeticion updated successfully', 'data' => $pmRepeticion]);
-    }
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $amre->update([
+            'pm_id' => $validated['pm_id'],
+            'repeticion_id' => $validated['repeticion_id'],
+        ]);
+
+        return response()->json(['message' => 'Pmrepeticion updated successfully', 'data' => $amre]);
+     }
 
     // DELETE /pmrepeticiones/{id}
     public function destroy($id)
