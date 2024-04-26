@@ -76,9 +76,9 @@
                     <div class="mb-3">
                         <label for="access-code" class="form-label">Código de Acceso</label>
                         <input type="text" name = "code" class="form-control" id="code" placeholder="Escriba el código de acceso">
-                        @error('code')
+                        {{-- @error('code')
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
-                        @enderror
+                        @enderror --}}
                     </div>
                     <button type="submit" class="btn btn-primary">Completar Registro</button>
                     <a href="/login" class="btn btn-link">Regresar a Inicio de Sesión</a>
@@ -86,7 +86,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Crear Semana de Entrenamiento</title>
+    <title>Editar Semana de Entrenamiento</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
 <body>
@@ -12,9 +12,10 @@
         <div class="logo-text">LTSMT</div>
     </div>
     <div class="container">
-        <h1 class="text-center">Crear Semana de Entrenamiento</h1>
+        <h1 class="text-center">Editar Semana de Entrenamiento</h1>
+        <h2 class="text-center mt-5">Entrenamiento 1</h2>
         <div class="text-left mt-4">
-            <a href="menu_principal_entrenador.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="entrenamiento_del_atleta" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
             <!--Lunes-->
@@ -48,7 +49,6 @@
                             <input type="radio" id="lunes-pm-repeticion" name="lunes-pm" value="Repeticion" onchange="toggleTrainingOptions('lunes-pm', this.value)">
                             <label for="lunes-pm-repeticion">Repetición</label>
                         </div>
-
                         <!-- Contenido dinámico para PM -->
                         <div class="dynamic-content" id="lunes-pm-options"></div>
                     </div>
@@ -111,7 +111,7 @@
 
             <!--Miércoles-->
             <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Miercoles</h3></div>
+                <div class="card-header"><h3 class="centered-text">Miércoles</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -252,7 +252,7 @@
 
             <!--Sábado-->
             <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sabado</h3></div>
+                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -347,44 +347,82 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg">Asignar a Atleta</button>
             <button class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
         </div>
     </div>
-
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta semana de entrenamiento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteWeek()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function toggleTrainingOptions(timeOfDay, option) {
-            let optionsContainer = document.getElementById(timeOfDay + '-options');
-            optionsContainer.innerHTML = ''; // Clear previous options
+    let optionsContainer = document.getElementById(timeOfDay + '-options');
+    optionsContainer.innerHTML = ''; // Limpia las opciones previas
 
-            if (option === 'Fondo') {
-                optionsContainer.innerHTML = `
-                    <input type="number" placeholder="Distancia (Kilometros)" />
-                    <select>
-                        <option value="">Zona</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                `;
-            } else if (option === 'Repeticion') {
-                optionsContainer.innerHTML = `
-                    <input type="number" placeholder="Cantidad de Sets" min="1" max="30" />
-                    <input type="number" placeholder="Distancia (metros)" />
-                    <input type="text" placeholder="Tiempo Esperado (mm:ss)" />
-                    <input type="text" placeholder="Recuperación (mm:ss)" />
-                    <div id="${timeOfDay}-repetition-container">
+    if (option === 'Fondo') {
+        optionsContainer.innerHTML = `
+            <input type="number" placeholder="Distancia (Kilometros)" />
+            <select>
+                <option value="">Zona</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        `;
+    } else if (option === 'Repeticion') {
+        const repetitionContainer = document.createElement('div');
+        repetitionContainer.classList.add('repetition-container');
+        repetitionContainer.innerHTML = `
+        <input type="number" placeholder="Cantidad de Sets" min="1" max="30" required />
 
-                    </div>
-                    <button type="button" class="btn btn-success mt-2" onclick="addRepetition('${timeOfDay}-repetition-container')">+</button>
+        <input type="number" placeholder="Distancia (metros)" min="1" required />
 
-                `;
-            } else if (option === 'Descanso') {
-                optionsContainer.innerHTML = 'Descanso';
-            }
-        }
+        <input type="text" placeholder="Tiempo Esperado (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
+
+        <input type="text" placeholder="Recuperación (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
+        `;
+        optionsContainer.appendChild(repetitionContainer);
+    } else if (option === 'Descanso') {
+        optionsContainer.innerHTML = 'Descanso';
+    }
+}
+
+function addRepetition(button) {
+    const repetitionContainer = button.parentElement;
+    const newRepetitionBlock = repetitionContainer.cloneNode(true);
+    newRepetitionBlock.querySelector('.add-repetition').remove();
+    newRepetitionBlock.innerHTML += '<button type="button" class="btn btn-danger remove-repetition">-</button>';
+    repetitionContainer.parentNode.insertBefore(newRepetitionBlock, repetitionContainer.nextSibling);
+}
+
+function removeRepetition(button) {
+    button.parentElement.remove();
+}
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('add-repetition')) {
+        addRepetition(event.target);
+    } else if (event.target.classList.contains('remove-repetition')) {
+        removeRepetition(event.target);
+    }
+});
+
     </script>
     <script>
         window.onload = function() {
@@ -424,29 +462,10 @@
             document.getElementById(groupName + '-descanso').checked = true;
             toggleTrainingOptions(groupName, 'Descanso');
         };
-2
+
         function resetNotes(notesId) {
             document.getElementById(notesId).value = '';
         };
-        function addRepetition(containerId) {
-            let container = document.getElementById(containerId);
-            if (container) {
-                let newRepetitionBlock = document.createElement('div');
-                newRepetitionBlock.classList.add('mt-2');
-                newRepetitionBlock.innerHTML = `
-                    <input type="number" placeholder="Cantidad de Sets" class="me-2">
-                    <input type="number" placeholder="Distancia (metros)" class="me-2">
-                    <input type="text" placeholder="Tiempo Esperado (mm:ss)" class="me-2">
-                    <input type="text" placeholder="Recuperación (mm:ss)" class="me-2">
-                    <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
-                `;
-                container.appendChild(newRepetitionBlock);
-            }
-        }
-
-        function removeRepetition(button) {
-            button.parentElement.remove();
-        }
 
 
     </script>

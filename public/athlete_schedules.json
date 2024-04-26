@@ -1,0 +1,44 @@
+{
+    "weeks": {
+        "week1": {
+            "dates": "6 Marzo 24 - 12 Marzo 24",
+            "days": {
+                "Lunes": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                },
+                "Martes": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                },
+                "Miércoles": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                },
+                "Jueves": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                },
+                "Viernes": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                },
+                "Sábado": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                },
+                "Domingo": {
+                    "AM": ["rec. 2' 5 x 200m (29\")", "rec. 2' + enf. 10' + flex."],
+                    "PM": ["Descanso"],
+                    "Notes": "Baño de agua fria."
+                }
+            }
+        }
+    }
+}

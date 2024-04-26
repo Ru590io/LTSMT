@@ -33,6 +33,11 @@ class UserController extends Controller
         $users = User::all();
         return view('auth.Register.registro', compact('users'));
     }
+    // public function indexs_lista_de_atletas()
+    // {
+    //     $users = User::all();  // Ensure this line is retrieving users correctly.
+    //     return view('Entrenador.Lista de Atletas.lista_de_atletas', compact('users'));
+    // }
 
     // Crear el usuario y registrarlo
     public function stores(Request $request)
@@ -47,6 +52,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|max:35|unique:users,email|ends_with:@upr.edu',
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
+
             'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
             'code' => 'required|string',
         ], $message);
@@ -59,6 +65,7 @@ class UserController extends Controller
             ]);
         }
 
+
         $validatedData['role'] = 'Atleta'; // Example function to determine role
         $validatedData['remember_token'] = Str::random(60); // Random remember token, length adjusted to 10 for better security
         $validatedData['password'] = bcrypt($validatedData['password']); // Encrypt the password
@@ -68,7 +75,7 @@ class UserController extends Controller
         User::create($validatedData);
 
         // Optionally invalidate the access code
-        $code->delete(); // or mark as used to prevent reuse
+       // $code->delete(); // or mark as used to prevent reuse
 
         //auth()->login($user);
 
@@ -159,6 +166,7 @@ class UserController extends Controller
          }
 
         return redirect('/users')->with('Exito', 'Informacion Actualizada.');
+
     }
 
     // Remove the specified user from storage.

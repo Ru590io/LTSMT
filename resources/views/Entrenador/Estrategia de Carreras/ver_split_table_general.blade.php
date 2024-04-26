@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="text-center">Split Tables General</h1>
         <div class="text-left mt-4">
-            <a href="your_back_link.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="detalles_de_la_competencia_general" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <div class="text-center mb-3">
             <a href="#" class="btn" onclick="navigateEventDistance(-1)">&lt;</a>
@@ -42,7 +42,9 @@
             { name: 'Rubén Marrero', event: 800, time: 120 },
             { name: 'Rubén Marrero', event: 3000, time: 420 },
             { name: 'Rubén Marrero', event: 5000, time: 800 },
+
             // Agrega más atletas aquí
+
         ];
 
         function secondsToMMSS(seconds) {

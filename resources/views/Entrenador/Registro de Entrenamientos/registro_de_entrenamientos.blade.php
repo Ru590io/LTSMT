@@ -14,11 +14,11 @@
     <div class="container">
         <h1 class="text-center">Registro de Entrenamientos</h1>
         <div class="text-left mt-4">
-            <button onclick="location.href='menu_principal_entrenador.html'" class="btn btn-primary">Regresar</button>
+            <button onclick="location.href='menu_principal_entrenador'" class="btn btn-primary">Regresar</button>
         </div>
         <div class="d-grid gap-3 mt-4">
-            <a href="registro.html" id="createTrainingWeekButton" class="btn btn-primary btn-lg">Crear Semana de Entrenamiento</a>
-            <a href="registro.html" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Ver Entrenamientos Guardados</a>
+            <a href="crear_semana_de_entrenamiento" id="createTrainingWeekButton" class="btn btn-primary btn-lg">Crear Semana de Entrenamiento</a>
+            <a href="lista_de_entrenamientos" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Ver Entrenamientos Guardados</a>
         </div>
     </div>
 

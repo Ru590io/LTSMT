@@ -19,7 +19,12 @@ use App\Http\Controllers\PasswordResetController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function () {
+    return redirect('/login');
+});
 
+Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
+=======
 Route::get('/', function () {
     return redirect('/login');
 })->middleware('guest');
@@ -62,6 +67,7 @@ Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middl
 
 Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
 
+
 Route::get('password/reset', [PasswordResetController::class, 'showResetRequestForm'])->name('password.request');
 
 Route::post('password/email', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
@@ -73,7 +79,6 @@ Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('
 Route::fallback(function(){
         return view('welcom');
 });
-
 
 //Atleta (Menú)
 Route::get('/calendario_del_atleta', function () {
@@ -89,6 +94,7 @@ Route::get('/editar_informacion_del_usuario', function () {
     return view('Atleta.editar_informacion_del_usuario');
 });
 
+
 //Registro
 Route::get('/inicio_de_sesion', function () {
     return view('auth.Register.inicio_de_sesion');
@@ -102,6 +108,9 @@ Route::get('/registro', function () {
 Route::get('/reestablecer_contraseña', function () {
     return view('auth.Register.reestablecer_contraseña');
 });
+// Route::get('/entrenadorregistro', function () {
+//     return view('auth.Register.entrenadorregistro');
+// });
 
 //Entrenador
 Route::get('/informacion_del_usuario_entrenador', function () {
@@ -110,10 +119,14 @@ Route::get('/informacion_del_usuario_entrenador', function () {
 Route::get('/menu_principal_entrenador', function () {
     return view('Entrenador.menu_principal_entrenador');
 });
+Route::get('/editar_informacion_del_usuario_entrenador', function () {
+    return view('Entrenador.editar_informacion_del_usuario_entrenador');
+});
+
 
 //Entrenador-> Estrategia de Carreras
-Route::get('/crear_nueva_competencia', function () {
-    return view('Entrenador.Estrategia de Carreras.crear_nueva_competencia');
+Route::get('/crear_nueva_competencia_estrategia_de_carreras', function () {
+    return view('Entrenador.Estrategia de Carreras.crear_nueva_competencia_estrategia_de_carreras');
 });
 Route::get('/detalles_de_la_competencia_general', function () {
     return view('Entrenador.Estrategia de Carreras.detalles_de_la_competencia_general');
@@ -133,19 +146,22 @@ Route::get('/ver_split_table_atleta', function () {
 Route::get('/ver_split_table_general', function () {
     return view('Entrenador.Estrategia de Carreras.ver_split_table_general');
 });
+Route::get('/editar_detalles_de_la_competencia', function () {
+    return view('Entrenador.Estrategia de Carreras.editar_detalles_de_la_competencia');
+});
 
 //Entrenador-> Lista de Atletas
 Route::get('/compartir_aplicacion_web', function () {
     return view('Entrenador.Lista de Atletas.compartir_aplicacion_web');
 });
-Route::get('/crear_nueva_competencia', function () {
-    return view('Entrenador.Lista de Atletas.crear_nueva_competencia');
+Route::get('/crear_nueva_competencia_lista_de_atletas', function () {
+    return view('Entrenador.Lista de Atletas.crear_nueva_competencia_lista_de_atletas');
 });
 Route::get('/detalles_de_la_competencia_atleta', function () {
     return view('Entrenador.Lista de Atletas.detalles_de_la_competencia_atleta');
 });
-Route::get('/editar_semana_de_entrenamiento', function () {
-    return view('Entrenador.Lista de Atletas.editar_semana_de_entrenamiento');
+Route::get('/editar_semana_de_entrenamiento_atleta', function () {
+    return view('Entrenador.Lista de Atletas.editar_semana_de_entrenamiento_atleta');
 });
 Route::get('/entrenamiento_del_atleta', function () {
     return view('Entrenador.Lista de Atletas.entrenamiento_del_atleta');
@@ -166,13 +182,18 @@ Route::get('/registro_del_atleta', function () {
 Route::get('/rehabilitar_cuentas', function () {
     return view('Entrenador.Lista de Atletas.rehabilitar_cuentas');
 });
+Route::get('/editar_detalles_de_la_competencia_atleta', function () {
+    return view('Entrenador.Lista de Atletas.editar_detalles_de_la_competencia_atleta');
+});
+
+
 
 //Entrenador-> Registro de Entrenamientos
 Route::get('/asignar_semana_de_entrenamiento', function () {
     return view('Entrenador.Registro de Entrenamientos.asignar_semana_de_entrenamiento');
 });
-Route::get('/crear_semana_de_entrenameitno', function () {
-    return view('Entrenador.Registro de Entrenamientos.crear_semana_de_entrenameitno');
+Route::get('/crear_semana_de_entrenamiento', function () {
+    return view('Entrenador.Registro de Entrenamientos.crear_semana_de_entrenamiento');
 });
 Route::get('/detalles_semana_de_entrenamiento', function () {
     return view('Entrenador.Registro de Entrenamientos.detalles_semana_de_entrenamiento');

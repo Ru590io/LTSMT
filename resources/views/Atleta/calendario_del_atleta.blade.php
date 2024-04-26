@@ -6,159 +6,71 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Calendario del Atleta</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
-    <div class="logo-container">
-        <div class="logo-text">LTSMT</div>
-    </div>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center">Calendario del Atleta</h1>
         <div class="text-left mt-4">
-            <a href="athlete_main_menu.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="menu_principal_atleta" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <div class="text-center mb-3">
             <a href="#" class="btn">&lt;</a> <!-- Previous week -->
             <select class="form-select d-inline-block w-auto" id="weekDropdown">
-                <!-- Dropdown for selecting the week -->
                 <option value="week1">6 Marzo 24 - 12 Marzo 24</option>
                 <!-- More weeks can be added here -->
             </select>
             <a href="#" class="btn">&gt;</a> <!-- Next week -->
         </div>
         <div id="schedule">
-            <!-- Cards for each day -->
-
-            <!--Lunes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Martes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Martes</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Miercoles-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Miércoles</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Jueves-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Jueves</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Viernes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Viernes</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Sabado-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sabado</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Domingo-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Domingo</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
+            <!-- Dynamic content will be loaded here -->
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        // JavaScript for navigating weeks and updating schedule goes here
+        document.addEventListener('DOMContentLoaded', function() {
+            const weekDropdown = document.getElementById('weekDropdown');
+
+            function loadWeekData(week) {
+                fetch('athlete_schedules.json')  // Make sure this path matches your JSON file location
+                .then(response => response.json())
+                .then(data => {
+                    updateSchedule(data.weeks[week]);
+                });
+            }
+
+            function updateSchedule(weekData) {
+                const scheduleContainer = document.getElementById('schedule');
+                scheduleContainer.innerHTML = ''; // Clear current schedule
+
+                Object.entries(weekData.days).forEach(([day, activities]) => {
+                    const dayCard = document.createElement('div');
+                    dayCard.className = 'card mb-5';
+                    dayCard.innerHTML = `
+                        <div class="card-header"><h3 class="centered-text">${day}</h3></div>
+                        <div class="card-body">
+                            <h3>AM:</h3>
+                            ${activities.AM.map(activity => `<div>${activity}</div>`).join('')}
+                            <hr>
+                            <h3>PM:</h3>
+                            ${activities.PM.map(activity => `<div>${activity}</div>`).join('')}
+                            <hr>
+                            <div class="notes-section">
+                                <label><h4>Notas:</h4></label>
+                                ${activities.Notes}
+                            </div>
+                        </div>
+                    `;
+                    scheduleContainer.appendChild(dayCard);
+                });
+            }
+
+            weekDropdown.addEventListener('change', function() {
+                loadWeekData(this.value);
+            });
+
+            loadWeekData(weekDropdown.value);
+        });
     </script>
 </body>
 </html>

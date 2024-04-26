@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Información del Entrenador</title>
+    <div class="logo-container">
+        <div class="logo-text">LTSMT</div>
+    </div>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
 <body>
@@ -13,8 +16,8 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
-                    <a href="menu_principal_entrenador.html" class="btn btn-primary mb-3">Regresar</a>
-                    <a href="/edit_information.html" class="btn btn-primary mb-3">Editar Información</a>
+                    <a href="menu_principal_entrenador" class="btn btn-primary mb-3">Regresar</a>
+                    <a href="editar_informacion_del_usuario_entrenador" class="btn btn-primary mb-3">Editar Información</a>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nombre:</label> <span class="form-label"> Jorge Santiago</span>
@@ -26,8 +29,11 @@
                     <label class="form-label">Número de Teléfono:</label> <span class="form-label"> (787) 735 - 5555</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <a href="/change_password.html" class="btn btn-primary">Cambiar Contraseña</a>
-                    <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-danger">Terminar Sesión</button>
+                    <a href="/reestablecer_contraseña" class="btn btn-primary">Cambiar Contraseña</a>
+                    <form class= "form" action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button class="btn btn-danger " type="submit">Terminar Sesión </button>
+                    <form>
                 </div>
                 <form id="logout-form" action="{{route('logout')}}" method="post" class="d-none">
                     @csrf

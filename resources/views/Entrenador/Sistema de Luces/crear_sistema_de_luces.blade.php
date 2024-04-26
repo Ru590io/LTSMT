@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="text-center">Crear Entrenamiento con Luces</h1>
         <div class="text-left mt-4">
-            <a href="athlete_main_menu.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="sistema_de_luces" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
         <form id="workoutForm">

@@ -16,7 +16,7 @@ class AuthController extends Controller
     }
 
     public function homepage(){
-        return view('home');
+        return view('Entrenador.menu_principal_entrenador');
     }
 
     public function login(Request $request){
@@ -79,7 +79,7 @@ class AuthController extends Controller
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect()->route('login')->with('Exito', 'Final de sesion hecha.');
+        return redirect()->route('login')->with('Exito', 'Seción Iniciada.');
     }
 
  //API/////////////////////////////////////////////////////////////////////////////////////////

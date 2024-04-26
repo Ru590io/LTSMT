@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="text-center">Entrenameinto 1</h1>
         <div class="text-left mt-4">
-            <a href="athlete_main_menu.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="lista_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <div id="schedule">
             <!-- Cards for each day -->
@@ -146,12 +146,64 @@
             </div>
         </div>
         <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg">Asignar a Atleta</button>
-            <button class="btn btn-primary btn-lg">Editar</button>
+            <button class="btn btn-primary btn-lg" onclick="location.href='asignar_semana_de_entrenamiento';">Asignar a Atleta</button>
+            <button class="btn btn-primary btn-lg" onclick="location.href='editar_semana_de_entrenamiento';">Editar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
-            <button class="btn btn-danger">Eliminar Semana de entrenamiento</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
+
         </div>
     </div>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de querer eliminar esta semana de entrenamiento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDeletion()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.copy-to-clipboard').addEventListener('click', function() {
+            let scheduleText = '';
+            document.querySelectorAll('.card').forEach(card => {
+                let dayName = card.querySelector('.card-header h3').textContent;
+                let amDetails = card.querySelector('h3 + div').textContent.trim();
+                let pmDetails = card.querySelector('hr + h3').nextElementSibling.textContent.trim();
+                let notes = card.querySelector('.notes-section label').nextSibling.textContent.trim();
+
+                scheduleText += `${dayName}\nAM: ${amDetails}\nPM: ${pmDetails}\nNotas: ${notes}\n\n`;
+            });
+
+            navigator.clipboard.writeText(scheduleText).then(function() {
+                alert('Información copiada al portapapeles');
+            }, function(err) {
+                console.error('Error al copiar información: ', err);
+            });
+        });
+        </script>
+        <script>
+            function confirmDeletion() {
+                // Placeholder for deletion logic
+                console.log("Semana de entrenamiento eliminada");
+
+                // Close the modal after action
+                var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteWeekModal'));
+                deleteModal.hide();
+
+                // Additional code to remove the week from the UI or refresh the page might be needed
+            }
+            </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

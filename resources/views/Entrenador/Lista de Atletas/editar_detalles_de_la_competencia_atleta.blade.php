@@ -12,9 +12,9 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Crear Nueva Competencia</h1>
+        <h1 class="text-center">Editar Competencia</h1>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="coach_main_menu.html" class="btn btn-primary">Regresar</a>
+            <a href="detalles_de_la_competencia_atleta" class="btn btn-primary">Regresar</a>
         </div>
 
         <div class="card">
@@ -23,18 +23,24 @@
                 <form id="newCompetitionForm">
                     <div class="mb-3">
                         <label for="competitionName" class="form-label">Nombre de la Competencia</label>
-                        <input type="text" class="form-control" id="competitionName" required>
+                        <!-- Validación para nombre: solo letras, números y espacios, hasta 100 caracteres -->
+                        <input type="text" class="form-control" id="competitionName" value="Competencia 1" pattern="[A-Za-z0-9\s]{1,100}" title="Solo letras, números y espacios, hasta 100 caracteres." required>
                     </div>
                     <div class="mb-3">
                         <label for="competitionDate" class="form-label">Fecha y Hora</label>
-                        <input type="datetime-local" class="form-control" id="competitionDate" required>
+                        <!-- Fecha y hora ya se valida mediante el tipo datetime-local -->
+                        <input type="datetime-local" class="form-control" id="competitionDate" value="2024-10-22T16:30" required>
                     </div>
                     <div class="mb-3">
                         <label for="competitionLocation" class="form-label">Lugar</label>
-                        <input type="text" class="form-control" id="competitionLocation" required>
+                        <!-- Validación para lugar: letras, números, espacios y algunos caracteres especiales, hasta 255 caracteres -->
+                        <input type="text" class="form-control" id="competitionLocation" value="Villalba, Puerto Rico" pattern="[A-Za-z0-9\s,.-]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Crear Competencia</button>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>

@@ -16,41 +16,20 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-end">
-                    <button id="userInfoButton" class="btn btn-primary mb-3">Información del Usuario</button>
+                    <a href="informacion_del_usuario_entrenador" class="btn btn-primary mb-3">Información del Entrenador</a>
                 </div>
                 <!-- Big Buttons -->
                 <div class="d-grid gap-3">
-                    <button id="rosterButton" class="btn btn-primary btn-lg">Lista de Atletas</button>
-                    <button id="trainingLogButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</button>
-                    <button id="raceStrategyButton" class="btn btn-primary btn-lg">Estrategia de Carreras</button>
-                    <button id="raceStrategyButton" class="btn btn-primary btn-lg">Sistema de Luces</button>
+                    <a href="lista_de_atletas" id="rosterButton" class="btn btn-primary btn-lg">Lista de Atletas</a>
+                    <a href="registro_de_entrenamientos" id="trainingLogButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</a>
+                    <a href="estrategia_de_carreras_general" id="raceStrategyButton" class="btn btn-primary btn-lg">Estrategia de Carreras</a>
+                    <a href="sistema_de_luces" id="raceStrategyButton" class="btn btn-primary btn-lg">Sistema de Luces</a>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        // Add event listeners for each button
-        document.getElementById('userInfoButton').addEventListener('click', function() {
-            // Implement your logic for the User Info button
-            alert('User Info button clicked');
-        });
 
-        document.getElementById('rosterButton').addEventListener('click', function() {
-            // Implement your logic for the Roster button
-            alert('Roster button clicked');
-        });
-
-        document.getElementById('trainingLogButton').addEventListener('click', function() {
-            // Implement your logic for the Training Log button
-            alert('Training Log button clicked');
-        });
-
-        document.getElementById('raceStrategyButton').addEventListener('click', function() {
-            // Implement your logic for the Race Strategy button
-            alert('Race Strategy button clicked');
-        });
-    </script>
 </body>
 </html>
