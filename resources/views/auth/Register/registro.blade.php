@@ -34,7 +34,7 @@
 
                         <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Escriba sus apellidos (Ej. Torrez Figueroa)" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
                         @error('last_name')
-                        
+
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
@@ -43,7 +43,7 @@
 
                         <input type="email" name="email" class="form-control" id="email" placeholder="Escriba su correo electrónico institucional (@upr.edu)" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email')
-                        
+
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
@@ -52,9 +52,6 @@
 
                         <input type="password" name="password" class="form-control" id="password" placeholder="Escriba su contraseña">
                         <label class="form-label" style="font-size: 0.8rem;">Contraseña debe tener Mayúsculas, números, símbolos y no mayor de 16 caracteres.</label>
-                        @error('password')
-
-                        <input type="password" name="password" class="form-control" id="password" placeholder="Escriba su contraseñá">
                         @error('password')
 
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
@@ -79,9 +76,9 @@
                     <div class="mb-3">
                         <label for="access-code" class="form-label">Código de Acceso</label>
                         <input type="text" name = "code" class="form-control" id="code" placeholder="Escriba el código de acceso">
-                        @error('code')
+                        {{-- @error('code')
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
-                        @enderror
+                        @enderror --}}
                     </div>
                     <button type="submit" class="btn btn-primary">Completar Registro</button>
                     <a href="/login" class="btn btn-link">Regresar a Inicio de Sesión</a>
@@ -89,7 +86,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">

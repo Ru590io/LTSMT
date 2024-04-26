@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <h1 class="text-center mb-4">Atletas con Cuentas Invalidadas</h1>
-        <a href="menu_principal_entrenador.html" class="btn btn-primary mb-4">Regresar</a>
+        <a href="lista_de_atletas" class="btn btn-primary mb-4">Regresar</a>
         <div class="list-group">
             <!-- List of athletes with invalid accounts -->
             <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -24,7 +24,7 @@
                 Martín Colón
                 <button onclick="rehabilitarCuenta('ID_DEL_ATLETA')" class="btn btn-success">Rehabilitar Cuenta</button>
             </div>
-            <!-- Add more athletes as needed -->
+
         </div>
     </div>
 

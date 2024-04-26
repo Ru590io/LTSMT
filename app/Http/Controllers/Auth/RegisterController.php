@@ -83,7 +83,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),  // Correctly using Hash::make for password encryption
             'phone_number' => bcrypt($data['phone_number']),
             'role' => 'Athlete',  // Default role
-            'is_active' => true,  // Always active
+            //'is_active' => true,  // Always active
             'remember_token' => Str::random(10)  // Generating remember token
         ]);
         return redirect()->route('login')->with('Exito', 'Usuario Agregado.');

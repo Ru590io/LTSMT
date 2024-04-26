@@ -15,47 +15,47 @@
         <h1 class="text-center">Entrenamiento de Hoy</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <!-- Botón de Información del Usuario -->
                 <div class="d-flex justify-content-end">
-                    <button id="userInfoButton" class="btn btn-primary mb-3">Información del Usuario</button>
+                    <a href="informacion_del_usuario_atleta" class="btn btn-primary mb-3">Información del Usuario</a>
                 </div>
-
-                <!-- Tarjeta de Entrenamiento de Hoy -->
                 <div class="card mb-5">
-                    <div class="card-header"><h3>Entrenamiento de Hoy:</h3></div>
+                    <div class="card-header"><h3 class="centered-text">Entrenamiento de Hoy:</h3></div>
                     <div class="card-body">
                         <h3>AM:</h3>
-                        <div>Cal. 15:00 + driles + 5 x 60m rectas</div>
+                        <div id="training-am"></div>
                         <hr>
                         <h3>PM:</h3>
-                        <div>1 x 1km (3:05) rec. 2:00</div>
-                        <div>5 x 200m (0:30) rec. 2:00 + enf. 10:00 + flex.</div>
+                        <div id="training-pm"></div>
                         <hr>
                         <div class="notes-section">
                             <label for="notas-hoy"><h4>Notas:</h4></label>
-                            Baño de agua fría.
+                            <div id="notes-today"></div>
                         </div>
                     </div>
                 </div>
-                <!-- Botón de Calendario -->
                 <div class="d-grid gap-3">
-                    <button id="calendarButton" class="btn btn-primary btn-lg">Calendario</button>
+                    <a href="calendario_del_atleta" class="btn btn-primary btn-lg">Calendario</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        document.getElementById('userInfoButton').addEventListener('click', function() {
-            alert('Información del Usuario');
-        });
-
-        document.getElementById('calendarButton').addEventListener('click', function() {
-            alert('Calendario');
-        });
+        fetch('/hoy_entrenamiento.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('training-am').textContent = data.am;
+                const pmContainer = document.getElementById('training-pm');
+                data.pm.forEach(item => {
+                    const div = document.createElement('div');
+                    div.textContent = item;
+                    pmContainer.appendChild(div);
+                });
+                document.getElementById('notes-today').textContent = data.notas;
+            })
+            .catch(error => console.error('Error loading today\'s training:', error));
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
-
-

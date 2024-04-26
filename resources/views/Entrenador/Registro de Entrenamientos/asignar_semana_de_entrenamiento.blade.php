@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="text-center">Asignar Semana de Entrenamiento</h1>
         <div class="text-left mt-4">
-            <a href="athlete_main_menu.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="#" onclick="event.preventDefault(); window.history.back();" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <!-- Selector de Semana en Estilo Calendario -->
         <div class="text-center mb-3">

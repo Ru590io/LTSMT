@@ -83,8 +83,8 @@
         }
 
         // Example usage
-        generateSplitTable(800, 120, 'Axel Rosado'); // For 800m in 120 seconds
-        generateSplitTable(1500, 240, 'Axel Rosado'); // For 1500m in 240 seconds
+        generateSplitTable(800, 90, 'Axel Rosado'); // For 800m in 120 seconds
+        generateSplitTable(1500, 170, 'Axel Rosado'); // For 1500m in 240 seconds
         generateSplitTable(3000, 630, 'Axel Rosado'); // For 3000m in 630 seconds
     </script>
 

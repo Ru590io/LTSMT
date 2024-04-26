@@ -14,7 +14,7 @@
     <div class="container">
         <h1 class="text-center">Crear Nueva Competencia</h1>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="coach_main_menu.html" class="btn btn-primary">Regresar</a>
+            <a href="estrategia_de_carreras_general" class="btn btn-primary">Regresar</a>
         </div>
 
         <div class="card">
@@ -23,7 +23,7 @@
                 <form id="newCompetitionForm">
                     <div class="mb-3">
                         <label for="competitionName" class="form-label">Nombre de la Competencia</label>
-                        <input type="text" class="form-control" id="competitionName" required>
+                        <input type="text" class="form-control" id="competitionName" pattern="[A-Za-z0-9\s]{1,100}" title="Solo letras, números y espacios, hasta 100 caracteres." required>
                     </div>
                     <div class="mb-3">
                         <label for="competitionDate" class="form-label">Fecha y Hora</label>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="competitionLocation" class="form-label">Lugar</label>
-                        <input type="text" class="form-control" id="competitionLocation" required>
+                        <input type="text" class="form-control" id="competitionLocation" pattern="[A-Za-z0-9\s,.-]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Crear Competencia</button>
                 </form>

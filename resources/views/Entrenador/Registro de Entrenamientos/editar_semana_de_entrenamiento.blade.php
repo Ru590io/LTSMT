@@ -15,7 +15,7 @@
         <h1 class="text-center">Editar Semana de Entrenamiento</h1>
         <h2 class="text-center mt-5">Entrenamiento 1</h2>
         <div class="text-left mt-4">
-            <a href="menu_principal_entrenador.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="detalles_semana_de_entrenamiento" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
             <!--Lunes-->
@@ -347,9 +347,7 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg">Asignar a Atleta</button>
             <button class="btn btn-primary btn-lg">Guardar</button>
-            <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
             <button class="btn btn-danger">Eliminar Semana de entrenamiento</button>
         </div>
     </div>

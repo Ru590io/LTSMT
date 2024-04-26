@@ -15,6 +15,10 @@
         <h1 class="text-center">Restablecer Contraseña</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
+                <div class="d-flex justify-content-between">
+                    <a href="javascript:history.back()" class="btn btn-primary">Regresar</a>
+                </div>
+
                 <!--Need to update password.update route-->
                 <form class= "form mt-5" action="{{route('password.update')}}" method="post">
                     @csrf

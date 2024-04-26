@@ -14,8 +14,8 @@
     <div class="container">
         <h1 class="text-center">Entrenamiento del Atleta</h1>
         <div class="d-flex justify-content-between mb-3">
-            <button onclick="location.href='/roster.html'" class="btn btn-primary">Regresar</button>
-            <button id="editTrainingLog" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
+            <button onclick="location.href='registro_del_atleta'" class="btn btn-primary">Regresar</button>
+            <button onclick="location.href='editar_semana_de_entrenamiento_atleta'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
         </div>
         <div class="text-center mb-3">
             <!-- Athlete navigation -->
@@ -41,8 +41,8 @@
         <div id="schedule">
             <!-- Cards for each day -->
             <!--Lunes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Lunes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -59,8 +59,8 @@
             </div>
 
             <!--Martes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Martes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Martes</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -77,8 +77,8 @@
             </div>
 
             <!--Miercoles-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Miércoles</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Miercoles</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -95,8 +95,8 @@
             </div>
 
             <!--Jueves-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Jueves</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Jueves</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -113,8 +113,8 @@
             </div>
 
             <!--Viernes-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Viernes</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Viernes</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -131,8 +131,8 @@
             </div>
 
             <!--Sabado-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Sábado</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Sabao</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -149,8 +149,8 @@
             </div>
 
             <!--Domingo-->
-            <div class="card mb-2">
-                <div class="card-header"><h3>Domingo</h3></div>
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Domingo</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>

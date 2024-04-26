@@ -15,14 +15,15 @@
         <h1 class="text-center">Lista de Competidores</h1>
         <h2 class="text-center">Competencia 1</h2>
         <div class="d-flex justify-content-between mb-4">
-            <a href="menu_principal_entrenador.html" class="btn btn-primary">Regresar</a>
+            <a href="detalles_de_la_competencia_general" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Competidores</button>
         </div>
         <div class="d-grid gap-3">
             <!-- Lista de competidores con sus eventos -->
-            <button class="btn btn-primary btn-lg">Axel Rosado - 800m, 1500m</button>
-            <button class="btn btn-primary btn-lg">Rubén Marrero - 5k, 10k</button>
-            <button class="btn btn-primary btn-lg">Enrique Compré - 3000m obstáculos</button>
+            <button class="btn btn-primary btn-lg" onclick="location.href='eventos_del_atleta'">Axel Rosado - 800m, 1500m</button>
+            <button class="btn btn-primary btn-lg" onclick="location.href='eventos_del_atleta'">Rubén Marrero - 5k, 10k</button>
+            <button class="btn btn-primary btn-lg" onclick="location.href='eventos_del_atleta'">Enrique Compré - 3000m obstáculos</button>
+
             <!-- Más botones de competidores pueden ser añadidos aquí -->
         </div>
     </div>
@@ -35,6 +36,7 @@
                 <h5 class="modal-title" id="addCompetitorModalLabel">Añadir Competidor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
                 <!-- Formulario para añadir competidor -->
                 <form id="addCompetitorForm">

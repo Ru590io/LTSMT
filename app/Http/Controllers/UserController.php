@@ -29,6 +29,11 @@ class UserController extends Controller
         $users = User::all();
         return view('auth.Register.registro', compact('users'));
     }
+    // public function indexs_lista_de_atletas()
+    // {
+    //     $users = User::all();  // Ensure this line is retrieving users correctly.
+    //     return view('Entrenador.Lista de Atletas.lista_de_atletas', compact('users'));
+    // }
 
     // Crear el usuario y registrarlo
     public function stores(Request $request)
@@ -44,14 +49,14 @@ class UserController extends Controller
             'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
             'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-            'code' => 'required',
+            //'code' => 'required',
         ], $message);
 
-        $code = AccessCode::where('code', $request->access_code)->where('expires_at', '>', Carbon::now())->first();
+        //$code = AccessCode::where('code', $request->access_code)->where('expires_at', '>', Carbon::now())->first();
 
-        if (!$code) {
-        return back()->withErrors(['access_code' => 'Invalid or expired access code.'])->withInput();
-        }
+        //if (!$code) {
+        //return back()->withErrors(['access_code' => 'Invalid or expired access code.'])->withInput();
+        //}
 
         $validatedData['role'] = 'Atleta'; // Example function to determine role
         //$validatedData['is_active'] = true; // Always true as specified
@@ -63,9 +68,9 @@ class UserController extends Controller
         $user = User::create($validatedData);
 
         // Optionally invalidate the access code
-        $code->delete(); // or mark as used to prevent reuse
+       // $code->delete(); // or mark as used to prevent reuse
 
-        auth()->login($user);
+        //auth()->login($user);
 
         return redirect()->route('login')->with('Exito', 'Usuario Agregado.');
     }
@@ -145,14 +150,14 @@ class UserController extends Controller
             $user->save();
          }
 
-        return redirect('/users')->with('Exito', 'Usario Actualizado.');
+        return redirect('/users')->with('Exito', 'Atleta Actualizado.');
     }
 
     // Remove the specified user from storage.
     public function destroys(User $user)
     {
         $user->delete();
-        return redirect('/users')->with('Exito', 'Usario Borrado.');
+        return redirect('/users')->with('Exito', 'Atleta Borrado.');
     }
 
     public function restoreUser($userId)
@@ -161,9 +166,9 @@ class UserController extends Controller
 
         if ($user) {
             $user->restore();
-            return redirect()->back()->with('success', 'User has been restored successfully.');
+            return redirect()->back()->with('success', 'Atleta ha sido rehabilitao.');
     }   else {
-            return redirect()->back()->with('error', 'User not found.');
+            return redirect()->back()->with('error', 'Atleta no encontrado.');
         }
     }
 
