@@ -69,13 +69,24 @@ class PmdescansoController extends Controller
      // POST /pmdescansos
      public function store(Request $request)
      {
-         $validated = $request->validate([
-             'pm_id' => 'required|integer|exists:pm,id',
-             'descanso_id' => 'required|integer|exists:descanso,id'
-         ]);
+        $validator = Validator::make($request->all(),[
+            'pm_id' => 'required|integer|exists:pm,id',
+            'descanso_id' => 'required|integer|exists:descanso,id'
+        ]);
 
-         $pmdescanso = PmDescanso::create($validated);
-         return response()->json($pmdescanso, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $am = new Pmdescanso([
+            'pm_id' => $validated['pm_id'],
+            'descanso_id' => $validated['descanso_id'],
+        ]);
+
+        $am->save();
+
+        return response()->json("Added", 201);
 
      }
 
@@ -84,26 +95,36 @@ class PmdescansoController extends Controller
      {
         $pmDescanso = PmDescanso::find($id);
         if (!$pmDescanso) {
-            return response()->json(['message' => 'PmDescanso not found'], 404);
+            return response()->json(['message' => 'PmDescanso no se encuentra'], 404);
         }
         return response()->json($pmDescanso);
      }
 
      // PUT /pmdescansos/{id}
-     public function update(Request $request, $id)
+     public function update(Request $request, Pmdescanso $amdes, $id)
      {
-         $pmdescanso = PmDescanso::find($id);
-         if (!$pmdescanso) {
-             return response()->json(['message' => 'PmDescanso not found'], 404);
+         $amDescanso = PmDescanso::find($id);
+         if (!$amDescanso) {
+             return response()->json(['message' => 'PmDescanso no se encuentra'], 404);
          }
 
-         $validated = $request->validate([
+         $validator = Validator::make($request->all(),[
              'pm_id' => 'required|integer|exists:pm,id',
              'descanso_id' => 'required|integer|exists:descanso,id'
          ]);
 
-         $pmdescanso->update($validated);
-         return response()->json(['message' => 'PmDescanso updated successfully', 'data' => $pmdescanso]);
+         if ($validator->fails()) {
+             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+         }
+
+         $validated = $validator->validated(); // Get validated data array
+
+         $amdes->update([
+         'pm_id' => $validated['pm_id'],
+         'descanso_id' => $validated['descanso'],
+         ]);
+
+         return response()->json(['message' => 'Pmdescanso actualizado', 'data' => $amdes]);
      }
 
      // DELETE /pmdescansos/{id}
@@ -111,10 +132,10 @@ class PmdescansoController extends Controller
      {
          $pmdescanso = PmDescanso::find($id);
          if (!$pmdescanso) {
-             return response()->json(['message' => 'PmDescanso not found'], 404);
+             return response()->json(['message' => 'PmDescanso no se encuentra'], 404);
          }
 
          $pmdescanso->delete();
-         return response()->json(['message' => 'PmDescanso deleted successfully']);
+         return response()->json(['message' => 'PmDescanso eliminado']);
      }
 }

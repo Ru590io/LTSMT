@@ -4,11 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
@@ -35,6 +36,12 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
     $this->notify(new CustomResetPasswordNotification($token));
+    }
+
+    public function hasRole($role)
+    {
+    return $this->role === $role;
+    //$this->roles->contains('name', $role);
     }
 
     /**

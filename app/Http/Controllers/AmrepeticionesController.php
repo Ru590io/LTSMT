@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Amrepeticiones;
+use Illuminate\Support\Facades\Validator;
 
 class AmrepeticionesController extends Controller
 {
@@ -69,13 +70,24 @@ class AmrepeticionesController extends Controller
      // POST /amrepeticiones
      public function store(Request $request)
      {
-         $validated = $request->validate([
-             'am_id' => 'required|exists:am,id',
-             'repeticion_id' => 'required|exists:repeticion,id'
-         ]);
+        $validator = Validator::make($request->all(),[
+            'am_id' => 'required|exists:am,id',
+            'repeticion_id' => 'required|exists:repeticion,id',
+        ]);
 
-         $amRepeticiones = AmRepeticiones::create($validated);
-         return response()->json($amRepeticiones, 201);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated();
+        $am = new Amrepeticiones([
+            'am_id' => $validated['am_id'],
+            'repeticion_id' => $validated['repeticion_id'],
+        ]);
+
+        $am->save();
+
+        return response()->json("Added", 201);
      }
 
      // GET /amrepeticiones/{id}
@@ -83,26 +95,36 @@ class AmrepeticionesController extends Controller
      {
          $amRepeticiones = AmRepeticiones::find($id);
          if (!$amRepeticiones) {
-             return response()->json(['message' => 'AmRepeticiones not found'], 404);
+             return response()->json(['message' => 'AmRepeticiones no se encontro'], 404);
          }
          return response()->json($amRepeticiones);
      }
 
      // PUT /amrepeticiones/{id}
-     public function update(Request $request, $id)
+     public function update(Request $request, Amrepeticiones $amre, $id)
      {
-         $amRepeticiones = AmRepeticiones::find($id);
-         if (!$amRepeticiones) {
-             return response()->json(['message' => 'AmRepeticiones not found'], 404);
-         }
+        $amre = Amrepeticiones::find($id);
+        if (!$amre) {
+            return response()->json(['message' => 'AmRepeticiones no se encontro'], 404);
+        }
 
-         $validated = $request->validate([
-             'am_id' => 'required|exists:am,id',
-             'repeticion_id' => 'required|exists:repeticion,id'
-         ]);
+        $validator = Validator::make($request->all(),[
+            'am_id' => 'required|exists:am,id',
+            'repeticion_id' => 'required|exists:repeticion,id',
+        ]);
 
-         $amRepeticiones->update($validated);
-         return response()->json(['message' => 'AmRepeticiones updated successfully', 'data' => $amRepeticiones]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $amre->update([
+            'am_id' => $validated['am_id'],
+            'repeticion_id' => $validated['repeticion_id'],
+        ]);
+
+        return response()->json(['message' => 'Amrepeticion actualizado', 'data' => $amre]);
      }
 
      // DELETE /amrepeticiones/{id}
@@ -110,10 +132,10 @@ class AmrepeticionesController extends Controller
      {
          $amRepeticiones = AmRepeticiones::find($id);
          if (!$amRepeticiones) {
-             return response()->json(['message' => 'AmRepeticiones not found'], 404);
+             return response()->json(['message' => 'AmRepeticiones no se encontro'], 404);
          }
 
          $amRepeticiones->delete();
-         return response()->json(['message' => 'AmRepeticiones deleted successfully']);
+         return response()->json(['message' => 'AmRepeticiones eliminado']);
      }
 }

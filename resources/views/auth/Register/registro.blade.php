@@ -34,7 +34,7 @@
 
                         <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Escriba sus apellidos (Ej. Torrez Figueroa)" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
                         @error('last_name')
-                        
+
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
@@ -43,7 +43,7 @@
 
                         <input type="email" name="email" class="form-control" id="email" placeholder="Escriba su correo electrónico institucional (@upr.edu)" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email')
-                        
+
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
@@ -52,9 +52,6 @@
 
                         <input type="password" name="password" class="form-control" id="password" placeholder="Escriba su contraseña">
                         <label class="form-label" style="font-size: 0.8rem;">Contraseña debe tener Mayúsculas, números, símbolos y no mayor de 16 caracteres.</label>
-                        @error('password')
-
-                        <input type="password" name="password" class="form-control" id="password" placeholder="Escriba su contraseñá">
                         @error('password')
 
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
