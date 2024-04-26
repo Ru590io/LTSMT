@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
-=======
+
 Route::get('/', function () {
     return redirect('/login');
 })->middleware('guest');
