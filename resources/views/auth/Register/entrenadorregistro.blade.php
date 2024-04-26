@@ -16,7 +16,7 @@
         <h1 class="text-center">Registro</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <form class= "form mt-5" action="{{route('register')}}" method="post">
+                <form class= "form mt-5" action="{{route('registers')}}" method="post">
                     @csrf
                 <form>
                     <div class="mb-3">

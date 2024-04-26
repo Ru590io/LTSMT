@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\day;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DaysController extends Controller
 {
@@ -71,14 +72,26 @@ class DaysController extends Controller
     // POST /days
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'day' => 'required|string',
-            'notes' => 'required|string',
-            'weeklyshedule_id' => 'required|exists:weeklyshedule,id'  // Ensure it matches your table name
-        ]);
+        $validator = Validator::make($request->all(),[
+            'day' => 'required|string|in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo',
+            'notes' => 'required|string|max:140',
+            'weeklyschedule_id' => 'required|exists:weeklyschedule,id',
+         ]);
 
-        $day = Day::create($validated);
-        return response()->json($day, 201);
+         if ($validator->fails()) {
+             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+         }
+
+         $validated = $validator->validated();
+         $am = new day([
+            'day' => $validated['day'],
+            'notes' => $validated['notes'],
+            'weeklyschedule_id' => $validated['weeklyschedule_id']
+         ]);
+
+         $am->save();
+
+         return response()->json("Added", 201);
     }
 
     // GET /days/{id}
@@ -86,38 +99,49 @@ class DaysController extends Controller
     {
         $day = Day::find($id);
         if (!$day) {
-            return response()->json(['message' => 'Day not found'], 404);
+            return response()->json(['message' => 'Dia no se encontro'], 404);
         }
         return response()->json($day);
     }
 
     // PUT /days/{id}
-    public function update(Request $request, $id)
-    {
-        $day = Day::find($id);
-        if (!$day) {
-            return response()->json(['message' => 'Day not found'], 404);
+    public function update(Request $request, day $amre, $id)
+     {
+        $amre = day::find($id);
+        if (!$amre) {
+            return response()->json(['message' => 'Dia no se encontro'], 404);
         }
 
-        $validated = $request->validate([
-            'day' => 'required|string',
-            'notes' => 'required|string',
-            'weeklyshedule_id' => 'required|exists:weeklyshedule,id'
+        $validator = Validator::make($request->all(),[
+            'day' => 'required|string|in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo',
+            'notes' => 'required|string|max:140',
+            'weeklyschedule_id' => 'required|exists:weeklyschedule,id',
         ]);
 
-        $day->update($validated);
-        return response()->json(['message' => 'Day updated successfully', 'data' => $day]);
-    }
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
+        }
+
+        $validated = $validator->validated(); // Get validated data array
+
+        $amre->update([
+            'day' => $validated['day'],
+            'notes' => $validated['notes'],
+            'weeklyschedule_id' => $validated['weeklyschedule_id']
+        ]);
+
+        return response()->json(['message' => 'Dia Actualizado exitosamente', 'data' => $amre]);
+     }
 
     // DELETE /days/{id}
     public function destroy($id)
     {
         $day = Day::find($id);
         if (!$day) {
-            return response()->json(['message' => 'Day not found'], 404);
+            return response()->json(['message' => 'Dia no se encontro'], 404);
         }
 
         $day->delete();
-        return response()->json(['message' => 'Day deleted successfully']);
+        return response()->json(['message' => 'Dia eliminado']);
     }
 }

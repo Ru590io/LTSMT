@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fondo', function (Blueprint $table) {
             $table->id();
-            $table->string('Fdistancia');
+            $table->unsignedInteger('Fdistancia');
             $table->unsignedInteger('Fzona');
             $table->timestamps();
         });

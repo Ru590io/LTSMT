@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccessCodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LighttrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
 
@@ -21,7 +23,13 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-//Auth::routes();
+Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
+=======
+Route::get('/', function () {
+    return redirect('/login');
+})->middleware('guest');
+
+Auth::routes();
 
 // For Coach specific pages
 /*Route::middleware(['auth', 'role:Entrenador'])->group(function () {
@@ -33,13 +41,32 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
     Route::get('/athlete/dashboard', [AthleteController::class, 'index'])->name('athlete.dashboard');
 });*/
 
+Route::middleware(['auth', 'role:Entrenador'])->group(function () {
+    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::middleware(['auth', 'role:Atleta'])->group(function () {
+    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+Route::get('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
+Route::post('/send-training-data', [LighttrainingController::class, 'sendTrainingData']);
+
 Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');
 
 Route::post('/register', [UserController::class, 'stores'])->name('register')->middleware('guest');
 
+Route::get('/registers', [UserController::class, 'creates'])->name('registers')->middleware('guest');
+
+Route::post('/registers', [UserController::class, 'coachstores'])->name('registers')->middleware('guest');
+
 Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+
 
 Route::get('password/reset', [PasswordResetController::class, 'showResetRequestForm'])->name('password.request');
 
@@ -49,19 +76,10 @@ Route::get('password/reset/{token}', [PasswordResetController::class, 'showReset
 
 Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
 
-// web.php
-Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
-});
-
 Route::fallback(function(){
         return view('welcom');
 });
+
 //Atleta (Menú)
 Route::get('/calendario_del_atleta', function () {
     return view('Atleta.calendario_del_atleta');

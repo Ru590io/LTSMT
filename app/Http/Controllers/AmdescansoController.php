@@ -94,7 +94,7 @@ class AmdescansoController extends Controller
     {
         $amDescanso = AmDescanso::find($id);
         if (!$amDescanso) {
-            return response()->json(['message' => 'AmDescanso not found'], 404);
+            return response()->json(['message' => 'AmDescanso no se encontro'], 404);
         }
         return response()->json($amDescanso);
     }
@@ -104,7 +104,7 @@ class AmdescansoController extends Controller
     {
         $amDescanso = AmDescanso::find($id);
         if (!$amDescanso) {
-            return response()->json(['message' => 'AmDescanso not found'], 404);
+            return response()->json(['message' => 'AmDescanso no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -123,7 +123,7 @@ class AmdescansoController extends Controller
         'descanso_id' => $validated['descanso'],
         ]);
 
-        return response()->json(['message' => 'Amdescanso updated successfully', 'data' => $amdes]);
+        return response()->json(['message' => 'AmDescanso actualizado', 'data' => $amdes]);
     }
 
     // DELETE /amdescansos/{id}
@@ -131,10 +131,10 @@ class AmdescansoController extends Controller
     {
         $amDescanso = AmDescanso::find($id);
         if (!$amDescanso) {
-            return response()->json(['message' => 'AmDescanso not found'], 404);
+            return response()->json(['message' => 'AmDescanso no se encontro'], 404);
         }
 
         $amDescanso->delete();
-        return response()->json(['message' => 'AmDescanso deleted successfully']);
+        return response()->json(['message' => 'AmDescanso eliminado']);
     }
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -50,11 +52,11 @@ class AuthController extends Controller
     }
 
     // If the login attempt was unsuccessful, increment the number of attempts to log in
-    RateLimiter::hit($throttleKey, 300); // 300 seconds until reset
+    RateLimiter::hit($throttleKey, 314); // 300 seconds until reset
 
     // Redirect back to the login form with an error message
     return back()->withErrors([
-        'email' => 'Correo y contraseña inválidos.'
+        'email' => 'Los credenciales son invalidos.'
     ])->withInput($request->only('email'));
 
        /* $validatedData = [
@@ -78,5 +80,73 @@ class AuthController extends Controller
         request()->session()->regenerateToken();
 
         return redirect()->route('login')->with('Exito', 'Seción Iniciada.');
+    }
+
+ //API/////////////////////////////////////////////////////////////////////////////////////////
+
+    public function apiLogin(Request $request){
+   // Throttle key based on IP and email to prevent brute force attacks
+   $throttleKey = strtolower($request->input('email')) . '|' . $request->ip();
+
+   // Maximum of 5 attempts allowed every 1 minute
+   if (RateLimiter::tooManyAttempts($throttleKey, 4)) {
+       $seconds = RateLimiter::availableIn($throttleKey);
+       return response()->json([
+           'message' => "Demasiados intentos de inicio de sesión. Por favor intente de nuevo en $seconds segundos."
+       ], 429); // 429 Too Many Requests
+   }
+
+   // Validate the request
+   $request->validate([
+       'email' => 'required|email',
+       'password' => 'required|string',
+   ]);
+
+   // Attempt to log the user in
+   if (Auth::attempt($request->only('email', 'password'))) {
+       RateLimiter::clear($throttleKey);
+       // $user = new User;
+       $user = Auth::user();
+
+
+       return response()->json([
+           'message' => 'Inicio de Sesion exitoso.',
+           'user' => $user,
+           'token' => $user->createToken('API Token')->plainTextToken
+       ], 200);
+   }
+
+   // Increment the number of failed attempts to log in
+   RateLimiter::hit($throttleKey, 60);
+
+   // Return error if credentials are incorrect
+   return response()->json([
+       'message' => 'Los credenciales son invalidos.'
+   ], 401);
+
+    }
+    public function APItestlogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales son incorrectas.'],
+            ]);
+        }
+
+        return response()->json([
+            'token' => $user->createToken('API Token')->plainTextToken
+        ]);
+    }
+    public function apilogout(Request $request)
+    {
+    $request->user()->tokens()->delete();
+    return response()->json(['message' => 'Final de sesion']);
     }
 }
