@@ -96,7 +96,7 @@ class PmrepeticionesController extends Controller
     {
         $pmRepeticion = PmRepeticiones::find($id);
         if (!$pmRepeticion) {
-            return response()->json(['message' => 'PmRepeticion not found'], 404);
+            return response()->json(['message' => 'PmRepeticion no se encontro'], 404);
         }
         return response()->json($pmRepeticion);
     }
@@ -106,7 +106,7 @@ class PmrepeticionesController extends Controller
      {
         $amre = Pmrepeticiones::find($id);
         if (!$amre) {
-            return response()->json(['message' => 'AmRepeticiones not found'], 404);
+            return response()->json(['message' => 'AmRepeticiones no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -125,7 +125,7 @@ class PmrepeticionesController extends Controller
             'repeticion_id' => $validated['repeticion_id'],
         ]);
 
-        return response()->json(['message' => 'Pmrepeticion updated successfully', 'data' => $amre]);
+        return response()->json(['message' => 'Pmrepeticion actualizado', 'data' => $amre]);
      }
 
     // DELETE /pmrepeticiones/{id}
@@ -133,10 +133,10 @@ class PmrepeticionesController extends Controller
     {
         $pmRepeticion = PmRepeticiones::find($id);
         if (!$pmRepeticion) {
-            return response()->json(['message' => 'PmRepeticion not found'], 404);
+            return response()->json(['message' => 'PmRepeticion no se encuentra'], 404);
         }
 
         $pmRepeticion->delete();
-        return response()->json(['message' => 'PmRepeticion deleted successfully']);
+        return response()->json(['message' => 'PmRepeticion eliminado']);
     }
 }

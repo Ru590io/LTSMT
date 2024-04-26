@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\competition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -26,10 +27,11 @@ class CompetitionController extends Controller
     {
         $messages = [
             'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
+            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'
         ];
 
         $request->validate([
-            'cname' => 'required|string|max:100|alpha',
+            'cname' => 'required|string|max:100|regex:/^[\pL\s]*$/u',
             'cdate' => 'required|date',
             'ctime' => 'required|date_format:H:i',
             'cplace' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
@@ -67,10 +69,11 @@ class CompetitionController extends Controller
     {
         $messages = [
             'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
+            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'
         ];
 
         $request->validate([
-            'cname' => 'required|string|max:100|alpha',
+            'cname' => 'required|string|max:100|regex:/^[\pL\s]*$/u',
             'cdate' => 'required|date',
             'ctime' => 'required|date_format:H:i',
             'cplace' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
@@ -100,13 +103,16 @@ class CompetitionController extends Controller
     {
          $messages = [
             'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
+            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'
         ];
         $validator = Validator::make($request->all(),[
-            'cname' => 'required|string|max:100|alpha',
+            'cname' => 'required|string|max:30|regex:/^[\pL\s]*$/u',
             'cdate' => 'required|date',
-            'ctime' => 'required|date_format:H:i',
-            'cplace' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
+            'ctime' => 'required|date_format:h:i A',
+            'cplace' => 'required|string|max:100|regex:/^[\pL\s]*$/u',
         ], $messages);
+
+        $convertedTime = Carbon::createFromFormat('h:i A', $request->ctime)->format('H:i:s');
 
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -116,7 +122,7 @@ class CompetitionController extends Controller
         $am = new competition([
             'cname' => $validated['cname'],
             'cdate' => $validated['cdate'],
-            'ctime' => $validated['ctime'],
+            'ctime' => $convertedTime,
             'cplace' => $validated['cplace'],
         ]);
 
@@ -130,7 +136,7 @@ class CompetitionController extends Controller
     {
         $competition = Competition::find($id);
         if (!$competition) {
-            return response()->json(['message' => 'Competition not found'], 404);
+            return response()->json(['message' => 'Competencia no se encontro'], 404);
         }
         return response()->json($competition);
     }
@@ -140,19 +146,22 @@ class CompetitionController extends Controller
      {
         $amre = competition::find($id);
         if (!$amre) {
-            return response()->json(['message' => 'Competencia not found'], 404);
+            return response()->json(['message' => 'Competencia no se encontro'], 404);
         }
 
         $messages = [
             'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
+            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'
         ];
 
         $validator = Validator::make($request->all(),[
-            'cname' => 'required|string|max:100|alpha',
+            'cname' => 'required|string|max:25|regex:/^[\pL\s]*$/u',
             'cdate' => 'required|date',
-            'ctime' => 'required|date_format:H:i',
+            'ctime' => 'required|date_format:h:i A',
             'cplace' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
         ], $messages);
+
+        $convertedTime = Carbon::createFromFormat('h:i A', $request->ctime)->format('H:i:s');
 
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -163,11 +172,11 @@ class CompetitionController extends Controller
         $amre->update([
             'cname' => $validated['cname'],
             'cdate' => $validated['cdate'],
-            'ctime' => $validated['ctime'],
+            'ctime' => $convertedTime,
             'cplace' => $validated['cplace'],
         ]);
 
-        return response()->json(['message' => 'Competencia updated successfully', 'data' => $amre]);
+        return response()->json(['message' => 'Competencia Actualizada', 'data' => $amre]);
      }
 
     // DELETE /competitions/{id}
@@ -175,10 +184,10 @@ class CompetitionController extends Controller
     {
         $competition = Competition::find($id);
         if (!$competition) {
-            return response()->json(['message' => 'Competition not found'], 404);
+            return response()->json(['message' => 'Competencia no se encontro'], 404);
         }
 
         $competition->delete();
-        return response()->json(['message' => 'Competition deleted successfully']);
+        return response()->json(['message' => 'Competencia eliminada exitosamente']);
     }
 }

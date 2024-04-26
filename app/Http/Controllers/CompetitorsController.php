@@ -94,7 +94,7 @@ class CompetitorsController extends Controller
     {
         $competitor = Competitors::find($id);
         if (!$competitor) {
-            return response()->json(['message' => 'Competitor not found'], 404);
+            return response()->json(['message' => 'Competitor no se encontro'], 404);
         }
         return response()->json($competitor);
     }
@@ -104,7 +104,7 @@ class CompetitorsController extends Controller
      {
         $amre = competitors::find($id);
         if (!$amre) {
-            return response()->json(['message' => 'Competidores not found'], 404);
+            return response()->json(['message' => 'Competidores no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -123,7 +123,7 @@ class CompetitorsController extends Controller
             'competition_id' => $validated['competition_id'],
         ]);
 
-        return response()->json(['message' => 'Competidores updated successfully', 'data' => $amre]);
+        return response()->json(['message' => 'Competidores actualizado', 'data' => $amre]);
      }
 
     // DELETE /competitors/{id}
@@ -131,10 +131,10 @@ class CompetitorsController extends Controller
     {
         $competitor = Competitors::find($id);
         if (!$competitor) {
-            return response()->json(['message' => 'Competitor not found'], 404);
+            return response()->json(['message' => 'Competitor no se encontro'], 404);
         }
 
         $competitor->delete();
-        return response()->json(['message' => 'Competitor deleted successfully']);
+        return response()->json(['message' => 'Competitor eliminado']);
     }
 }

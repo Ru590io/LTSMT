@@ -22,7 +22,7 @@ class FondoController extends Controller
     public function stores(Request $request)
     {
         $request->validate([
-            'Fdistancia' => 'required|integer',
+            'Fdistancia' => 'required|integer|max:15000',
             'Fzona' => 'required|integer|max:2',
         ]);
 
@@ -53,7 +53,7 @@ class FondoController extends Controller
     public function updates(Request $request, Fondo $fondo)
     {
         $request->validate([
-            'Fdistancia' => 'required|integer',
+            'Fdistancia' => 'required|integer|max:15000',
             'Fzona' => 'required|integer|max:2',
         ]);
 
@@ -78,7 +78,7 @@ class FondoController extends Controller
      public function store(Request $request)
      {
         $validator = Validator::make($request->all(),[
-            'Fdistancia' => 'required|integer',
+            'Fdistancia' => 'required|integer|max:15000',
             'Fzona' => 'required|integer|max:2',
          ]);
 
@@ -102,7 +102,7 @@ class FondoController extends Controller
      {
          $fondo = Fondo::find($id);
          if (!$fondo) {
-             return response()->json(['message' => 'Fondo not found'], 404);
+             return response()->json(['message' => 'Fondo no se encontro'], 404);
          }
          return response()->json($fondo);
      }
@@ -112,11 +112,11 @@ class FondoController extends Controller
     {
        $amre = fondo::find($id);
        if (!$amre) {
-           return response()->json(['message' => 'Fondo not found'], 404);
+           return response()->json(['message' => 'Fondo no se encontro'], 404);
        }
 
        $validator = Validator::make($request->all(),[
-        'Fdistancia' => 'required|integer',
+        'Fdistancia' => 'required|integer|max:15000',
         'Fzona' => 'required|integer|max:2',
        ]);
 
@@ -131,7 +131,7 @@ class FondoController extends Controller
         'Fzona' => $validated['Fzona'],
        ]);
 
-       return response()->json(['message' => 'Fondo updated successfully', 'data' => $amre]);
+       return response()->json(['message' => 'Fondo actualizado', 'data' => $amre]);
     }
 
      // DELETE /fondos/{id}
@@ -139,10 +139,10 @@ class FondoController extends Controller
      {
          $fondo = Fondo::find($id);
          if (!$fondo) {
-             return response()->json(['message' => 'Fondo not found'], 404);
+             return response()->json(['message' => 'Fondo no se encontro'], 404);
          }
 
          $fondo->delete();
-         return response()->json(['message' => 'Fondo deleted successfully']);
+         return response()->json(['message' => 'Fondo eliminado']);
      }
 }

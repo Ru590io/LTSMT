@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccessCodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LighttrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
 
@@ -37,9 +39,16 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
 Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/home', [AuthController::class, 'homepage'])->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
-    Route::get('/generate_code', [AuthController::class, 'generateAccessCode'])->name('generate_code');
 });
+
+Route::middleware(['auth', 'role:Atleta'])->group(function () {
+    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+Route::get('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
+Route::post('/send-training-data', [LighttrainingController::class, 'sendTrainingData']);
 
 Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');
 

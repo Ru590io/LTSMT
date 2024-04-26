@@ -99,7 +99,7 @@ class DaysController extends Controller
     {
         $day = Day::find($id);
         if (!$day) {
-            return response()->json(['message' => 'Day not found'], 404);
+            return response()->json(['message' => 'Dia no se encontro'], 404);
         }
         return response()->json($day);
     }
@@ -109,7 +109,7 @@ class DaysController extends Controller
      {
         $amre = day::find($id);
         if (!$amre) {
-            return response()->json(['message' => 'Dia not found'], 404);
+            return response()->json(['message' => 'Dia no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -130,7 +130,7 @@ class DaysController extends Controller
             'weeklyschedule_id' => $validated['weeklyschedule_id']
         ]);
 
-        return response()->json(['message' => 'Dia updated successfully', 'data' => $amre]);
+        return response()->json(['message' => 'Dia Actualizado exitosamente', 'data' => $amre]);
      }
 
     // DELETE /days/{id}
@@ -138,10 +138,10 @@ class DaysController extends Controller
     {
         $day = Day::find($id);
         if (!$day) {
-            return response()->json(['message' => 'Day not found'], 404);
+            return response()->json(['message' => 'Dia no se encontro'], 404);
         }
 
         $day->delete();
-        return response()->json(['message' => 'Day deleted successfully']);
+        return response()->json(['message' => 'Dia eliminado']);
     }
 }

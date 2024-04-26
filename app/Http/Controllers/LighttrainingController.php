@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\lighttraining;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class LighttrainingController extends Controller
 {
@@ -24,8 +25,8 @@ class LighttrainingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ttime' => 'required|integer',
-            'tdistance' => 'required|integer',
+            'ttime' => 'required|integer|max:50000',
+            'tdistance' => 'required|integer|max:15000',
             'users_id' => 'required|exists:users,id',
         ]);
 
@@ -57,8 +58,8 @@ class LighttrainingController extends Controller
     public function update(Request $request, LightTraining $lighttraining)
     {
         $request->validate([
-            'ttime' => 'required|integer',
-            'tdistance' => 'required|integer',
+            'ttime' => 'required|integer|max:50000',
+            'tdistance' => 'required|integer|max:15000',
             'users_id' => 'required|exists:users,id',
         ]);
 
@@ -73,6 +74,30 @@ class LighttrainingController extends Controller
 
         return redirect()->route('lighttrainings.indexs')->with('Exito', 'Entrenamiento de Luz Borrado.');
     }
+    public function sendPostRequestToESP($time, $distance){
+    $url = 'http://<ESP-IP-ADDRESS>/endpoint'; // Replace with your ESP's actual IP address and endpoint
+
+    $response = Http::post($url, [
+        'ttime' => $time,
+        'tdistance' => $distance
+    ]);
+
+    if ($response->successful()) {
+        return 'Success: ' . $response->body();
+    } else {
+        return 'Error: ' . $response->body();
+    }
+    }
+
+    public function sendTrainingData(Request $request)
+    {
+    $validatedData = $request->validate([
+        'ttime' => 'required|integer|max:50000',
+        'tdistance' => 'required|integer|max:15000',
+    ]);
+
+    return $this->sendPostRequestToESP($validatedData['ttime'], $validatedData['tdistance']);
+    }
 
     /*API*////////////////////////////////////////////////////////////////////////////////////////////
     public function seetraining()
@@ -84,24 +109,26 @@ class LighttrainingController extends Controller
         $userExists = User::find($request->users_id);
 
         if (!$userExists) {
-            return response()->json(['message' => 'The specified user ID does not exist in our records.'], 404);
+            return response()->json(['message' => 'No se encontro ningun usario para este entrenamiento'], 404);
         }
 
         $validator = Validator::make($request->all(),[
-            'ttime' => 'required|integer',
-            'tdistance' => 'required|integer',
-            'users_id' => 'required|exists:users,id',
+            'ttime' => 'required|integer|max:50000',
+            'tdistance' => 'required|integer|max:15000',
+            //'users_id' => 'required|exists:users,id',
          ]);
+
 
          if ($validator->fails()) {
              return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
          }
 
          $validated = $validator->validated();
+         $timeinseconds = $validated['ttime'] * 60;
          $am = new lighttraining([
-            'ttime' => $validated['ttime'],
+            'ttime' => $timeinseconds,
             'tdistance' => $validated['tdistance'],
-            'users_id' => $validated['users_id'],
+            'users_id' => auth()->id(),
          ]);
 
          $am->save();
@@ -114,7 +141,7 @@ class LighttrainingController extends Controller
     {
         $lightTraining = LightTraining::find($id);
         if (!$lightTraining) {
-            return response()->json(['message' => 'Light Training not found'], 404);
+            return response()->json(['message' => 'No se encontro nada'], 404);
         }
 
         return $lightTraining;
@@ -126,18 +153,18 @@ class LighttrainingController extends Controller
         $userExists = User::find($request->users_id);
 
         if (!$userExists) {
-            return response()->json(['message' => 'The specified user ID does not exist in our records.'], 404);
+            return response()->json(['message' => 'No se encontro ningun usario para este entrenamiento'], 404);
         }
 
         $lightTraining = LightTraining::find($id);
     if (!$lightTraining) {
-        return response()->json(['message' => 'Light Training not found'], 404);
+        return response()->json(['message' => 'Entrenamiento de Luz no se encontro'], 404);
     }
 
         $validator = Validator::make($request->all(),[
-        'ttime' => 'required|integer',
-        'tdistance' => 'required|integer',
-        'users_id' => 'required|exists:users,id',
+            'ttime' => 'required|integer|max:50000',
+            'tdistance' => 'required|integer|max:15000',
+            //'users_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -145,14 +172,14 @@ class LighttrainingController extends Controller
         }
 
         $validated = $validator->validated(); // Get validated data array
-
+        $timeinseconds = $validated['ttime'] * 60;
         $lightTraining->update([
-            'ttime' => $validated['ttime'],
+            'ttime' => $timeinseconds,
             'tdistance' => $validated['tdistance'],
-            'users_id' => $validated['users_id'],
+            'users_id' => auth()->id(),
            ]);
 
-           return response()->json(['message' => 'Fondo updated successfully', 'data' => $lightTraining]);
+           return response()->json(['message' => 'Entrenamiento de Luz actualizado', 'data' => $lightTraining]);
     }
 
     // DELETE /lighttrainings/{id}
@@ -160,12 +187,12 @@ class LighttrainingController extends Controller
     {
         $lightTraining = LightTraining::find($id);
         if (!$lightTraining) {
-        return response()->json(['message' => 'Light Training not found'], 404);
+        return response()->json(['message' => 'Light Training no se encontro'], 404);
         }
 
         $lightTraining->delete();
 
-        return response()->json("Deleted succesfully", 200);
+        return response()->json("Entrenamiento de Luz eliminado exitosamente", 200);
     }
 
 }

@@ -26,6 +26,7 @@ use App\Http\Controllers\RepeticionController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\CompetitorsController;
 use App\Http\Controllers\LighttrainingController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\WeeklysheduleController;
 use App\Http\Controllers\AmrepeticionesController;
 use App\Http\Controllers\PmrepeticionesController;
@@ -46,6 +47,47 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //AM//
+/*Route::get('add-am', [AmController::class, 'see']);
+
+Route::post('add-am', [AmController::class, 'added']);
+
+Route::get('add-am/{id}', [AmController::class, 'specificam']);
+
+Route::put('am/{id}', [AmController::class, 'amupdate']);
+
+Route::delete('ams/{id}', [AmController::class, 'amerase']);
+
+//LightTraining//
+Route::get('light', [LighttrainingController::class, 'seetraining']);
+
+Route::post('light', [LighttrainingController::class, 'lighttrainingadded']);
+
+Route::get('light/{id}', [LighttrainingController::class, 'specificlighttraining']);
+
+Route::put('updatinglight/{id}', [LighttrainingController::class, 'updatelighttraining']);
+
+Route::delete('deletelight/{id}', [LighttrainingController::class, 'erase']);*/
+
+//Users//
+//Route::apiResource('users', UserController::class);
+Route::post('coachuser', [UserController::class, 'storecoachapi'])->middleware('guest');
+Route::post('athleteuser', [UserController::class, 'athletestore'])->middleware('guest');
+//Route::post('/users/{id}/restore', [UserController::class, 'restore']);
+
+//Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCodeAPI']);
+
+//Auth//
+Route::post('password/email', [PasswordResetController::class, 'apisendResetLinkEmail']);
+Route::post('password/reset', [PasswordResetController::class, 'apireset']);
+
+Route::post('/login', [AuthController::class, 'apiLogin'])->middleware('guest');
+
+
+Route::middleware('auth:sanctum', 'role:Entrenador')->group(function () {
+
+//AM//
+Route::apiResource('users', UserController::class);
+
 Route::get('add-am', [AmController::class, 'see']);
 
 Route::post('add-am', [AmController::class, 'added']);
@@ -67,12 +109,14 @@ Route::put('updatinglight/{id}', [LighttrainingController::class, 'updatelighttr
 
 Route::delete('deletelight/{id}', [LighttrainingController::class, 'erase']);
 
-//Users//
-Route::apiResource('users', UserController::class);
+//Auth//
+Route::post('/coachlogout', [AuthController::class, 'apilogout']);
 
-Route::post('/users/{id}/restore', [UserController::class, 'restore']);
-
+//Access Code//
 Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCodeAPI']);
+
+//Restore//
+Route::post('/users/{id}/restore', [UserController::class, 'restore']);
 
 //PM//
 Route::apiResource('pm', PmController::class);
@@ -121,6 +165,61 @@ Route::apiResource('sessions', SessionsController::class);
 
 //Event//
 Route::apiResource('events', EventsController::class);
+
+});
+
+Route::middleware('auth:api', 'role:Atleta')->group(function () {
+    Route::post('/athletelogout', [AuthController::class, 'apilogout']);
+    Route::apiResource('users', UserController::class);
+});
+/*
+//PM//
+Route::apiResource('pm', PmController::class);
+
+//Descanso//
+Route::apiResource('descanso', DescansoController::class);
+
+//Fondo//
+Route::apiResource('fondo', FondoController::class);
+
+//Repeticiones//
+Route::apiResource('repeticiones', RepeticionController::class);
+
+//Amdescanso//
+Route::apiResource('amdescanso', AmdescansoController::class);
+
+//Pmdescanso//
+Route::apiResource('pmdescanso', PmdescansoController::class);
+
+//Amfondo//
+Route::apiResource('amfondo', AmfondoController::class);
+
+//Pmfondo//
+Route::apiResource('pmfondo', PmfondoController::class);
+
+//Amrepeticiones//
+Route::apiResource('amrepeticiones', AmrepeticionesController::class);
+
+//Pmrepeticiones//
+Route::apiResource('pmrepeticiones', PmrepeticionesController::class);
+
+//Days//
+Route::apiResource('day', DaysController::class);
+
+//Weeklyshedule//
+Route::apiResource('weeklyshedule', WeeklysheduleController::class);
+
+//Competition//
+Route::apiResource('competition', CompetitionController::class);
+
+//Competitors//
+Route::apiResource('competitors', CompetitorsController::class);
+
+//Sessions//
+Route::apiResource('sessions', SessionsController::class);
+
+//Event//
+Route::apiResource('events', EventsController::class);*/
 
 
 

@@ -95,7 +95,7 @@ class PmdescansoController extends Controller
      {
         $pmDescanso = PmDescanso::find($id);
         if (!$pmDescanso) {
-            return response()->json(['message' => 'PmDescanso not found'], 404);
+            return response()->json(['message' => 'PmDescanso no se encuentra'], 404);
         }
         return response()->json($pmDescanso);
      }
@@ -105,7 +105,7 @@ class PmdescansoController extends Controller
      {
          $amDescanso = PmDescanso::find($id);
          if (!$amDescanso) {
-             return response()->json(['message' => 'PmDescanso not found'], 404);
+             return response()->json(['message' => 'PmDescanso no se encuentra'], 404);
          }
 
          $validator = Validator::make($request->all(),[
@@ -124,7 +124,7 @@ class PmdescansoController extends Controller
          'descanso_id' => $validated['descanso'],
          ]);
 
-         return response()->json(['message' => 'Pmdescanso updated successfully', 'data' => $amdes]);
+         return response()->json(['message' => 'Pmdescanso actualizado', 'data' => $amdes]);
      }
 
      // DELETE /pmdescansos/{id}
@@ -132,10 +132,10 @@ class PmdescansoController extends Controller
      {
          $pmdescanso = PmDescanso::find($id);
          if (!$pmdescanso) {
-             return response()->json(['message' => 'PmDescanso not found'], 404);
+             return response()->json(['message' => 'PmDescanso no se encuentra'], 404);
          }
 
          $pmdescanso->delete();
-         return response()->json(['message' => 'PmDescanso deleted successfully']);
+         return response()->json(['message' => 'PmDescanso eliminado']);
      }
 }

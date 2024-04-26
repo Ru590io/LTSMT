@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\competitors;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,8 +24,8 @@ class EventsController extends Controller
     {
         $validated = $request->validate([
             'competitors_id' => 'required|exists:competitors,id',
-            'etime_range' => 'required|integer|max:10',
-            'edistance' => 'required|string|max:100|alpha_num',
+            'etime_range' => 'required|integer|max:10000',
+            'edistance' => 'required|string|max:20|min:4|alpha_num',
         ]);
 
         Event::create($validated);
@@ -56,8 +57,8 @@ class EventsController extends Controller
     {
         $validated = $request->validate([
             'competitors_id' => 'required|exists:competitors,id',
-            'etime_range' => 'required|integer|max:10',
-            'edistance' => 'required|string|max:100|alpha_num',
+            'etime_range' => 'required|integer|max:10000',
+            'edistance' => 'required|string|max:20|min:4|alpha_num',
         ]);
 
         $event->update($validated);
@@ -82,11 +83,18 @@ class EventsController extends Controller
     // POST /events
     public function store(Request $request)
     {
+        $competitorExists = competitors::find($request->competitors_id);
+
+        if (!$competitorExists) {
+            return response()->json(['message' => 'No se encontro ningun competidor para este entrenamiento'], 404);
+        }
         $validator = Validator::make($request->all(),[
             'competitors_id' => 'required|exists:competitors,id',
-            'etime_range' => 'required|integer|max:10',
-            'edistance' => 'required|string|max:100|alpha_num',
+            'etime_range' => 'required|integer|max:10000',
+            'edistance' => 'required|string|max:20|min:4|alpha_num',
          ]);
+
+         //$timeInSeconds = $request->etime_range * 60;
 
          if ($validator->fails()) {
              return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -109,7 +117,7 @@ class EventsController extends Controller
     {
         $event = Event::find($id);
         if (!$event) {
-            return response()->json(['message' => 'Event not found'], 404);
+            return response()->json(['message' => 'Evento no se encontro'], 404);
         }
         return response()->json($event);
     }
@@ -117,15 +125,20 @@ class EventsController extends Controller
     // PUT /events/{id}
     public function update(Request $request, Event $amre, $id)
     {
+        $competitorExists = competitors::find($request->competitors_id);
+
+        if (!$competitorExists) {
+            return response()->json(['message' => 'No se encontro ningun competidor para este entrenamiento'], 404);
+        }
        $amre = Event::find($id);
        if (!$amre) {
-           return response()->json(['message' => 'Evento not found'], 404);
+           return response()->json(['message' => 'Evento no se encontro'], 404);
        }
 
        $validator = Validator::make($request->all(),[
         'competitors_id' => 'required|exists:competitors,id',
-        'etime_range' => 'required|integer|max:10',
-        'edistance' => 'required|string|max:100|alpha_num',
+        'etime_range' => 'required|integer|max:10000',
+        'edistance' => 'required|string|max:20|min:4|alpha_num',
        ]);
 
        if ($validator->fails()) {
@@ -140,7 +153,7 @@ class EventsController extends Controller
         'edistance' => $validated['edistance'],
        ]);
 
-       return response()->json(['message' => 'Evento updated successfully', 'data' => $amre]);
+       return response()->json(['message' => 'Evento actualizado', 'data' => $amre]);
     }
 
     // DELETE /events/{id}
@@ -148,10 +161,10 @@ class EventsController extends Controller
     {
         $event = Event::find($id);
         if (!$event) {
-            return response()->json(['message' => 'Event not found'], 404);
+            return response()->json(['message' => 'Evento no se encontro'], 404);
         }
 
         $event->delete();
-        return response()->json(['message' => 'Event deleted successfully']);
+        return response()->json(['message' => 'Evento eliminado']);
     }
 }

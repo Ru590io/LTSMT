@@ -101,7 +101,7 @@ class SessionsController extends Controller
     {
         $session = Sessions::find($id);
         if (!$session) {
-            return response()->json(['message' => 'session not found'], 404);
+            return response()->json(['message' => 'Seccion no se encontro'], 404);
         }
         return response()->json($session);
     }
@@ -111,7 +111,7 @@ class SessionsController extends Controller
     {
        $amre = sessions::find($id);
        if (!$amre) {
-           return response()->json(['message' => 'Session not found'], 404);
+           return response()->json(['message' => 'Seccion no se encontro'], 404);
        }
 
        $validator = Validator::make($request->all(),[
@@ -132,7 +132,7 @@ class SessionsController extends Controller
             'days_id' => $validated['days_id'],
        ]);
 
-       return response()->json(['message' => 'Session updated successfully', 'data' => $amre]);
+       return response()->json(['message' => 'Seccion actualizada', 'data' => $amre]);
     }
 
     // DELETE /sessions/{id}
@@ -140,10 +140,10 @@ class SessionsController extends Controller
     {
         $session = Sessions::find($id);
         if (!$session) {
-            return response()->json(['message' => 'Session not found'], 404);
+            return response()->json(['message' => 'Seccion no se encontro'], 404);
         }
 
         $session->delete();
-        return response()->json(['message' => 'Session deleted successfully']);
+        return response()->json(['message' => 'Session eliminada']);
     }
 }

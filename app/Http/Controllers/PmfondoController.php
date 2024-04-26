@@ -95,7 +95,7 @@ class PmfondoController extends Controller
     {
         $pmFondo = Pmfondo::find($id);
         if (!$pmFondo) {
-            return response()->json(['message' => 'PmFondo not found'], 404);
+            return response()->json(['message' => 'PmFondo no se encontro'], 404);
         }
         return response()->json($pmFondo);
     }
@@ -105,7 +105,7 @@ class PmfondoController extends Controller
     {
         $fondo = PmFondo::find($id);
         if (!$fondo) {
-            return response()->json(['message' => 'PmFondo not found'], 404);
+            return response()->json(['message' => 'PmFondo no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -124,7 +124,7 @@ class PmfondoController extends Controller
         'fondo_id' => $validated['fondo_id'],
         ]);
 
-        return response()->json(['message' => 'PmFondo updated successfully', 'data' => $fondo]);
+        return response()->json(['message' => 'PmFondo actualizado', 'data' => $fondo]);
     }
 
     // DELETE /pmfondos/{id}
@@ -132,10 +132,10 @@ class PmfondoController extends Controller
     {
         $pmFondo = PmFondo::find($id);
         if (!$pmFondo) {
-            return response()->json(['message' => 'PmFondo not found'], 404);
+            return response()->json(['message' => 'PmFondo no se encontro'], 404);
         }
 
         $pmFondo->delete();
-        return response()->json(['message' => 'PmFondo deleted successfully']);
+        return response()->json(['message' => 'PmFondo eliminado']);
     }
 }

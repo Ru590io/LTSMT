@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\weeklyshedule;
 use Illuminate\Support\Facades\Validator;
@@ -23,8 +24,19 @@ class WeeklysheduleController extends Controller
     {
         $request->validate([
             'wstart_date' => 'required|date',
-            'wend_date' => 'required|date|after_or_equal:wstart_date',
-            'wname' => 'required|string|max:20|alpha',
+            //'wend_date' => 'required|date|after:wstart_date',
+            'wend_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->wstart_date);
+                    $endDate = Carbon::parse($value);
+                    if (!$endDate->eq($startDate->addDays(7))) {
+                        $fail($attribute . ' debe ser exactamente 7 dias despues del principio de la semana.');
+                    }
+                },
+            ],
+            'wname' => 'required|string|max:30|alpha',
             'users_id' => 'required|exists:users,id',
         ]);
 
@@ -38,7 +50,7 @@ class WeeklysheduleController extends Controller
         $item = weeklyshedule::find($id);
 
         if (!$item) {
-        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
+        return redirect()->route('home')->withErrors('No hay nada que ver aqui.');
         }
         return view('weeklyschedules.shows', compact('weeklyschedule'));
     }
@@ -57,7 +69,18 @@ class WeeklysheduleController extends Controller
     {
         $request->validate([
             'wstart_date' => 'required|date',
-            'wend_date' => 'required|date|after_or_equal:wstart_date',
+            //'wend_date' => 'required|date|after:wstart_date',
+            'wend_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->wstart_date);
+                    $endDate = Carbon::parse($value);
+                    if (!$endDate->eq($startDate->addDays(7))) {
+                        $fail($attribute . ' debe ser exactamente 7 dias despues del principio de la semana.');
+                    }
+                },
+            ],
             'wname' => 'required|string|max:20|alpha',
             'users_id' => 'required|exists:users,id',
         ]);
@@ -86,9 +109,20 @@ class WeeklysheduleController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'wstart_date' => 'required|date',
-            'wend_date' => 'required|date|after_or_equal:wstart_date',
+            //'wend_date' => 'required|date|after:wstart_date',
+            'wend_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->wstart_date);
+                    $endDate = Carbon::parse($value);
+                    if (!$endDate->eq($startDate->addDays(7))) {
+                        $fail($attribute . ' debe ser exactamente 7 dias despues del principio de la semana.');
+                    }
+                },
+            ],
             'wname' => 'required|string|max:20|alpha',
-            'users_id' => 'required|exists:users,id',
+            //'users_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -100,7 +134,7 @@ class WeeklysheduleController extends Controller
             'wstart_date' => $validated['wstart_date'],
             'wend_date' => $validated['wend_date'],
             'wname' => $validated['wname'],
-            'users_id' => $validated['users_id'],
+            'users_id' => auth()->id(),
         ]);
 
         $am->save();
@@ -113,7 +147,7 @@ class WeeklysheduleController extends Controller
     {
         $weeklySchedule = WeeklyShedule::find($id);
         if (!$weeklySchedule) {
-            return response()->json(['message' => 'Weekly Schedule not found'], 404);
+            return response()->json(['message' => 'Horario semanal no se encontro'], 404);
         }
         return response()->json($weeklySchedule);
     }
@@ -123,12 +157,23 @@ class WeeklysheduleController extends Controller
     {
        $amre = weeklyshedule::find($id);
        if (!$amre) {
-           return response()->json(['message' => 'Shedule not found'], 404);
+           return response()->json(['message' => 'Horario semanal no se encontro'], 404);
        }
 
        $validator = Validator::make($request->all(),[
         'wstart_date' => 'required|date',
-        'wend_date' => 'required|date|after_or_equal:wstart_date',
+        //'wend_date' => 'required|date|after:wstart_date',
+        'wend_date' => [
+            'required',
+            'date',
+            function ($attribute, $value, $fail) use ($request) {
+                $startDate = Carbon::parse($request->wstart_date);
+                $endDate = Carbon::parse($value);
+                if (!$endDate->eq($startDate->addDays(7))) {
+                    $fail($attribute . ' debe ser exactamente 7 dias despues del principio de la semana.');
+                }
+            },
+        ],
         'wname' => 'required|string|max:20|alpha',
         'users_id' => 'required|exists:users,id',
        ]);
@@ -143,10 +188,10 @@ class WeeklysheduleController extends Controller
             'wstart_date' => $validated['wstart_date'],
             'wend_date' => $validated['wend_date'],
             'wname' => $validated['wname'],
-            'users_id' => $validated['users_id'],
+            'users_id' => auth()->id(),
        ]);
 
-       return response()->json(['message' => 'Schedule updated successfully', 'data' => $amre]);
+       return response()->json(['message' => 'Horario actualizado exitosamente', 'data' => $amre]);
     }
 
     // DELETE /weeklyschedules/{id}
@@ -154,10 +199,10 @@ class WeeklysheduleController extends Controller
     {
         $weeklySchedule = WeeklyShedule::find($id);
         if (!$weeklySchedule) {
-            return response()->json(['message' => 'Weekly Schedule not found'], 404);
+            return response()->json(['message' => 'Horario Semanal no se encontro'], 404);
         }
 
         $weeklySchedule->delete();
-        return response()->json(['message' => 'Weekly Schedule deleted successfully']);
+        return response()->json(['message' => 'Horario se Elimino exitosamente']);
     }
 }

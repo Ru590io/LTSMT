@@ -88,7 +88,7 @@ class PmController extends Controller
      {
          $pm = Pm::find($id);
          if (!$pm) {
-             return response()->json(['message' => 'PM not found'], 404);
+             return response()->json(['message' => 'PM no se encontro'], 404);
          }
          return response()->json($pm);
      }
@@ -98,7 +98,7 @@ class PmController extends Controller
      {
         $pm = Pm::find($id);
         if (!$pm) {
-        return response()->json(['message' => 'Pm not found'], 404);
+        return response()->json(['message' => 'Pm no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -115,7 +115,7 @@ class PmController extends Controller
         'ppm' => $validated['ppm'],
         ]);
 
-         return response()->json(['message' => 'Pm updated successfully', 'data' => $pm]);
+         return response()->json(['message' => 'Pm actualizado', 'data' => $pm]);
      }
 
      // DELETE /pms/{id}
@@ -123,10 +123,10 @@ class PmController extends Controller
      {
          $pm = Pm::find($id);
          if (!$pm) {
-             return response()->json(['message' => 'PM not found'], 404);
+             return response()->json(['message' => 'PM no se encuentra'], 404);
          }
 
          $pm->delete();
-         return response()->json(['message' => 'PM deleted successfully']);
+         return response()->json(['message' => 'PM eliminado exitosamente']);
      }
 }

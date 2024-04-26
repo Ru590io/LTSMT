@@ -94,7 +94,7 @@ class AmfondoController extends Controller
     {
         $amFondo = Amfondo::find($id);
         if (!$amFondo) {
-            return response()->json(['message' => 'AmFondo not found'], 404);
+            return response()->json(['message' => 'AmFondo no se encontro'], 404);
         }
         return response()->json($amFondo);
     }
@@ -104,7 +104,7 @@ class AmfondoController extends Controller
     {
         $fondo = AmFondo::find($id);
         if (!$fondo) {
-            return response()->json(['message' => 'Fondo not found'], 404);
+            return response()->json(['message' => 'AmFondo no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -123,7 +123,7 @@ class AmfondoController extends Controller
         'fondo_id' => $validated['fondo_id'],
         ]);
 
-        return response()->json(['message' => 'AmFondo updated successfully', 'data' => $fondo]);
+        return response()->json(['message' => 'AmFondo actualizado', 'data' => $fondo]);
     }
 
     // DELETE /amfondos/{id}
@@ -131,10 +131,10 @@ class AmfondoController extends Controller
     {
         $amFondo = AmFondo::find($id);
         if (!$amFondo) {
-            return response()->json(['message' => 'AmFondo not found'], 404);
+            return response()->json(['message' => 'AmFondo no se encontro'], 404);
         }
 
         $amFondo->delete();
-        return response()->json(['message' => 'AmFondo deleted successfully']);
+        return response()->json(['message' => 'AmFondo eliminado']);
     }
 }

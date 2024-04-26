@@ -100,7 +100,7 @@ class DescansoController extends Controller
     {
         $descanso = Descanso::find($id);
         if (!$descanso) {
-            return response()->json(['message' => 'Descanso not found'], 404);
+            return response()->json(['message' => 'Descanso no se encontro'], 404);
         }
         return response()->json($descanso);
     }
@@ -110,7 +110,7 @@ class DescansoController extends Controller
      {
         $amre = descanso::find($id);
         if (!$amre) {
-            return response()->json(['message' => 'Descanso not found'], 404);
+            return response()->json(['message' => 'Descanso no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(),[
@@ -127,7 +127,7 @@ class DescansoController extends Controller
             'ddescanso' => $validated['ddescanso'],
         ]);
 
-        return response()->json(['message' => 'Descanso updated successfully', 'data' => $amre]);
+        return response()->json(['message' => 'Descanso actualizado', 'data' => $amre]);
      }
 
     // DELETE /descansos/{id}
@@ -135,10 +135,10 @@ class DescansoController extends Controller
     {
         $descanso = Descanso::find($id);
         if (!$descanso) {
-            return response()->json(['message' => 'Descanso not found'], 404);
+            return response()->json(['message' => 'Descanso no se encontro'], 404);
         }
 
         $descanso->delete();
-        return response()->json(['message' => 'Descanso deleted successfully']);
+        return response()->json(['message' => 'Descanso eliminado']);
     }
 }

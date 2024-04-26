@@ -95,7 +95,7 @@ class AmController extends Controller
      {
         $am = Am::find($id);
         if (!$am) {
-        return response()->json(['message' => 'Am not found'], 404);
+        return response()->json(['message' => 'Am no se encontro'], 404);
         }
 
          return $am;
@@ -106,7 +106,7 @@ class AmController extends Controller
      {
         $am = Am::find($id);
         if (!$am) {
-        return response()->json(['message' => 'Am not found'], 404);
+        return response()->json(['message' => 'Am no se encontro'], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -123,7 +123,7 @@ class AmController extends Controller
         'aam' => $validated['aam'],
         ]);
 
-         return response()->json(['message' => 'Am updated successfully', 'data' => $am]);
+         return response()->json(['message' => 'Am actualiazado', 'data' => $am]);
      }
 
 
@@ -131,10 +131,10 @@ class AmController extends Controller
      {
         $am = Am::find($id);
         if (!$am) {
-        return response()->json(['message' => 'Am not found'], 404);
+        return response()->json(['message' => 'Am no se encontro'], 404);
         }
          $am->delete();
 
-         return response()->json("Deleted succesfully", 204);
+         return response()->json("Eliminado exitosamente", 204);
      }
 }

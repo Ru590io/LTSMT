@@ -22,10 +22,10 @@ class RepeticionController extends Controller
     public function stores(Request $request)
     {
         $validated = $request->validate([
-            'Rdistancia' => 'required|integer',
-            'Rsets' => 'required|integer',
-            'Rtiempoesperado' => 'required|integer',
-            'Rrecuperacion' => 'required|integer',
+            'Rdistancia' => 'required|integer|max:15000',
+            'Rsets' => 'required|integer|max:50',
+            'Rtiempoesperado' => 'required|integer|max:50000',
+            'Rrecuperacion' => 'required|integer|max:1000',
         ]);
 
         Repeticiones::create($validated);
@@ -55,10 +55,10 @@ class RepeticionController extends Controller
     public function updates(Request $request, Repeticiones $repeticion)
     {
         $validated = $request->validate([
-            'Rdistancia' => 'required|integer',
-            'Rsets' => 'required|integer',
-            'Rtiempoesperado' => 'required|integer',
-            'Rrecuperacion' => 'required|integer',
+            'Rdistancia' => 'required|integer|max:15000',
+            'Rsets' => 'required|integer|max:50',
+            'Rtiempoesperado' => 'required|integer|max:50000',
+            'Rrecuperacion' => 'required|integer|max:1000',
         ]);
 
         $repeticion->update($validated);
@@ -82,10 +82,10 @@ class RepeticionController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'Rdistancia' => 'required|integer',
-            'Rsets' => 'required|integer',
-            'Rtiempoesperado' => 'required|integer',
-            'Rrecuperacion' => 'required|integer',
+            'Rdistancia' => 'required|integer|max:15000',
+            'Rsets' => 'required|integer|max:50',
+            'Rtiempoesperado' => 'required|integer|max:50000',
+            'Rrecuperacion' => 'required|integer|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -102,7 +102,7 @@ class RepeticionController extends Controller
 
         $am->save();
 
-        return response()->json("Added", 201);
+        return response()->json("Agregado", 201);
     }
 
     // GET /repeticions/{id}
@@ -110,7 +110,7 @@ class RepeticionController extends Controller
     {
         $repeticion = Repeticiones::find($id);
         if (!$repeticion) {
-            return response()->json(['message' => 'Repeticion not found'], 404);
+            return response()->json(['message' => 'Repeticion no se encontro'], 404);
         }
         return response()->json($repeticion);
     }
@@ -120,14 +120,14 @@ class RepeticionController extends Controller
     {
        $amre = repeticiones::find($id);
        if (!$amre) {
-           return response()->json(['message' => 'Repeticiones not found'], 404);
+           return response()->json(['message' => 'Repeticiones no se encontro'], 404);
        }
 
        $validator = Validator::make($request->all(),[
-        'Rdistancia' => 'required|integer',
-        'Rsets' => 'required|integer',
-        'Rtiempoesperado' => 'required|integer',
-        'Rrecuperacion' => 'required|integer',
+        'Rdistancia' => 'required|integer|max:15000',
+        'Rsets' => 'required|integer|max:50',
+        'Rtiempoesperado' => 'required|integer|max:50000',
+        'Rrecuperacion' => 'required|integer|max:1000',
        ]);
 
        if ($validator->fails()) {
@@ -143,7 +143,7 @@ class RepeticionController extends Controller
         'Rrecuperacion' => $validated['Rrecuperacion'],
        ]);
 
-       return response()->json(['message' => 'Repeticion updated successfully', 'data' => $amre]);
+       return response()->json(['message' => 'Repeticion actualizada', 'data' => $amre]);
     }
 
     // DELETE /repeticions/{id}
@@ -151,10 +151,10 @@ class RepeticionController extends Controller
     {
         $repeticion = Repeticiones::find($id);
         if (!$repeticion) {
-            return response()->json(['message' => 'Repeticion not found'], 404);
+            return response()->json(['message' => 'Repeticion no se encontro'], 404);
         }
 
         $repeticion->delete();
-        return response()->json(['message' => 'Repeticion deleted successfully']);
+        return response()->json(['message' => 'Repeticion se elimino']);
     }
 }
