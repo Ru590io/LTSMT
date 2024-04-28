@@ -16,14 +16,14 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-end">
-                    <a href="informacion_del_usuario_entrenador" class="btn btn-primary mb-3">Información del Entrenador</a>
+                        <a href="/entrenadorinfo" class="btn btn-primary mb-3">Información del Entrenador</a>
                 </div>
                 <!-- Big Buttons -->
                 <div class="d-grid gap-3">
-                    <a href="lista_de_atletas" id="rosterButton" class="btn btn-primary btn-lg">Lista de Atletas</a>
-                    <a href="registro_de_entrenamientos" id="trainingLogButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</a>
-                    <a href="estrategia_de_carreras_general" id="raceStrategyButton" class="btn btn-primary btn-lg">Estrategia de Carreras</a>
-                    <a href="sistema_de_luces" id="raceStrategyButton" class="btn btn-primary btn-lg">Sistema de Luces</a>
+                    <a href="/lista" id="rosterButton" class="btn btn-primary btn-lg">Lista de Atletas</a>
+                    <a href="/schedule" id="trainingLogButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</a>
+                    <a href="/competition" id="raceStrategyButton" class="btn btn-primary btn-lg">Estrategia de Carreras</a>
+                    <a href="/light" id="raceStrategyButton" class="btn btn-primary btn-lg">Sistema de Luces</a>
                 </div>
             </div>
         </div>

@@ -19,7 +19,7 @@ class CompetitionController extends Controller
     // Show the form for creating a new competition.
     public function creates()
     {
-        return view('competitions.creates');
+        return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general');
     }
 
     // Store a newly created competition in storage.

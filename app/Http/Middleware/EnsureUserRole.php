@@ -21,7 +21,7 @@ class EnsureUserRole
     {
         if (!Auth::check() || Auth::user()->role !== $role) {
             // Redirect them to their home page or somewhere else
-            return redirect('home')->with('error', 'No tienes acceso a esta sección');
+            return redirect('login')->with('error', 'No tienes acceso a esta sección');
         }
 
         return $next($request);

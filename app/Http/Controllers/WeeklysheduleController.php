@@ -17,7 +17,7 @@ class WeeklysheduleController extends Controller
 
     public function create()
     {
-        return view('weeklyschedules.creates');
+        return view('Entrenador.Registro_de_Entrenamientos.registro_de_entrenamientos');
     }
 
     public function stores(Request $request)

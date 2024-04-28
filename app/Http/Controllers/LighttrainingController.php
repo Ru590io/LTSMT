@@ -19,7 +19,7 @@ class LighttrainingController extends Controller
 
     public function create()
     {
-        return view('lighttrainings.creates');
+        return view('Entrenador.Sistema_de_Luces.sistema_de_luces');
     }
 
     public function store(Request $request)
