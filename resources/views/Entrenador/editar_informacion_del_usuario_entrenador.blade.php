@@ -20,7 +20,7 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Nombre</label>
                         <!-- Solo letras y espacios, máximo 50 caracteres -->
-                        <input type="text" class="form-control" id="name" name="name" value="Manuel Rosado" pattern="[a-zA-Z\s]{1,50}" title="Solo letras y espacios, hasta 50 caracteres." required>
+                        <input type="text" class="form-control" id="name" name="name" value="Manuel Rosado" pattern="[a-zA-Z\sáéíóúñ]{1,50}" title="Solo letras y espacios, hasta 50 caracteres." required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>

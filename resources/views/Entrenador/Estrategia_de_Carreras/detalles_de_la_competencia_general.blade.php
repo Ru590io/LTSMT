@@ -15,7 +15,7 @@
         <h1 class="text-center">Detalles de la Competencia</h1>
         <h2 class="text-center mt-5" id="competitionName"></h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="../menu_principal_entrenador" class="btn btn-primary">Regresar</a>
+            <a href="../estrategia_de_carreras_general" class="btn btn-primary">Regresar</a>
             <a href="editar_detalles_de_la_competencia" class="btn btn-primary">Editar Detalles de Competencia</a>
         </div>
         <div class="card mb-5">

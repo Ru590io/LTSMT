@@ -15,7 +15,7 @@
         <h1 class="text-center">Editar Semana de Entrenamiento</h1>
         <h2 class="text-center mt-5">Entrenamiento 1</h2>
         <div class="text-left mt-4">
-            <a href="detalles_semana_de_entrenamiento" class="btn btn-primary mb-3">Regresar</a>
+            <a href="entrenamiento_del_atleta" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
             <!--Lunes-->
@@ -348,10 +348,27 @@
 
         <div class="d-grid gap-3 mt-5">
             <button class="btn btn-primary btn-lg">Guardar</button>
-            <button class="btn btn-danger">Eliminar Semana de entrenamiento</button>
+            <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
         </div>
     </div>
-
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta semana de entrenamiento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteWeek()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function toggleTrainingOptions(timeOfDay, option) {
     let optionsContainer = document.getElementById(timeOfDay + '-options');
@@ -372,11 +389,13 @@
         const repetitionContainer = document.createElement('div');
         repetitionContainer.classList.add('repetition-container');
         repetitionContainer.innerHTML = `
-            <input type="number" placeholder="Cantidad de Sets" min="1" max="30" />
-            <input type="number" placeholder="Distancia (metros)" />
-            <input type="text" placeholder="Tiempo Esperado (mm:ss)" />
-            <input type="text" placeholder="Recuperación (mm:ss)" />
-            <button type="button" class="btn btn-success add-repetition">+</button>
+        <input type="number" placeholder="Cantidad de Sets" min="1" max="30" tittle="Ingrese valores entre 1 a 30" required />
+
+        <input type="number" placeholder="Distancia (metros)" min="1" max="10000" title="Ingrese valores entre 1 a 10000" required />
+
+        <input type="text" placeholder="Tiempo Esperado (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
+
+        <input type="text" placeholder="Recuperación (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
         `;
         optionsContainer.appendChild(repetitionContainer);
     } else if (option === 'Descanso') {

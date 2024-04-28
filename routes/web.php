@@ -126,100 +126,100 @@ Route::get('/editar_informacion_del_usuario_entrenador', function () {
 
 //Entrenador-> Estrategia de Carreras
 Route::get('/crear_nueva_competencia_estrategia_de_carreras', function () {
-    return view('Entrenador.Estrategia de Carreras.crear_nueva_competencia_estrategia_de_carreras');
+    return view('Entrenador.Estrategia_de_Carreras.crear_nueva_competencia_estrategia_de_carreras');
 });
 Route::get('/detalles_de_la_competencia_general', function () {
-    return view('Entrenador.Estrategia de Carreras.detalles_de_la_competencia_general');
+    return view('Entrenador.Estrategia_de_Carreras.detalles_de_la_competencia_general');
 });
 Route::get('/estrategia_de_carreras_general', function () {
-    return view('Entrenador.Estrategia de Carreras.estrategia_de_carreras_general');
+    return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general');
 });
 Route::get('/eventos_del_atleta', function () {
-    return view('Entrenador.Estrategia de Carreras.eventos_del_atleta');
+    return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta');
 });
 Route::get('/lista_de_competidores', function () {
-    return view('Entrenador.Estrategia de Carreras.lista_de_competidores');
+    return view('Entrenador.Estrategia_de_Carreras.lista_de_competidores');
 });
 Route::get('/ver_split_table_atleta', function () {
-    return view('Entrenador.Estrategia de Carreras.ver_split_table_atleta');
+    return view('Entrenador.Estrategia_de_Carreras.ver_split_table_atleta');
 });
 Route::get('/ver_split_table_general', function () {
-    return view('Entrenador.Estrategia de Carreras.ver_split_table_general');
+    return view('Entrenador.Estrategia_de_Carreras.ver_split_table_general');
 });
 Route::get('/editar_detalles_de_la_competencia', function () {
-    return view('Entrenador.Estrategia de Carreras.editar_detalles_de_la_competencia');
+    return view('Entrenador.Estrategia_de_Carreras.editar_detalles_de_la_competencia');
 });
 
 //Entrenador-> Lista de Atletas
 Route::get('/compartir_aplicacion_web', function () {
-    return view('Entrenador.Lista de Atletas.compartir_aplicacion_web');
+    return view('Entrenador.Lista_de_Atletas.compartir_aplicacion_web');
 });
 Route::get('/crear_nueva_competencia_lista_de_atletas', function () {
-    return view('Entrenador.Lista de Atletas.crear_nueva_competencia_lista_de_atletas');
+    return view('Entrenador.Lista_de_Atletas.crear_nueva_competencia_lista_de_atletas');
 });
 Route::get('/detalles_de_la_competencia_atleta', function () {
-    return view('Entrenador.Lista de Atletas.detalles_de_la_competencia_atleta');
+    return view('Entrenador.Lista_de_Atletas.detalles_de_la_competencia_atleta');
 });
 Route::get('/editar_semana_de_entrenamiento_atleta', function () {
-    return view('Entrenador.Lista de Atletas.editar_semana_de_entrenamiento_atleta');
+    return view('Entrenador.Lista_de_Atletas.editar_semana_de_entrenamiento_atleta');
 });
 Route::get('/entrenamiento_del_atleta', function () {
-    return view('Entrenador.Lista de Atletas.entrenamiento_del_atleta');
+    return view('Entrenador.Lista_de_Atletas.entrenamiento_del_atleta');
 });
 Route::get('/estrategia_de_carrera_atleta', function () {
-    return view('Entrenador.Lista de Atletas.estrategia_de_carrera_atleta');
+    return view('Entrenador.Lista_de_Atletas.estrategia_de_carrera_atleta');
 });
 Route::get('/informacion_del_atleta', function () {
-    return view('Entrenador.Lista de Atletas.informacion_del_atleta');
+    return view('Entrenador.Lista_de_Atletas.informacion_del_atleta');
 });
 Route::get('/lista_de_atletas', function () {
-    return view('Entrenador.Lista de Atletas.lista_de_atletas');
+    return view('Entrenador.Lista_de_Atletas.lista_de_atletas');
 });
 
 Route::get('/registro_del_atleta', function () {
-    return view('Entrenador.Lista de Atletas.registro_del_atleta');
+    return view('Entrenador.Lista_de_Atletas.registro_del_atleta');
 });
 Route::get('/rehabilitar_cuentas', function () {
-    return view('Entrenador.Lista de Atletas.rehabilitar_cuentas');
+    return view('Entrenador.Lista_de_Atletas.rehabilitar_cuentas');
 });
 Route::get('/editar_detalles_de_la_competencia_atleta', function () {
-    return view('Entrenador.Lista de Atletas.editar_detalles_de_la_competencia_atleta');
+    return view('Entrenador.Lista_de_Atletas.editar_detalles_de_la_competencia_atleta');
 });
 
 
 
 //Entrenador-> Registro de Entrenamientos
 Route::get('/asignar_semana_de_entrenamiento', function () {
-    return view('Entrenador.Registro de Entrenamientos.asignar_semana_de_entrenamiento');
+    return view('Entrenador.Registro_de_Entrenamientos.asignar_semana_de_entrenamiento');
 });
 Route::get('/crear_semana_de_entrenamiento', function () {
-    return view('Entrenador.Registro de Entrenamientos.crear_semana_de_entrenamiento');
+    return view('Entrenador.Registro_de_Entrenamientos.crear_semana_de_entrenamiento');
 });
 Route::get('/detalles_semana_de_entrenamiento', function () {
-    return view('Entrenador.Registro de Entrenamientos.detalles_semana_de_entrenamiento');
+    return view('Entrenador.Registro_de_Entrenamientos.detalles_semana_de_entrenamiento');
 });
 Route::get('/editar_semana_de_entrenamiento', function () {
-    return view('Entrenador.Registro de Entrenamientos.editar_semana_de_entrenamiento');
+    return view('Entrenador.Registro_de_Entrenamientos.editar_semana_de_entrenamiento');
 });
 Route::get('/lista_de_entrenamientos', function () {
-    return view('Entrenador.Registro de Entrenamientos.lista_de_entrenamientos');
+    return view('Entrenador.Registro_de_Entrenamientos.lista_de_entrenamientos');
 });
 Route::get('/registro_de_entrenamientos', function () {
-    return view('Entrenador.Registro de Entrenamientos.registro_de_entrenamientos');
+    return view('Entrenador.Registro_de_Entrenamientos.registro_de_entrenamientos');
 });
 
 //Entrenador-> Sistema de Luces
 Route::get('/crear_sistema_de_luces', function () {
-    return view('Entrenador.Sistema de Luces.crear_sistema_de_luces');
+    return view('Entrenador.Sistema_de_Luces.crear_sistema_de_luces');
 });
 Route::get('/entrenamiento_de_luces', function () {
-    return view('Entrenador.Sistema de Luces.entrenamiento_de_luces');
+    return view('Entrenador.Sistema_de_Luces.entrenamiento_de_luces');
 });
 Route::get('/lista_de_sistema_de_luces', function () {
-    return view('Entrenador.Sistema de Luces.lista_de_sistema_de_luces');
+    return view('Entrenador.Sistema_de_Luces.lista_de_sistema_de_luces');
 });
 Route::get('/sistema_de_luces', function () {
-    return view('Entrenador.Sistema de Luces.sistema_de_luces');
+    return view('Entrenador.Sistema_de_Luces.sistema_de_luces');
 });
 
 
