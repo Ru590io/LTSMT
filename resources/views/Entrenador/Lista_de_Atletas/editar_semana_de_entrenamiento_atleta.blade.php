@@ -389,9 +389,9 @@
         const repetitionContainer = document.createElement('div');
         repetitionContainer.classList.add('repetition-container');
         repetitionContainer.innerHTML = `
-        <input type="number" placeholder="Cantidad de Sets" min="1" max="30" required />
+        <input type="number" placeholder="Cantidad de Sets" min="1" max="30" tittle="Ingrese valores entre 1 a 30" required />
 
-        <input type="number" placeholder="Distancia (metros)" min="1" required />
+        <input type="number" placeholder="Distancia (metros)" min="1" max="10000" title="Ingrese valores entre 1 a 10000" required />
 
         <input type="text" placeholder="Tiempo Esperado (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
 

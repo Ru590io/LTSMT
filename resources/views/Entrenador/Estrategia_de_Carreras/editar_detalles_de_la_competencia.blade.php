@@ -23,7 +23,7 @@
                 <form id="newCompetitionForm">
                     <div class="mb-3">
                         <label for="competitionName" class="form-label">Nombre de la Competencia</label>
-                        <input type="text" class="form-control" id="competitionName" value="Competencia 1" pattern="[A-Za-z0-9\s]{1,100}" title="Solo letras, números y espacios, hasta 100 caracteres." required>
+                        <input type="text" class="form-control" id="competitionName" value="Competencia 1" pattern="[A-Za-z0-9\sáéíóúñ]{1,100}" title="Solo letras, números y espacios, hasta 100 caracteres." required>
                     </div>
                     <div class="mb-3">
                         <label for="competitionDate" class="form-label">Fecha y Hora</label>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="competitionLocation" class="form-label">Lugar</label>
-                        <input type="text" class="form-control" id="competitionLocation" value="Villalba, Puerto Rico" pattern="[A-Za-z0-9\s,.-]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
+                        <input type="text" class="form-control" id="competitionLocation" value="Villalba, Puerto Rico" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>

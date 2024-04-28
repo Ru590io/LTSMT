@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Crear Semana de Entrenamiento</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
@@ -16,7 +19,28 @@
         <div class="text-left mt-4">
             <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
         </div>
+        <!-- Campo para el nombre de la semana -->
+        <div class="mb-3">
+            <label for="weekName" class="form-label">Nombre de la Semana:</label>
+            <input type="text" class="form-control" id="weekName" placeholder="Ej: Semana del 1 al 7 de Marzo">
+        </div>
 
+        <!-- Selector de atletas con búsqueda -->
+        <div class="mb-3">
+            <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
+            <select class="form-control" id="athleteSelector">
+                <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
+                <option></option> <!-- Opción vacía para la búsqueda -->
+                <option value="1">Axel Rosado</option>
+                <option value="2">Guillermo Colón</option>
+                <option value="3">Rubén Marrero</option>
+                <!-- más atletas -->
+            </select>
+        </div>
+        <h1 class="text-center">Crear Semana de Entrenamiento</h1>
+        <div class="text-left mt-4">
+            <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
+        </div>
             <!--Lunes-->
             <div class="card mb-5">
                 <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
@@ -493,6 +517,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             var copyButton = document.querySelector('.copy-to-clipboard');
             copyButton.addEventListener('click', copyTrainingWeekToClipboard);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#athleteSelector').select2({
+                placeholder: "Selecciona un atleta",
+                allowClear: true
+            });
         });
     </script>
 
