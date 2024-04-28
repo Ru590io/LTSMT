@@ -11,7 +11,7 @@
         </div>
         @endif
         <div class="d-flex justify-content-end">
-            <button id="userInfoButton" class="btn btn-primary mb-3">Información del Usuario</button>
+            <button id="/coachinfo/{id}" class="btn btn-primary mb-3">Información del Usuario</button>
         </div>
         <!-- Big Buttons -->
         <div class="d-grid gap-3">
