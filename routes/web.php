@@ -4,10 +4,12 @@ use App\Http\Controllers\AccessCodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LighttrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\WeeklysheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
+//Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
 
 Route::get('/', function () {
     return redirect('/login');
@@ -42,17 +44,29 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
 });*/
 
 Route::middleware(['auth', 'role:Entrenador'])->group(function () {
-    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    //Informacion de Entrenador
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //Home de Entrenador
+    Route::get('/home', [UserController::class, 'homepage'])->name('home');
+    Route::get('/lista', [UserController::class, 'athleteindexs'])->name('users.index');
+    Route::get('/entrenadorinfo', [UserController::class, 'entrenadorindexs'])->name('coach.index');
+    Route::get('/light', [LighttrainingController::class, 'create'])->name('light');
+    Route::get('/competition', [CompetitionController::class, 'creates'])->name('competition');
+    Route::get('/schedule', [WeeklysheduleController::class, 'create'])->name('schedule');
+
+    //Compartir pagina y codigo de acceso
+    Route::get('/generate_code', [AccessCodeController::class, 'shareweb'])->name('generate_code');
+    Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
+
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {
-    Route::get('/home', [AuthController::class, 'homepage'])->name('home');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    //Route::get('/home', [AuthController::class, 'homepage'])->name('home');
+    //Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
-Route::get('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
 Route::post('/send-training-data', [LighttrainingController::class, 'sendTrainingData']);
 
 Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');

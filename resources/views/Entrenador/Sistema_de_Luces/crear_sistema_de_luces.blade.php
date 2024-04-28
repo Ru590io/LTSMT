@@ -26,7 +26,6 @@
             <div class="mb-3">
                 <label for="distanceInput" class="form-label">Distancia (metros)</label>
                 <input type="number" class="form-control" id="distanceInput" placeholder="Ingrese distancia en metros" min="100" max="10000" title="Escriba un valor de 100 a 10000." required>
-
             </div>
 
             <div class="mb-3">
@@ -34,8 +33,6 @@
                 <input type="text" class="form-control" id="timeInput" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" required>
                 <!--For email: <input type="email" class="form-control" id="emailInput" placeholder="Ingrese su correo electrónico" pattern=".+@upr\.edu" maxlength="40" required>-->
             </div>
-
-
             <button type="submit" class="btn btn-primary">Guardar Entrenamiento</button>
         </form>
     </div>

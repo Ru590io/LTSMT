@@ -13,11 +13,34 @@ class AccessCodeController extends Controller
 {
     $code = new AccessCode();
     $code->users_id = auth()->id(); // Assuming the coach is logged in
-    $code->code = Str::random(10); // Generate a random string
-    $code->expires_at = Carbon::now()->addSeconds(120); // Set expiration time
+    $code->code = Str::random(15); // Generate a random string
+    $code->expires_at = Carbon::now('America/Puerto_Rico')->addSeconds(3600); // Set expiration time
     $code->save();
 
-    return view('coach.access_code', compact('code'));
+    $url = url('/register?access_code=' . $code->code);
+
+    //$formattedExpiration = $code->expires_at->format('Y-m-d h:i:s A');
+
+    $userTimezone = 'America/Puerto_Rico';
+    $displayTime = Carbon::parse($code->expires_at, 'UTC')->setTimezone($userTimezone);
+    $formattedDisplayTime = $displayTime->format('Y-m-d h:i:s A');
+    return view('Entrenador.Lista_de_Atletas.compartir_aplicacion_web', compact('code', 'url', 'formattedDisplayTime'));
+}
+
+public function shareweb(){
+    $code = new AccessCode();
+    $code->users_id = auth()->id(); // Assuming the coach is logged in
+    $code->code = Str::random(15); // Generate a random string
+    $code->expires_at = Carbon::now('America/Puerto_Rico')->addSeconds(3600); // Set expiration time
+    $code->save();
+
+    $url = url('/register?access_code=' . $code->code);
+
+    //$formattedExpiration = $code->expires_at->format('Y-m-d h:i:s A');
+    $userTimezone = 'America/Puerto_Rico';
+    $displayTime = Carbon::parse($code->expires_at, 'UTC')->setTimezone($userTimezone);
+    $formattedDisplayTime = $displayTime->format('Y-m-d h:i:s A');
+    return view('Entrenador.Lista_de_Atletas.compartir_aplicacion_web', compact('code', 'url', 'formattedDisplayTime'));
 }
 
 public function generateAccessCodeAPI(Request $request)

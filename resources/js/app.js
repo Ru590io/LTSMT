@@ -13,12 +13,19 @@ import '../sass/app.scss';
  * registering components with the application instance so they are ready
  * to use in your application's views. An example is included for you.
  */
-
-const app = createApp({});
-
 import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+//import FormComponent from './components/FormComponent.vue';
+const app = createApp({
+    components: {
+        ExampleComponent,
+       // FormComponent
+    }
+});
 
+//import ExampleComponent from './components/ExampleComponent.vue';
+//import FormComponent from './components/FormComponent.vue';
+//app.component('example-component', ExampleComponent);
+//app.component('registration-form', FormComponent);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

@@ -19,7 +19,6 @@
         <div class="text-left mt-4">
             <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
         </div>
-
         <!-- Campo para el nombre de la semana -->
         <div class="mb-3">
             <label for="weekName" class="form-label">Nombre de la Semana:</label>
@@ -42,7 +41,6 @@
         <div class="text-left mt-4">
             <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
         </div>
-
             <!--Lunes-->
             <div class="card mb-5">
                 <div class="card-header"><h3 class="centered-text">Lunes</h3></div>

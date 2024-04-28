@@ -8,6 +8,7 @@ use App\Models\AccessCode;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Rules\UniquePhoneNumber;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use App\Rules\UpdateUniquePhoneNumber;
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 
+    public function homepage(){
+        return view('Entrenador.menu_principal_entrenador');
+    }
     //Registro//
     public function create()
     {
@@ -30,14 +34,26 @@ class UserController extends Controller
     //Ver todos usarios//
     public function indexs()
     {
-        $users = User::all();
-        return view('auth.Register.registro', compact('users'));
+       // $users = User::where('role', 'Atleta')->orderBy('first_name', 'last_name', 'asc')->get();
+        //$users = User::all();
+        //return view('Entrenador.Lista_de_Atletas.lista_de_atletas');
     }
-    // public function indexs_lista_de_atletas()
-    // {
-    //     $users = User::all();  // Ensure this line is retrieving users correctly.
-    //     return view('Entrenador.Lista de Atletas.lista_de_atletas', compact('users'));
-    // }
+
+    public function athleteindexs()
+    {
+       $users = User::where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
+       return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
+    }
+
+    public function entrenadorindexs()
+    {
+        $users = User::where('role', 'Entrenador')->get();
+        $users->transform(function ($user) {
+            $user->phone_number = Crypt::decryptString($user->phone_number);
+            return $user;
+        });
+        return view('Entrenador.informacion_del_usuario_entrenador', compact('users'));
+    }
 
     // Crear el usuario y registrarlo
     public function stores(Request $request)
@@ -75,7 +91,7 @@ class UserController extends Controller
         User::create($validatedData);
 
         // Optionally invalidate the access code
-       // $code->delete(); // or mark as used to prevent reuse
+       $code->delete(); // or mark as used to prevent reuse
 
         //auth()->login($user);
 
@@ -112,7 +128,7 @@ class UserController extends Controller
     }
 
     // Display the specified user.
-    public function shows(User $user, $id)
+    public function athleteshows(User $user, $id)
     {
         $item = User::find($id);
 
@@ -121,6 +137,18 @@ class UserController extends Controller
         }
         $this->authorize('view', $user);
         return view('users.shows', compact('user'));
+    }
+
+    public function coachindex()
+    {
+       /* $item = User::find($id);
+
+        if (!$item) {
+        return redirect()->route('home')->withErrors('No hay ningun Entrenador aqui.');
+        }*/
+       // $this->authorize('view', $users);
+       //$user = Auth::user();
+        return view('Entrenador.informacion_del_usuario_entrenador');
     }
 
     // Show the form for editing the specified user.
@@ -190,7 +218,7 @@ class UserController extends Controller
 
     //API///////////////////////////////////////////////////////////////////////////////////////////////////
      // GET /users
-     public function index()
+     public function indexss()
     {
     // Order users alphabetically by their first name
     //return User::orderBy('first_name', 'asc')->get();
@@ -292,7 +320,7 @@ class UserController extends Controller
      }
 
      // GET /users/{id}
-     public function show($id)
+     public function shows($id)
      {
          $user = User::find($id);
          if (!$user) {

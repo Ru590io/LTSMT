@@ -15,10 +15,6 @@ class AuthController extends Controller
         return view('auth.Register.inicio_de_sesion');
     }
 
-    public function homepage(){
-        return view('Entrenador.menu_principal_entrenador');
-    }
-
     public function login(Request $request){
 
 

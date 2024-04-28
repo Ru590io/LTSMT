@@ -32,6 +32,7 @@
                     <div class="mb-3">
                         <label for="competitionLocation" class="form-label">Lugar</label>
                         <input type="text" class="form-control" id="competitionLocation" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
+
                     </div>
                     <button type="submit" class="btn btn-primary">Crear Competencia</button>
                 </form>

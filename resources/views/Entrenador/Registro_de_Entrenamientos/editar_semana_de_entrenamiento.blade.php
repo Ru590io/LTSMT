@@ -7,7 +7,6 @@
     <title>Editar Semana de Entrenamiento</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
-
 <body>
     <div class="logo-container">
         <div class="logo-text">LTSMT</div>

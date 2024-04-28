@@ -14,55 +14,41 @@
     <div class="container">
         <h1 class="text-center">Compartir Aplicación Web</h1>
         <div class="text-left mt-4">
-            <a href="lista_de_atletas" class="btn btn-primary mb-3">Regresar</a>
+            <a href="/lista" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <div class="d-flex flex-column align-items-center mt-5">
             <!-- Section to display webapp link -->
             <div class="mb-3">
-                <span id="webAppLink">http://127.0.0.1:5500/login.html</span>
+                <span id="accessCodeUrl" style="user-select: all;">{{ $url }}</span>
             </div>
+
             <!-- Hidden section for access code -->
-            <input type="hidden" id="accessCode" value="ACCESS-CODE-1234">
+            <input type="hidden" id="accessCode" value="{{ $code->code }}">
             <!-- Button to copy both link and access code -->
-            <button class="btn btn-primary mb-3" type="button" onclick="copyAllToClipboard()">Copiar Link y Codigo de Acceso</button>
+            <button class="btn btn-primary mb-3" type="button" onclick="copyToClipboard()">Copiar Link y Codigo de Acceso</button>
             <div class="mb-0">
-                <span id="webAppLink">Codigo de Acceso puede ser usado solo por una persona.</span>
+                <span id="webAppLink">Enlace puede ser usado solo por una persona.</span>
             </div>
             <div class="mb-3">
-                <span id="webAppLink">Tendran 1 hora para usarlo antes de que el codigo de acceso sea invalido.</span>
+                <span id="webAppLink"> El enlace expira en: {{ $formattedDisplayTime }}. Luego de ese tiempo el enlace será invalido.</span>
             </div>
-            <button class="btn btn-outline-primary" onclick="generateAccessCode()">Generar Código de Acceso</button>
+            <form action="{{ route('generate_code') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-outline-primary">Generar Código de Acceso</button>
+            </form>
         </div>
     </div>
 
     <script>
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Copiado al portapapeles");
-            }, (err) => {
-                console.error('Error al copiar texto: ', err);
-            });
-        }
-
-        function copyAllToClipboard() {
-            const webAppLink = document.getElementById('webAppLink').textContent;
-            const accessCode = document.getElementById('accessCode').value;
-            copyToClipboard(`Web App Link: ${webAppLink}\nAccess Code: ${accessCode}`);
-        }
-
-        function generateAccessCode() {
-            // You would call your server here to get a new access code
-            fetch('/generate-access-code', { method: 'POST' })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('accessCode').value = data.accessCode;
-                alert('Nuevo código de acceso generado y copiado al portapapeles');
-                copyToClipboard(data.accessCode);
-            })
-            .catch(error => console.error('Error al generar el código de acceso:', error));
-        }
+       function copyToClipboard() {
+    const textToCopy = document.getElementById('accessCodeUrl').innerText; // Get text from span
+    navigator.clipboard.writeText(textToCopy).then(function() {
+        alert('Enlace copiado al portapapeles.');
+    }, function(err) {
+        console.error('Error al copiar el texto: ', err);
+    });
+}
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
