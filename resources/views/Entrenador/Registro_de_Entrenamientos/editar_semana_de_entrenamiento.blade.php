@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Editar Semana de Entrenamiento</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
@@ -13,13 +16,39 @@
     </div>
     <div class="container">
         <h1 class="text-center">Editar Semana de Entrenamiento</h1>
-        <h2 class="text-center mt-5">Entrenamiento 1</h2>
+        {{-- method (post?) can be added down here? (method="post") --}}
+        <form id="trainingForm">
         <div class="text-left mt-4">
-            <a href="detalles_semana_de_entrenamiento" class="btn btn-primary mb-3">Regresar</a>
+            <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
+        </div>
+        <!-- Campo para el nombre de la semana -->
+        <div class="mb-3">
+            <label for="weekName" class="form-label">Nombre de la Semana:</label>
+            <input type="text" class="form-control" id="weekName" placeholder="Ej: Entrenamiento Regular" maxlength="50" title="No más de 50 caracteres." required>
         </div>
 
+        {{-- <!-- Selector de atletas con búsqueda -->
+        <div class="mb-3">
+            <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
+            <select class="form-control" id="athleteSelector">
+                <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
+                <option></option> <!-- Opción vacía para la búsqueda -->
+                <option value="1">Axel Rosado</option>
+                <option value="2">Guillermo Colón</option>
+                <option value="3">Rubén Marrero</option>
+                <!-- más atletas -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
+            <select class="form-control" id="weekSelector">
+                <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
+                <option></option> <!-- Opción vacía para la búsqueda -->
+            </select>
+        </div> --}}
             <!--Lunes-->
-            <div class="card mb-5">
+            <div class="card mb-5 mt-5">
                 <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
                 <div class="card-body">
                     <!-- Sección AM -->
@@ -49,6 +78,7 @@
                             <input type="radio" id="lunes-pm-repeticion" name="lunes-pm" value="Repeticion" onchange="toggleTrainingOptions('lunes-pm', this.value)">
                             <label for="lunes-pm-repeticion">Repetición</label>
                         </div>
+
                         <!-- Contenido dinámico para PM -->
                         <div class="dynamic-content" id="lunes-pm-options"></div>
                     </div>
@@ -57,7 +87,7 @@
                     <!-- Notas -->
                     <div class="notes-section">
                         <label for="lunes-notas">Notas:</label>
-                        <textarea class="form-control" id="lunes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                        <textarea class="form-control" id="lunes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -103,7 +133,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="martes-notas">Notas:</label>
-                            <textarea class="form-control" id="martes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="martes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -111,7 +141,7 @@
 
             <!--Miércoles-->
             <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Miércoles</h3></div>
+                <div class="card-header"><h3 class="centered-text">Miercoles</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -150,7 +180,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="miércoles-notas">Notas:</label>
-                            <textarea class="form-control" id="miércoles-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="miércoles-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -197,7 +227,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="jueves-notas">Notas:</label>
-                            <textarea class="form-control" id="jueves-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="jueves-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -244,7 +274,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="viernes-notas">Notas:</label>
-                            <textarea class="form-control" id="viernes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="viernes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -252,7 +282,7 @@
 
             <!--Sábado-->
             <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
+                <div class="card-header"><h3 class="centered-text">Sabado</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -291,7 +321,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="sábado-notas">Notas:</label>
-                            <textarea class="form-control" id="sábado-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="sábado-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
                     </div>
                 </div>
@@ -339,7 +369,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="domingo-notas">Notas:</label>
-                            <textarea class="form-control" id="domingo-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="domingo-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
 
                     </div>
@@ -347,63 +377,62 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg">Guardar</button>
-            <button class="btn btn-danger">Eliminar Semana de entrenamiento</button>
+            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
         </div>
+    </div>
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta semana de entrenamiento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteWeek()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     </div>
 
     <script>
         function toggleTrainingOptions(timeOfDay, option) {
-    let optionsContainer = document.getElementById(timeOfDay + '-options');
-    optionsContainer.innerHTML = ''; // Limpia las opciones previas
+            let optionsContainer = document.getElementById(timeOfDay + '-options');
+            optionsContainer.innerHTML = ''; // Clear previous options
 
-    if (option === 'Fondo') {
-        optionsContainer.innerHTML = `
-            <input type="number" placeholder="Distancia (Kilometros)" />
-            <select>
-                <option value="">Zona</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        `;
-    } else if (option === 'Repeticion') {
-        const repetitionContainer = document.createElement('div');
-        repetitionContainer.classList.add('repetition-container');
-        repetitionContainer.innerHTML = `
-            <input type="number" placeholder="Cantidad de Sets" min="1" max="30" />
-            <input type="number" placeholder="Distancia (metros)" />
-            <input type="text" placeholder="Tiempo Esperado (mm:ss)" />
-            <input type="text" placeholder="Recuperación (mm:ss)" />
-            <button type="button" class="btn btn-success add-repetition">+</button>
-        `;
-        optionsContainer.appendChild(repetitionContainer);
-    } else if (option === 'Descanso') {
-        optionsContainer.innerHTML = 'Descanso';
-    }
-}
+            if (option === 'Fondo') {
+                optionsContainer.innerHTML = `
+                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (Kilometros)" min="1" max="30" title= "Distancia entre 1 y 10" required />
+                    <select>
+                        <option value="">Zona</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                `;
+            } else if (option === 'Repeticion') {
+                optionsContainer.innerHTML = `
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title= "Sets entre 1 a 30." required />
+                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
+                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <div id="${timeOfDay}-repetition-container">
 
-function addRepetition(button) {
-    const repetitionContainer = button.parentElement;
-    const newRepetitionBlock = repetitionContainer.cloneNode(true);
-    newRepetitionBlock.querySelector('.add-repetition').remove();
-    newRepetitionBlock.innerHTML += '<button type="button" class="btn btn-danger remove-repetition">-</button>';
-    repetitionContainer.parentNode.insertBefore(newRepetitionBlock, repetitionContainer.nextSibling);
-}
+                    </div>
+                    <button type="button" class="btn btn-success mt-2" onclick="addRepetition('${timeOfDay}-repetition-container')">+</button>
 
-function removeRepetition(button) {
-    button.parentElement.remove();
-}
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('add-repetition')) {
-        addRepetition(event.target);
-    } else if (event.target.classList.contains('remove-repetition')) {
-        removeRepetition(event.target);
-    }
-});
-
+                `;
+            } else if (option === 'Descanso') {
+                // optionsContainer.innerHTML = 'Descanso';
+            }
+        }
     </script>
     <script>
         window.onload = function() {
@@ -443,10 +472,29 @@ document.addEventListener('click', function(event) {
             document.getElementById(groupName + '-descanso').checked = true;
             toggleTrainingOptions(groupName, 'Descanso');
         };
-
+2
         function resetNotes(notesId) {
             document.getElementById(notesId).value = '';
         };
+        function addRepetition(containerId) {
+            let container = document.getElementById(containerId);
+            if (container) {
+                let newRepetitionBlock = document.createElement('div');
+                newRepetitionBlock.classList.add('mt-2');
+                newRepetitionBlock.innerHTML = `
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title="Sets entre 1 a 30." required />
+                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
+                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
+                `;
+                container.appendChild(newRepetitionBlock);
+            }
+        }
+
+        function removeRepetition(button) {
+            button.parentElement.remove();
+        }
 
 
     </script>
@@ -496,6 +544,89 @@ document.addEventListener('click', function(event) {
             copyButton.addEventListener('click', copyTrainingWeekToClipboard);
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#athleteSelector').select2({
+                placeholder: "Selecciona un atleta",
+                allowClear: true
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#weekSelector').select2({
+                placeholder: "Selecciona una semana",
+                allowClear: true
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getMondayOfCurrentWeek(date) {
+                var monday = new Date(date);
+                monday.setDate(date.getDate() - (date.getDay() - 1));
+                return monday;
+            }
+
+            function formatDate(date) {
+                return date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            function generateWeekOptions() {
+                var today = new Date();
+                var weekSelector = document.getElementById('weekSelector');
+
+                // Empezamos desde el lunes de la semana actual
+                var currentMonday = getMondayOfCurrentWeek(today);
+
+                for (let i = 0; i < 5; i++) {
+                    var startOfWeek = new Date(currentMonday);
+                    startOfWeek.setDate(currentMonday.getDate() + (7 * i));
+                    var endOfWeek = new Date(startOfWeek);
+                    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+                    var option = document.createElement('option');
+                    option.value = `${startOfWeek.toISOString()}/${endOfWeek.toISOString()}`; // Formato para uso con timestamps
+                    option.textContent = `${formatDate(startOfWeek)} - ${formatDate(endOfWeek)}`;
+                    weekSelector.appendChild(option);
+                }
+            }
+
+            generateWeekOptions();
+
+            $('#weekSelector').select2({
+                placeholder: "Selecciona una semana",
+                allowClear: true
+            });
+        });
+
+
+    </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $('#athleteSelector, #weekSelector').select2({
+                    placeholder: "Seleccione",
+                    allowClear: true,
+                    minimumResultsForSearch: Infinity // Disables the search box
+                });
+
+                const form = document.getElementById('trainingForm');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the form from submitting
+
+                    // Validate that an athlete and a week are selected
+                    const athleteSelector = document.getElementById('athleteSelector');
+                    const weekSelector = document.getElementById('weekSelector');
+
+                    if (!athleteSelector.value || !weekSelector.value) {
+                        alert('Por favor, seleccione un atleta y una semana.');
+                        return false; // Stop the form from submitting
+                    }
+                });
+
+            });
+        </script>
 
 
 

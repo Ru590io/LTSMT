@@ -12,6 +12,7 @@
 </head>
 <body>
     <div class="container">
+        {{-- Título del entrenamiento: --}}
         <h1 class="text-center">Entrenameinto 1</h1>
         <div class="text-left mt-4">
             <a href="lista_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>

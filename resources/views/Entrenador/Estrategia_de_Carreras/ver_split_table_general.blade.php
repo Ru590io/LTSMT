@@ -34,14 +34,18 @@
     </div>
 
     <script>
-        // Datos de ejemplo de atletas
+            function getNumber(eventString) {
+                const result = eventString.match(/\d+/); // This regex matches any sequence of digits in the string
+                return result ? parseInt(result[0], 10) : null; // Convert the found string to a number, or return null if nothing is found
+            }
+        // Datos de ejemplo de atletas getnubers()
         const athletesData = [
-            { name: 'Axel Rosado', event: 800, time: 120 },
-            { name: 'Enrique Chompré', event: 10000, time: 120 },
-            { name: 'Guillermo Colón', event: 1500, time: 180 },
-            { name: 'Rubén Marrero', event: 800, time: 120 },
-            { name: 'Rubén Marrero', event: 3000, time: 420 },
-            { name: 'Rubén Marrero', event: 5000, time: 800 },
+            { name: 'Axel Rosado', event: getNumber("800m"), time: 300 },
+            { name: 'Enrique Chompré', event: getNumber("10000m"), time: 120 },
+            { name: 'Guillermo Colón', event: getNumber("1500m"), time: 180 },
+            { name: 'Rubén Marrero', event: getNumber("800m"), time: 120 },
+            { name: 'Rubén Marrero', event: getNumber("3000m"), time: 420 },
+            { name: 'Rubén Marrero', event: getNumber("5000m"), time: 800 },
 
             // Agrega más atletas aquí
 
@@ -130,7 +134,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateEventDistance(); // Cargar automáticamente el primer conjunto de tablas
         });
+
     </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

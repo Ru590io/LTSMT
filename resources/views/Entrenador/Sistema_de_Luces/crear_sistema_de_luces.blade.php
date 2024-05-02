@@ -38,12 +38,14 @@
             </div>
 
             <div class="mb-3">
+
                 <label for="ttime" class="form-label">Tiempo (mm:ss)</label>
-                <input type="text" class="form-control" id="ttime" name="ttime" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" required>
+                <input type="text" class="form-control" id="ttime" name="ttime" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" title= "Porfavor, siga el formato (MM:SS)." required>
                 @error('ttime')
 
                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                 @enderror
+
             </div>
             <button type="submit" class="btn btn-primary">Guardar Entrenamiento</button>
         </form>

@@ -34,7 +34,7 @@
                     <div class="mb-3">
                         <label for="competitionLocation" class="form-label">Lugar</label>
                         <!-- Validación para lugar: letras, números, espacios y algunos caracteres especiales, hasta 255 caracteres -->
-                        <input type="text" class="form-control" id="competitionLocation" value="Villalba, Puerto Rico" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
+                        <input type="text" class="form-control" id="competitionLocation" value="Villalba, Puerto Rico" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, los caracteres ',.-' y un máximo de 255 caracteres." required>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>

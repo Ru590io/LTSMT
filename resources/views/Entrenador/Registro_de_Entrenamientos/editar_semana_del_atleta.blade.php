@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <title>Asignar Semana de Entrenamiento</title>
+    <title>Editar Semana del Atleta</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
 <body>
@@ -15,11 +15,11 @@
         <div class="logo-text">LTSMT</div>
     </div>
     <div class="container">
-        <h1 class="text-center">Asignar Semana de Entrenamiento</h1>
+        <h1 class="text-center">Editar Semana del Atleta</h1>
         {{-- method (post?) can be added down here? (method="post") --}}
         <form id="trainingForm">
         <div class="text-left mt-4">
-            <a href="detalles_semana_de_entrenamiento" class="btn btn-primary mb-3">Regresar</a>
+            <a href="calendario_de_atletas" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <!-- Campo para el nombre de la semana -->
         {{-- <div class="mb-3">
@@ -28,7 +28,7 @@
         </div> --}}
 
         <!-- Selector de atletas con búsqueda -->
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
             <select class="form-control" id="athleteSelector">
                 <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
@@ -38,8 +38,8 @@
                 <option value="3">Rubén Marrero</option>
                 <!-- más atletas -->
             </select>
-        </div>
-
+        </div> --}}
+        <h2 class="text-center mt-2">Axel Rosado</h2>
         <div class="mb-3">
             <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
             <select class="form-control" id="weekSelector">
@@ -379,6 +379,24 @@
         <div class="d-grid gap-3 mt-5">
             <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta semana de entrenamiento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteWeek()">Eliminar</button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -15,8 +15,10 @@
         <h1 class="text-center">Editar Información del Entrenador</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
+
                 <a href="{{ route('coach.index', ['user' => $user->id]) }}" class="btn btn-primary mb-3">Regresar</a>
                 <form id="userInfoForm" class= "form" action="{{route('entrenador.update', ['user'=> $user])}}" method="post">
+
                     @csrf
                     @method('put')
                     <div class="mb-3">
