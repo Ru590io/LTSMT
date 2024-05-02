@@ -14,10 +14,12 @@
     <div class="container">
         <h1 class="text-center">Lista de Entrenamiento de Luces</h1>
         <div class="text-left mt-4">
-            <button onclick="location.href='sistema_de_luces'" class="btn btn-primary">Regresar</button>
+            <a href="/light" class="btn btn-primary">Regresar</a>
         </div>
         <div class="d-grid gap-3 mt-4" id="trainingList">
-            <!-- Dynamically generated training buttons will go here -->
+            @foreach ($lighttrainings as $lighttraining)
+            <a href="{{ route('light.show', ['lighttraining' => $lighttraining->id]) }}" class="btn btn-primary btn-lg"> {{ $lighttraining->tname }}:  {{ $lighttraining->tdistance }} metros  {{sprintf('%02d:%02d', floor($lighttraining->ttime / 60), $lighttraining->ttime % 60)}}</a>
+            @endforeach
         </div>
     </div>
 

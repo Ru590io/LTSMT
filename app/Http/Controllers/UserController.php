@@ -16,9 +16,22 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-
+    //Coach Homepage
     public function homepage(){
-        return view('Entrenador.menu_principal_entrenador');
+        $user = auth()->user();
+        return view('Entrenador.menu_principal_entrenador', compact('user'));
+    }
+    //Athlete Homepage
+    public function athletehome(){
+        //$users = User::orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('email', 'asc')->orderBy('phone_number', 'asc')->get(['id','first_name', 'last_name', 'email', 'phone_number']);
+        $user = auth()->user();
+        return view('Atleta.menu_principal_atleta', compact('user'));
+    }
+
+    public function atletaindex(User $user){
+        $this->authorize('view', $user);
+        $user->phone_number = Crypt::decryptString($user->phone_number);
+        return view('Atleta.informacion_del_usuario_atleta', compact('user'));
     }
     //Registro//
     public function create()
@@ -32,12 +45,6 @@ class UserController extends Controller
     }
 
     //Ver todos usarios//
-    public function indexs()
-    {
-       // $users = User::where('role', 'Atleta')->orderBy('first_name', 'last_name', 'asc')->get();
-        //$users = User::all();
-        //return view('Entrenador.Lista_de_Atletas.lista_de_atletas');
-    }
 
     public function athleteindexs()
     {
@@ -45,14 +52,11 @@ class UserController extends Controller
        return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
     }
 
-    public function entrenadorindexs()
+    public function entrenadorindexs(User $user)
     {
-        $users = User::where('role', 'Entrenador')->get();
-        $users->transform(function ($user) {
-            $user->phone_number = Crypt::decryptString($user->phone_number);
-            return $user;
-        });
-        return view('Entrenador.informacion_del_usuario_entrenador', compact('users'));
+        $this->authorize('view', $user);
+        $user->phone_number = Crypt::decryptString($user->phone_number);
+        return view('Entrenador.informacion_del_usuario_entrenador', compact('user'));
     }
 
     // Crear el usuario y registrarlo
@@ -67,13 +71,12 @@ class UserController extends Controller
             'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u',
             'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u',
             'email' => 'required|string|email|max:35|unique:users,email|ends_with:@upr.edu',
-            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
-
+            'phone_number' => ['required', 'string', 'digits:10', 'numeric', new UniquePhoneNumber()],
             'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
             'code' => 'required|string',
         ], $message);
 
-        $code = AccessCode::where('code', $request->code)->where('expires_at', '>', Carbon::now())->first();
+        $code = AccessCode::where('code', $request->code)->where('expires_at', '>', Carbon::now('America/Puerto_Rico'))->first();
 
         if (!$code) {
             return redirect()->route('register')->withErrors([
@@ -106,10 +109,10 @@ class UserController extends Controller
             'last_name.regex' => 'El Apellido no puede tener numeros, caracteres especiales y debe tener Mayuscula',
         ];
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'first_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'last_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
             'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
-            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number',
+            'phone_number' => ['required', 'string', 'digits:10', 'numeric', new UniquePhoneNumber()],
             'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
 
         ], $message);
@@ -139,64 +142,97 @@ class UserController extends Controller
         return view('users.shows', compact('user'));
     }
 
-    public function coachindex()
-    {
-       /* $item = User::find($id);
-
-        if (!$item) {
-        return redirect()->route('home')->withErrors('No hay ningun Entrenador aqui.');
-        }*/
-       // $this->authorize('view', $users);
-       //$user = Auth::user();
-        return view('Entrenador.informacion_del_usuario_entrenador');
-    }
-
     // Show the form for editing the specified user.
-    public function edits(User $user, $id)
+    public function athletedits(User $user)
     {
-        $item = User::find($id);
+        /*$user= User::find($id);
 
-        if (!$item) {
+        if (!$user) {
         return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
-        }
+        }*/
 
         $this->authorize('update', $user);
-        return view('users.edits', compact('user'));
+        $user->phone_number = Crypt::decryptString($user->phone_number);
+        return view('Atleta.editar_informacion_del_usuario', compact('user'));
+    }
+
+    public function entrenadoredits(User $user)
+    {
+        /*$users = User::find($user);
+
+        if (!$users) {
+        return redirect()->route('entrenadorinfo')->withErrors('No hay nada aqui para editar.');
+        }*/
+        $this->authorize('update', $user);
+        $user->phone_number = Crypt::decryptString($user->phone_number);
+        return view('Entrenador.editar_informacion_del_usuario_entrenador', compact('user'));
     }
 
     // Update the specified user in storage.
-    public function updates(Request $request, User $user)
+    public function passwordupdates(Request $request, User $user)
     {
         $this->authorize('update', $user);
         $messages = [
             'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+        ];
+        $validatedData = $request->validate([
+            'password' => 'required|string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        ], $messages);
+
+        $dataToUpdate = [];
+
+        if ($validatedData['password'] !== $user->password) {
+            $dataToUpdate['password'] = Crypt::encryptString($validatedData['password']);
+        }
+            // Only update if there's actually something to update
+            if (!empty($dataToUpdate)) {
+                $user->update($dataToUpdate);
+            }
+
+        return redirect()->route('coach.index')->with('Exito', 'Contraseña Actualizada.');
+
+    }
+    public function coachupdates(Request $request, User $user)
+    {
+        $this->authorize('update', $user);
+        $messages = [
             'first_name.regex' => 'El Nombre no puede tener numeros, caracteres especiales y debe tener Mayuscula',
             'last_name.regex' => 'El Apellido no puede tener numeros, caracteres especiales y debe tener Mayuscula',
         ];
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'email' => 'required|string|email|max:20|ends_with:@upr.edu,'.$user->id,
-            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,'.$user->id,
-            'password' => 'required|string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'first_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'last_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'email' => 'required|string|email|max:50|ends_with:@upr.edu,' .$user->id,
+            'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,' .$user->id,
         ], $messages);
 
-        $user->update($validatedData);
+    $dataToUpdate = [];
 
-        if (!empty($validatedData['password'])) {
-            $user->upassword = bcrypt($validatedData['password']);
-            $user->save();
-         }
+    if ($validatedData['first_name'] !== $user->first_name) {
+        $dataToUpdate['first_name'] = $validatedData['first_name'];
+    }
+    if ($validatedData['last_name'] !== $user->last_name) {
+        $dataToUpdate['last_name'] = $validatedData['last_name'];
+    }
+    if ($validatedData['email'] !== $user->email) {
+        $dataToUpdate['email'] = $validatedData['email'];
+    }
+    if ($validatedData['phone_number'] !== $user->phone_number) {
+        $dataToUpdate['phone_number'] = Crypt::encryptString($validatedData['phone_number']);
+    }
+        // Only update if there's actually something to update
+        if (!empty($dataToUpdate)) {
+            $user->update($dataToUpdate);
+        }
 
-         if (!empty($validatedData['phone_number'])) {
-            $user->upassword = Crypt::encryptString($validatedData['phone_number']);
-            $user->save();
-         }
-
-        return redirect('/users')->with('Exito', 'Informacion Actualizada.');
+        if (auth()->user()->role === 'Entrenador') {
+            return redirect()->route('coach.index', ['user' => $user->id])->with('Exito', 'Informacion Actualizada.');
+        } elseif (auth()->user()->role === 'Atleta') {
+            return redirect()->route('atleta.index', ['user' => $user->id])->with('Exito', 'Informacion Actualizada.');
+        }
+        //return redirect()->route('coach.index')->with('Exito', 'Informacion Actualizada.');
 
     }
-
     // Remove the specified user from storage.
     public function destroys(User $user)
     {
@@ -204,16 +240,22 @@ class UserController extends Controller
         return redirect('/users')->with('Exito', 'Atleta Eliminado.');
     }
 
-    public function restoreUser($userId)
-    {
-        $user = User::withTrashed()->where('id', $userId)->first();
+    public function showdeleted(){
+        $users = User::onlyTrashed()->where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
 
-        if ($user) {
+        return view('Entrenador.Lista_de_Atletas.rehabilitar_cuentas', compact('users'));
+    }
+
+    public function restoreUser(User $user)
+    {
+        $user = User::onlyTrashed()->where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
+        //if ($user) {
             $user->restore();
-            return redirect()->back()->with('success', 'Atleta Restaurado.');
-    }   else {
-            return redirect()->back()->with('error', 'Atleta no se encontro.');
-        }
+        //    return redirect()->route('users.index')->with('success', 'Atleta Restaurado.');
+        //}
+       // else {
+        //    return redirect()->back()->with('error', 'Atleta no se encontro.');
+       //}
     }
 
     //API///////////////////////////////////////////////////////////////////////////////////////////////////

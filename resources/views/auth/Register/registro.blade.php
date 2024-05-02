@@ -19,6 +19,7 @@
             <div class="col-md-6">
                 <form class= "form mt-5" action="{{route('register')}}" method="post">
                     @csrf
+                    <input type="hidden" name="code" value="{{ request('code') }}">
                 <form>
                     <div class="mb-3">
                         <label for="firstname" class="form-label">Nombre</label>
@@ -72,14 +73,14 @@
 
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
-                    </div>
-                    <div class="mb-3">
+                   </div>
+                   {{--<div class="mb-3">
                         <label for="access-code" class="form-label">Código de Acceso</label>
                         <input type="text" name = "code" class="form-control" id="code" placeholder="Escriba el código de acceso">
-                        {{-- @error('code')
+                        @error('code')
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
-                        @enderror --}}
-                    </div>
+                        @enderror
+                    </div>--}}
                     <button type="submit" class="btn btn-primary">Completar Registro</button>
                     <a href="/login" class="btn btn-link">Regresar a Inicio de Sesión</a>
                 </form>

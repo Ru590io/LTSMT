@@ -23,7 +23,7 @@
             @endforeach
         </div>
         <div class="d-flex justify-content-end">
-            <a href="rehabilitar_cuentas" class="btn btn-primary mt-4">Rehabilitar Cuentas</a>
+            <a href="/lista/deleted" class="btn btn-primary mt-4">Rehabilitar Cuentas</a>
         </div>
     </div>
 

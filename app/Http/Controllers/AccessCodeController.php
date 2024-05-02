@@ -17,7 +17,7 @@ class AccessCodeController extends Controller
     $code->expires_at = Carbon::now('America/Puerto_Rico')->addSeconds(3600); // Set expiration time
     $code->save();
 
-    $url = url('/register?access_code=' . $code->code);
+    $url = url('/register?code=' . $code->code);
 
     //$formattedExpiration = $code->expires_at->format('Y-m-d h:i:s A');
 
@@ -34,7 +34,7 @@ public function shareweb(){
     $code->expires_at = Carbon::now('America/Puerto_Rico')->addSeconds(3600); // Set expiration time
     $code->save();
 
-    $url = url('/register?access_code=' . $code->code);
+    $url = url('/register?code=' . $code->code);
 
     //$formattedExpiration = $code->expires_at->format('Y-m-d h:i:s A');
     $userTimezone = 'America/Puerto_Rico';

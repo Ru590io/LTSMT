@@ -13,27 +13,27 @@
 <body>
     <div class="container">
         <h1 class="text-center mb-4">Atletas con Cuentas Invalidadas</h1>
-        <a href="lista_de_atletas" class="btn btn-primary mb-4">Regresar</a>
+        <a href="/lista" class="btn btn-primary mb-4">Regresar</a>
         <div class="list-group">
             <!-- List of athletes with invalid accounts -->
+            @foreach ($users as $user)
             <div class="list-group-item d-flex justify-content-between align-items-center">
-                Javier Espinoza
-                <button onclick="rehabilitarCuenta('ID_DEL_ATLETA')" class="btn btn-success">Rehabilitar Cuenta</button>
+                {{ $user->first_name }} {{ $user->last_name }}
+                <form action="{{ route('users.restore', $user->id) }}" method="POST" class="form mt-5">
+                    @csrf
+                    <button type="submit" class="btn btn-success">Rehabilitar Cuenta</button>
+                </form>
             </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                Martín Colón
-                <button onclick="rehabilitarCuenta('ID_DEL_ATLETA')" class="btn btn-success">Rehabilitar Cuenta</button>
-            </div>
-
+            @endforeach
         </div>
     </div>
 
     <script>
-        function rehabilitarCuenta(athleteId) {
+       /* function rehabilitarCuenta(athleteId) {
             // Aquí debes agregar la lógica para rehabilitar la cuenta del atleta
             console.log("Rehabilitando cuenta para el atleta con ID:", athleteId);
             // Por ejemplo, podrías enviar una solicitud a tu servidor aquí
-        }
+        }*/
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
