@@ -14,25 +14,45 @@
     <div class="container">
         <h1 class="text-center">Crear Nueva Competencia</h1>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="estrategia_de_carreras_general" class="btn btn-primary">Regresar</a>
+            <a href="/competition" class="btn btn-primary">Regresar</a>
         </div>
 
         <div class="card">
             <div class="card-header">Detalles de la Competencia</div>
             <div class="card-body">
-                <form id="newCompetitionForm">
+                <form id="newCompetitionForm" class= "form mt-2" action="{{route('competition.add')}}" method="post">
+                    @csrf
                     <div class="mb-3">
-                        <label for="competitionName" class="form-label">Nombre de la Competencia</label>
-                        <input type="text" class="form-control" id="competitionName" pattern="[A-Za-z0-9\sáéíóúñ]{1,100}" title="Solo letras, números y espacios, hasta 100 caracteres." required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="competitionDate" class="form-label">Fecha y Hora</label>
-                        <input type="datetime-local" class="form-control" id="competitionDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="competitionLocation" class="form-label">Lugar</label>
-                        <input type="text" class="form-control" id="competitionLocation" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
+                        <label for="cname" class="form-label">Nombre de la Competencia</label>
+                        <input type="text" class="form-control" id="cname" name="cname" pattern="[A-Za-z0-9\sáéíóúñ]{1,100}" title="Solo letras, números y espacios, hasta 100 caracteres." required>
+                        @error('cname')
 
+                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="cdate" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="cdate" name="cdate" required>
+                        @error('cdate')
+
+                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="ctime" class="form-label">Hora</label>
+                        <input type="time" class="form-control" id="ctime" name="ctime" required>
+                        @error('ctime')
+
+                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="cplace" class="form-label">Lugar</label>
+                        <input type="text" class="form-control" id="cplace" name="cplace" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
+                        @error('cplace')
+
+                        <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">Crear Competencia</button>
                 </form>

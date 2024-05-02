@@ -15,16 +15,18 @@
         <h1 class="text-center">Detalles de la Competencia</h1>
         <h2 class="text-center mt-5" id="competitionName"></h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="../estrategia_de_carreras_general" class="btn btn-primary">Regresar</a>
-            <a href="editar_detalles_de_la_competencia" class="btn btn-primary">Editar Detalles de Competencia</a>
+            <a href="/competition" class="btn btn-primary">Regresar</a>
+        {{--@foreach ($competitions as $competition)--}}
+            <a href="{{route('competition.edit', ['competition' => $competition])}}" class="btn btn-primary">Editar Detalles de Competencia</a>
         </div>
-        <div class="card mb-5">
+        <div class="card mb-4">
             <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
             <div class="card-body">
-                <p id="competitionDateTime"></p>
-                <p id="competitionLocation"></p>
+                <p id="competitionDateTime"> {{$competition->cdate}} {{$competition->ctime}}</p>
+                <p id="competitionLocation"> {{$competition->cname}} {{$competition->cplace}}</p>
             </div>
         </div>
+        {{--@endforeach--}}
 
         <div class="d-grid gap-3">
             <a href="/lista_de_competidores" class="btn btn-primary btn-lg">Ver Competidores</a>
@@ -48,7 +50,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger">Remover</button>
+                    <form class= "form" action="{{ route('competition.delete', ['competition' => $competition->id]) }}" method="post">
+                        @csrf
+                        @method('delete')
+                    <button type="submit" class="btn btn-danger">Remover</button>
+                    </form>
                 </div>
             </div>
         </div>

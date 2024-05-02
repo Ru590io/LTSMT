@@ -77,6 +77,43 @@ class PasswordResetController extends Controller
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     }
+
+    public function editpassword(User $user){
+        $user = auth()->user();
+        return view('auth.Register.reestablecer_contraseña', compact('user'));
+    }
+
+    public function atletaeditpassword(User $user){
+        $user = auth()->user();
+        return view('auth.Register.reestablecer_contraseña_atleta', compact('user'));
+    }
+
+    public function entrenadorreset(Request $request)
+    {
+        $user = auth()->user();  // Get the authenticated user
+        $message = [
+            'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+        ];
+
+        $request->validate([
+            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            //'password.not_same' => 'La nueva contraseña debe ser diferente de la contraseña anterior.',
+        ], $message);
+
+        $user->forceFill([
+            'password' => bcrypt($request->password),
+            'remember_token' => Str::random(60),
+        ])->save();
+
+            event(new PasswordReset($user));
+
+            if (auth()->user()->role === 'Entrenador') {
+                return redirect()->route('coach.index', ['user' => $user->id])->with('status', 'contranseña actualizada.');
+            } elseif (auth()->user()->role === 'Atleta') {
+                return redirect()->route('atleta.index', ['user' => $user->id])->with('status', 'contranseña actualizada.');
+            }
+           // return redirect()->route('coach.index')->with('status', 'contranseña actualizada.');
+    }
     //API////////////////////////////////////////////////////////////////////////////
     // Send the password reset link
     public function apisendResetLinkEmail(Request $request)

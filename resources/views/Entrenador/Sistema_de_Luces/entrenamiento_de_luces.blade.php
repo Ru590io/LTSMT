@@ -14,9 +14,9 @@
     <div class="container">
         <h1 class="text-center">Detalle de Entrenamiento de Luces - Entrenamiento 1</h1>
         <div class="text-left mt-4">
-            <button onclick="location.href='sistema_de_luces'" class="btn btn-primary">Regresar</button>
+            <a href="/light/list" class="btn btn-primary">Regresar</a>
         </div>
-        <h2 class="text-center mt-4">Distancia: 800m - Tiempo: 2:00</h2>
+        <h2 class="text-center mt-4">Distancia {{ $lighttraining->tdistance }} metros - Tiempo {{ sprintf('%02d:%02d', floor($lighttraining->ttime / 60), $lighttraining->ttime % 60) }}</h2>
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead>
@@ -47,7 +47,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteTraining()">Eliminar</button>
+                    <form class= "form" action="{{ route('light.delete', ['lighttraining' => $lighttraining->id]) }}" method="post">
+                        @csrf
+                        @method('delete')
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -88,7 +92,9 @@
         }
 
         // Asigna los valores del entrenamiento específico aquí
-        calculateSegmentTimes(800, 120);
+        var tDistance = {{ json_encode($lighttraining->tdistance) }};
+        var tTime = {{ json_encode($lighttraining->ttime) }}; // Make sure tTime is in seconds if needed
+        calculateSegmentTimes(tDistance, tTime);
     </script>
 </body>
 </html>

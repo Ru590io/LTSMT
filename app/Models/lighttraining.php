@@ -12,6 +12,7 @@ class lighttraining extends Model
     protected $table = 'lighttraining';
 
     protected $fillable = [
+        'tname',
         'ttime',
         'tdistance',
         'users_id'

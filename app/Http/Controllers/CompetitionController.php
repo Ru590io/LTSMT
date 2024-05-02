@@ -10,89 +10,92 @@ use Illuminate\Support\Facades\Validator;
 class CompetitionController extends Controller
 {
     // Display a listing of the competition.
-    public function indexs()
+    public function competitionlist()
     {
-        $competitions = competition::all();
-        return view('competitions.indexs', compact('competitions'));
+        $competitions = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->get(['id','cname']);
+
+        return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general', compact('competitions'));
     }
 
     // Show the form for creating a new competition.
-    public function creates()
+    /*public function creates()
     {
         return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general');
+    }*/
+
+    public function addindex(){
+        return view('Entrenador.Estrategia_de_Carreras.crear_nueva_competencia_estrategia_de_carreras');
     }
 
     // Store a newly created competition in storage.
     public function stores(Request $request)
     {
         $messages = [
-            'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
-            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'
+            /*'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
+            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'*/
         ];
-
-        $request->validate([
-            'cname' => 'required|string|max:100|regex:/^[\pL\s]*$/u',
+        /*regex:/^[\pL\s]*$/u
+        regex:/^[\pL\s]*$/u*/
+        $validatedData = $request->validate([
+            'cname' => 'required|string|max:100',
             'cdate' => 'required|date',
             'ctime' => 'required|date_format:H:i',
-            'cplace' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
+            'cplace' => 'required|string|max:255',
         ], $messages);
 
-        competition::create($request->all());
+        $convertedTime = Carbon::createFromFormat('H:i', $request->ctime)->format('H:i:s');
+        $validatedData['ctime'] = $convertedTime;
+        competition::create($validatedData);
 
-        return redirect()->route('competitions.indexs')->with('Exito', 'Competencia creada.');
+        return redirect()->route('competition.list')->with('Exito', 'Competencia creada.');
     }
 
     // Display the specified competition.
-    public function shows(competition $competition, $id)
+    public function shows(competition $competition)
     {
-        $item = competition::find($id);
-
-        if (!$item) {
-        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
-        }
-        return view('competitions.shows', compact('competition'));
+        $competition->ctime = Carbon::createFromFormat('H:i:s', $competition->ctime)->format('h:i A');
+        return view('Entrenador.Estrategia_de_Carreras.detalles_de_la_competencia_general', compact('competition'));
     }
 
     // Show the form for editing the specified competition.
-    public function edits(competition $competition, $id)
+    public function edits(competition $competition)
     {
-        $item = competition::find($id);
-
-        if (!$item) {
-        return redirect()->route('home')->withErrors('No hay nada aqui para editar.');
-        }
-        return view('competitions.edits', compact('competition'));
+        $competition->ctime = Carbon::createFromFormat('H:i:s', $competition->ctime)->format('h:i A');
+        return view('Entrenador.Estrategia_de_Carreras.editar_detalles_de_la_competencia', compact('competition'));
     }
 
     // Update the specified competition in storage.
     public function updates(Request $request, competition $competition)
     {
         $messages = [
-            'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
-            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'
+           /* 'cplace.regex' => 'El campo :attribute solo puede contener letras y espacios.',
+            'cname.regex' => 'El campo :attribute solo puede contener letras y espacios.'*/
         ];
 
-        $request->validate([
-            'cname' => 'required|string|max:100|regex:/^[\pL\s]*$/u',
+        $validatedData= $request->validate([
+            'cname' => 'required|string|max:100',
             'cdate' => 'required|date',
             'ctime' => 'required|date_format:H:i',
-            'cplace' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
+            'cplace' => 'required|string|max:255',
         ], $messages);
 
-        $competition->update($request->all());
+        $convertedTime = Carbon::createFromFormat('H:i', $request->ctime)->format('H:i:s');
+        $validatedData['ctime'] = $convertedTime;
 
-        return redirect()->route('competitions.indexs')->with('Exito', 'Competencia Actualizada.');
+        $competition->update($validatedData);
+
+        return redirect()->route('competition.show', ['competition' => $competition->id])->with('Exito', 'Competencia Actualizada.');
     }
 
     // Remove the specified competition from storage.
     public function destroys(competition $competition)
     {
         $competition->delete();
-        return redirect()->route('competitions.indexs')->with('Exito', 'Competencia Borrada.');
+        return redirect()->route('competition.list')->with('Exito', 'Competencia Borrada.');
     }
     //API//
     // GET /competitions
-    public function index()
+    public function indexs()
     {
         $competitions = Competition::all();
         return response()->json($competitions);

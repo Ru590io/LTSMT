@@ -16,19 +16,17 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('coach.index', ['user' => $user->id]) }}" class="btn btn-primary">Regresar</a>
+                    <a href="{{ route('atleta.index', ['user' => $user->id]) }}" class="btn btn-primary">Regresar</a>
                 </div>
 
                 <!--Need to update password.update route-->
-
-                <form class= "form mt-5" action="{{route('password.updates')}}" method="post">
+                <form class= "form mt-5" action="{{route('password.updated')}}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="password" class="form-label">Nueva Contraseña</label>
-                        <input type="password" name="password" class="form-control" @error('password') is-invalid @enderror name="password" required autocomplete="new-password" id="password" placeholder="Escriba su nueva contraseña" required minlength="6" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 6 a 16 caracteres.">
+                        <input type="password" name="password" class="form-control" @error('password') is-invalid @enderror name="password" required autocomplete="new-password" id="password" placeholder="Escriba su nueva contraseña" required>
                         @error('password')
                                 <strong class="d-block fs-6 text-danger mt-2">{{$message}}</strong>
-
                         @enderror
                     </div>
                     <div class="mb-3">
@@ -46,15 +44,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
-
-<script>
-    document.getElementById('passwordForm').addEventListener('submit', function(event) {
-        var password = document.getElementById('new-password').value;
-        var confirmPassword = document.getElementById('confirm-new-password').value;
-
-        if (password !== confirmPassword) {
-            alert('Las contraseñas no coinciden.');
-            event.preventDefault(); // Evita que el formulario se envíe
-        }
-    });
-</script>

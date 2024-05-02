@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('lighttraining', function (Blueprint $table) {
             $table->id();
+            $table->string('tname');
             $table->unsignedInteger('ttime');
             $table->unsignedInteger('tdistance');
             $table->foreignId('users_id')->constrained();

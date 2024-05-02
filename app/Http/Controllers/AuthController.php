@@ -44,7 +44,14 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         // Redirect the user to the intended page with success message
-        return redirect()->intended('home')->with('Exito', 'Inicio de sesión exitoso.');
+        $user = auth()->user();
+        switch ($user->role) {
+            case 'Atleta':
+                return redirect()->route('home.atleta')->with('Exito', 'Bienvenido inicio de sesión exitoso');
+            default:
+                return redirect()->route('home')->with('Exito', ' Bienvenido inicio de sesión exitoso.');
+        }
+       // return redirect()->intended('home')->with('Exito', 'Inicio de sesión exitoso.');
     }
 
     // If the login attempt was unsuccessful, increment the number of attempts to log in
@@ -70,12 +77,34 @@ class AuthController extends Controller
     }
      //Terminar sesion
     public function logout(){
+        //$role = auth()->user() ? auth()->user()->role : null;
         auth()->logout();
 
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect()->route('login')->with('Exito', 'Seción Iniciada.');
+        /*if ($role === 'Entrenador') {
+            return redirect()->route('login')->with('status', 'Fuera de Sección');
+        } elseif ($role === 'Atleta') {
+            return redirect()->route('login')->with('status', 'Fuera de Sección');
+        }*/
+
+        return redirect()->route('login')->with('Exito', 'Fuera de Sesión.');
+    }
+    public function athletelogout(){
+        //$role = auth()->user() ? auth()->user()->role : null;
+        auth()->logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        /*if ($role === 'Entrenador') {
+            return redirect()->route('login')->with('status', 'Fuera de Sección');
+        } elseif ($role === 'Atleta') {
+            return redirect()->route('login')->with('status', 'Fuera de Sección');
+        }*/
+
+        return redirect()->route('login')->with('Exito', 'Fuera de Sesión.');
     }
 
  //API/////////////////////////////////////////////////////////////////////////////////////////

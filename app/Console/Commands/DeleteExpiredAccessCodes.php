@@ -13,7 +13,7 @@ class DeleteExpiredAccessCodes extends Command
 
     public function handle()
     {
-        $expiredCodesCount = AccessCode::where('expires_at', '<', Carbon::now())->delete();
+        $expiredCodesCount = AccessCode::where('expires_at', '<', Carbon::now('America/Puerto_Rico'))->delete();
         $this->info("Deleted $expiredCodesCount expired access codes.");
     }
 }

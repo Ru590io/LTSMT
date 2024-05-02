@@ -14,24 +14,38 @@
     <div class="container">
         <h1 class="text-center">Crear Entrenamiento con Luces</h1>
         <div class="text-left mt-4">
-            <a href="sistema_de_luces" class="btn btn-primary mb-3">Regresar</a>
+            <a href="/light" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
-        <form id="workoutForm">
+        <form id="workoutForm" class= "form mt-5" action="{{route('light.add')}}" method="post">
+            @csrf
             <div class="mb-3">
-                <label for="workoutName" class="form-label">Nombre del Entrenamiento</label>
-                <input type="text" class="form-control" id="workoutName" placeholder="Ingrese el nombre del entrenamiento" pattern="[a-zA-Z\sáéíóúñ]{1,50}" title="Solo letras y espacios, hasta 50 caracteres." required>
+                <label for="tname" class="form-label">Nombre del Entrenamiento</label>
+                <input type="text" class="form-control" id="tname" name="tname" placeholder="Ingrese el nombre del entrenamiento" pattern="[a-zA-Z\sáéíóúñ]{1,50}" title="Solo letras y espacios, hasta 50 caracteres." required>
+                @error('tname')
+
+                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                @enderror
             </div>
 
             <div class="mb-3">
-                <label for="distanceInput" class="form-label">Distancia (metros)</label>
-                <input type="number" class="form-control" id="distanceInput" placeholder="Ingrese distancia en metros" min="100" max="10000" title="Escriba un valor de 100 a 10000." required>
+                <label for="tdistance" class="form-label">Distancia (metros)</label>
+                <input type="number" class="form-control" id="tdistance" name="tdistance" placeholder="Ingrese distancia en metros" min="100" max="10000" title="Escriba un valor de 100 a 10000." required>
+                @error('tdistance')
+
+                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                @enderror
             </div>
 
             <div class="mb-3">
-                <label for="timeInput" class="form-label">Tiempo (mm:ss)</label>
-                <input type="text" class="form-control" id="timeInput" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required>
-                <!--For email: <input type="email" class="form-control" id="emailInput" placeholder="Ingrese su correo electrónico" pattern=".+@upr\.edu" maxlength="40" required>-->
+
+                <label for="ttime" class="form-label">Tiempo (mm:ss)</label>
+                <input type="text" class="form-control" id="ttime" name="ttime" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" title= "Porfavor, siga el formato (MM:SS)." required>
+                @error('ttime')
+
+                <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
+                @enderror
+
             </div>
             <button type="submit" class="btn btn-primary">Guardar Entrenamiento</button>
         </form>
@@ -39,11 +53,11 @@
 
     <script>
         document.getElementById('workoutForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+            //event.preventDefault();
 
-            const workoutName = document.getElementById('workoutName').value;
-            const distance = document.getElementById('distanceInput').value;
-            const time = document.getElementById('timeInput').value;
+            const workoutName = document.getElementById('tname').value;
+            const distance = document.getElementById('tdistance').value;
+            const time = document.getElementById('ttime').value;
 
             console.log('Entrenamiento:', { workoutName, distance, time });
             // Aquí iría el código para guardar los datos en la base de datos o enviarlos a un servidor.
