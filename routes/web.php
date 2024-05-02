@@ -221,6 +221,13 @@ Route::get('/lista_de_entrenamientos', function () {
 Route::get('/registro_de_entrenamientos', function () {
     return view('Entrenador.Registro_de_Entrenamientos.registro_de_entrenamientos');
 });
+Route::get('/calendario_de_atletas', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.calendario_de_atletas');
+});
+Route::get('/editar_semana_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.editar_semana_del_atleta');
+});
+
 
 //Entrenador-> Sistema de Luces
 Route::get('/crear_sistema_de_luces', function () {

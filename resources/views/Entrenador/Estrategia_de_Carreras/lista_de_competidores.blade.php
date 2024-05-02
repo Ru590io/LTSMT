@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Lista de Competidores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
@@ -41,7 +45,19 @@
                 <!-- Formulario para añadir competidor -->
                 <form id="addCompetitorForm">
                     <!-- Lista desplegable de competidores -->
+                            <!-- Selector de atletas con búsqueda -->
                     <div class="mb-3">
+                        <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
+                        <select class="form-control" id="athleteSelector">
+                            <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
+                            <option></option> <!-- Opción vacía para la búsqueda -->
+                            <option value="1">Axel Rosado</option>
+                            <option value="2">Guillermo Colón</option>
+                            <option value="3">Rubén Marrero</option>
+                            <!-- más atletas -->
+                        </select>
+                    </div>
+                    {{-- <div class="mb-3">
                         <label for="competitorSelect" class="form-label">Selecciona un Competidor</label>
                         <select class="form-select" id="competitorSelect">
                             <option selected>Elige un competidor</option>
@@ -49,9 +65,9 @@
                             <option value="2">Competidor 2</option>
                             <option value="3">Competidor 3</option>
                         </select>
-                    </div>
+                    </div> --}}
 
-                    <!-- Sección de eventos -->
+                    {{-- <!-- Sección de eventos -->
                     <div id="eventsSection">
                         <!-- Un solo conjunto de evento y tiempo para empezar -->
                         <div class="event-time-pair mb-3">
@@ -69,19 +85,44 @@
                                 <button type="button" class="btn btn-success add-event">+</button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="submit" form="addCompetitorForm" class="btn btn-primary">Añadir</button>
             </div>
+
         </div>
     </div>
 </div>
 
 </div>
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+<!-- Disable Bootstrap's modal focus management -->
+<script>
+    $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+</script>
+
+<!-- Initialize Select2 with proper configurations -->
+<script>
+    $(document).ready(function() {
+        $('#athleteSelector').select2({
+            placeholder: "Selecciona un atleta",
+            dropdownParent: $('#addCompetitorModal'),
+            allowClear: true
+        });
+
+        // Close Select2 on modal close
+        $('#addCompetitorModal').on('hidden.bs.modal', function () {
+            $('#athleteSelector').select2('close');
+        });
+    });
+</script>
+
+<!-- Additional event handling script if necessary -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const eventsSection = document.getElementById('eventsSection');
@@ -92,17 +133,15 @@
                 newEventTimePair.querySelector('.add-event').classList.replace('btn-success', 'btn-danger');
                 newEventTimePair.querySelector('.add-event').textContent = '-';
                 newEventTimePair.querySelector('.add-event').classList.replace('add-event', 'remove-event');
-                newEventTimePair.querySelector('select').selectedIndex = 0; // Resetea el evento seleccionado
-                newEventTimePair.querySelector('input').value = ''; // Limpia el campo de tiempo
+                newEventTimePair.querySelector('select').selectedIndex = 0;
+                newEventTimePair.querySelector('input').value = '';
                 eventsSection.appendChild(newEventTimePair);
             } else if (event.target.classList.contains('remove-event')) {
-                event.target.parentElement.remove(); // Solo elimina el contenedor padre del botón "-"
+                event.target.parentElement.remove();
             }
         });
     });
 </script>
 
-    <!-- Aquí se incluyen los scripts de Bootstrap y cualquier otro script que necesites -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

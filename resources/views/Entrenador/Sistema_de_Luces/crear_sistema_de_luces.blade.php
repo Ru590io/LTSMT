@@ -30,7 +30,7 @@
 
             <div class="mb-3">
                 <label for="timeInput" class="form-label">Tiempo (mm:ss)</label>
-                <input type="text" class="form-control" id="timeInput" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" required>
+                <input type="text" class="form-control" id="timeInput" placeholder="Ingrese tiempo (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required>
                 <!--For email: <input type="email" class="form-control" id="emailInput" placeholder="Ingrese su correo electrónico" pattern=".+@upr\.edu" maxlength="40" required>-->
             </div>
             <button type="submit" class="btn btn-primary">Guardar Entrenamiento</button>

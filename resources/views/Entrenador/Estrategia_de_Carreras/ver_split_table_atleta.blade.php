@@ -15,7 +15,7 @@
         <h1 class="text-center">Split Tables para Atleta</h1>
         <h2 class="text-center mt-5">Axel Rosado</h2>
         <div class="text-left mt-4">
-            <a href="your_back_link.html" class="btn btn-primary mb-3">Regresar</a>
+            <a href="eventos_del_atleta" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <div id="splitsContainer" class="mt-5">
             <!-- Las tablas de splits y la información del atleta se generarán aquí -->
@@ -83,9 +83,14 @@
         }
 
         // Example usage
-        generateSplitTable(800, 90, 'Axel Rosado'); // For 800m in 120 seconds
-        generateSplitTable(1500, 170, 'Axel Rosado'); // For 1500m in 240 seconds
-        generateSplitTable(3000, 630, 'Axel Rosado'); // For 3000m in 630 seconds
+        function getNumber(eventString) {
+                const result = eventString.match(/\d+/); // This regex matches any sequence of digits in the string
+                return result ? parseInt(result[0], 10) : null; // Convert the found string to a number, or return null if nothing is found
+            }
+
+        generateSplitTable(getNumber("800m"), 90, 'Axel Rosado'); // For 800m in 120 seconds
+        generateSplitTable(getNumber("1500m"), 170, 'Axel Rosado'); // For 1500m in 240 seconds
+        generateSplitTable(getNumber("3000m obstáculos"), 630, 'Axel Rosado'); // For 3000m in 630 seconds
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

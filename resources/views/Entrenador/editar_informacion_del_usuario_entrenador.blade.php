@@ -15,6 +15,7 @@
         <h1 class="text-center">Editar Información del Entrenador</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
+                <form>
                 <a href="informacion_del_usuario_entrenador" class="btn btn-primary mb-3">Regresar</a>
                     @csrf
                     <div class="mb-3">

@@ -37,6 +37,19 @@ h1 {
     border-color: #094200 !important; /* Darker blue border on hover */
 }
 
+.btn-primary:focus{
+    background-color: #094201 !important; /* Darker blue on hover */
+    border-color: #094200 !important; /* Darker blue border on hover */
+}
+
+.btn-primary:focus {
+    background-color: #094201 !important;  /* Your desired background color for focus */
+    border-color: #094200 !important;      /* Your desired border color for focus */
+    outline: none;                         /* Optional: removes the outline */
+    box-shadow: none;                      /* Optional: removes the box-shadow if any */
+}
+
+
 .btn-link {
     color: #007bff; /* Blue link color */
 }
@@ -76,6 +89,17 @@ h1 {
 .centered-text {
     text-align: center;
   }
+
+  /* Increase z-index for Select2 dropdown inside modals */
+.select2-container--open {
+    z-index: 1100 !important; /* Set z-index higher than that of Bootstrap modal */
+}
+
+
+
+.select2-dropdown {
+    z-index: 1051;  /* Bootstrap modal backdrop is usually less than 1050 */
+}
 
 
 

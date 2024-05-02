@@ -16,16 +16,18 @@
     </div>
     <div class="container">
         <h1 class="text-center">Crear Semana de Entrenamiento</h1>
+        {{-- method (post?) can be added down here? (method="post") --}}
+        <form id="trainingForm">
         <div class="text-left mt-4">
             <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <!-- Campo para el nombre de la semana -->
         <div class="mb-3">
             <label for="weekName" class="form-label">Nombre de la Semana:</label>
-            <input type="text" class="form-control" id="weekName" placeholder="Ej: Semana del 1 al 7 de Marzo">
+            <input type="text" class="form-control" id="weekName" placeholder="Ej: Entrenamiento Regular" maxlength="50" title="No más de 50 caracteres." required>
         </div>
 
-        <!-- Selector de atletas con búsqueda -->
+        {{-- <!-- Selector de atletas con búsqueda -->
         <div class="mb-3">
             <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
             <select class="form-control" id="athleteSelector">
@@ -37,12 +39,16 @@
                 <!-- más atletas -->
             </select>
         </div>
-        <h1 class="text-center">Crear Semana de Entrenamiento</h1>
-        <div class="text-left mt-4">
-            <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
-        </div>
+
+        <div class="mb-3">
+            <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
+            <select class="form-control" id="weekSelector">
+                <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
+                <option></option> <!-- Opción vacía para la búsqueda -->
+            </select>
+        </div> --}}
             <!--Lunes-->
-            <div class="card mb-5">
+            <div class="card mb-5 mt-5">
                 <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
                 <div class="card-body">
                     <!-- Sección AM -->
@@ -81,7 +87,7 @@
                     <!-- Notas -->
                     <div class="notes-section">
                         <label for="lunes-notas">Notas:</label>
-                        <textarea class="form-control" id="lunes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                        <textarea class="form-control" id="lunes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -127,7 +133,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="martes-notas">Notas:</label>
-                            <textarea class="form-control" id="martes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="martes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -174,7 +180,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="miércoles-notas">Notas:</label>
-                            <textarea class="form-control" id="miércoles-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="miércoles-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -221,7 +227,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="jueves-notas">Notas:</label>
-                            <textarea class="form-control" id="jueves-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="jueves-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -268,7 +274,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="viernes-notas">Notas:</label>
-                            <textarea class="form-control" id="viernes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="viernes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -315,7 +321,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="sábado-notas">Notas:</label>
-                            <textarea class="form-control" id="sábado-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="sábado-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
                     </div>
                 </div>
@@ -363,7 +369,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="domingo-notas">Notas:</label>
-                            <textarea class="form-control" id="domingo-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                            <textarea class="form-control" id="domingo-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
 
                     </div>
@@ -371,9 +377,10 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg">Guardar</button>
+            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
         </div>
+
     </div>
 
     <script>
@@ -383,7 +390,7 @@
 
             if (option === 'Fondo') {
                 optionsContainer.innerHTML = `
-                    <input type="number" placeholder="Distancia (Kilometros)" />
+                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (Kilometros)" min="1" max="30" title= "Distancia entre 1 y 10" required />
                     <select>
                         <option value="">Zona</option>
                         <option value="2">2</option>
@@ -394,10 +401,10 @@
                 `;
             } else if (option === 'Repeticion') {
                 optionsContainer.innerHTML = `
-                    <input type="number" placeholder="Cantidad de Sets" min="1" max="30" />
-                    <input type="number" placeholder="Distancia (metros)" />
-                    <input type="text" placeholder="Tiempo Esperado (mm:ss)" />
-                    <input type="text" placeholder="Recuperación (mm:ss)" />
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title= "Sets entre 1 a 30." required />
+                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
+                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" title= "Porfavor, siga el formato (MM:SS)." required />
                     <div id="${timeOfDay}-repetition-container">
 
                     </div>
@@ -405,7 +412,7 @@
 
                 `;
             } else if (option === 'Descanso') {
-                optionsContainer.innerHTML = 'Descanso';
+                // optionsContainer.innerHTML = 'Descanso';
             }
         }
     </script>
@@ -457,10 +464,10 @@
                 let newRepetitionBlock = document.createElement('div');
                 newRepetitionBlock.classList.add('mt-2');
                 newRepetitionBlock.innerHTML = `
-                    <input type="number" placeholder="Cantidad de Sets" class="me-2">
-                    <input type="number" placeholder="Distancia (metros)" class="me-2">
-                    <input type="text" placeholder="Tiempo Esperado (mm:ss)" class="me-2">
-                    <input type="text" placeholder="Recuperación (mm:ss)" class="me-2">
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title="Sets entre 1 a 30." required />
+                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
+                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
                     <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
                 `;
                 container.appendChild(newRepetitionBlock);
@@ -527,6 +534,82 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#weekSelector').select2({
+                placeholder: "Selecciona una semana",
+                allowClear: true
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getMondayOfCurrentWeek(date) {
+                var monday = new Date(date);
+                monday.setDate(date.getDate() - (date.getDay() - 1));
+                return monday;
+            }
+
+            function formatDate(date) {
+                return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                // return date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            function generateWeekOptions() {
+                var today = new Date();
+                var weekSelector = document.getElementById('weekSelector');
+
+                // Empezamos desde el lunes de la semana actual
+                var currentMonday = getMondayOfCurrentWeek(today);
+
+                for (let i = 0; i < 5; i++) {
+                    var startOfWeek = new Date(currentMonday);
+                    startOfWeek.setDate(currentMonday.getDate() + (7 * i));
+                    var endOfWeek = new Date(startOfWeek);
+                    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+                    var option = document.createElement('option');
+                    option.value = `${startOfWeek.toISOString()}/${endOfWeek.toISOString()}`; // Formato para uso con timestamps
+                    option.textContent = `${formatDate(startOfWeek)} - ${formatDate(endOfWeek)}`;
+                    weekSelector.appendChild(option);
+                }
+            }
+
+            generateWeekOptions();
+
+            $('#weekSelector').select2({
+                placeholder: "Selecciona una semana",
+                allowClear: true
+            });
+        });
+
+
+    </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $('#athleteSelector, #weekSelector').select2({
+                    placeholder: "Seleccione",
+                    allowClear: true,
+                    minimumResultsForSearch: Infinity // Disables the search box
+                });
+
+                const form = document.getElementById('trainingForm');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the form from submitting
+
+                    // Validate that an athlete and a week are selected
+                    const athleteSelector = document.getElementById('athleteSelector');
+                    const weekSelector = document.getElementById('weekSelector');
+
+                    if (!athleteSelector.value || !weekSelector.value) {
+                        alert('Por favor, seleccione un atleta y una semana.');
+                        return false; // Stop the form from submitting
+                    }
+                });
+
+            });
+        </script>
 
 
 
