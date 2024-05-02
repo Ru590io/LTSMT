@@ -16,12 +16,12 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex text-left">
-                    <a href="menu_principal_entrenador" class="btn btn-primary mb-3">Regresar</a>
+                    <a href="/home" class="btn btn-primary mb-3">Regresar</a>
                 </div>
                 <!-- Big Buttons -->
                 <div class="d-grid gap-3">
-                    <a href="crear_sistema_de_luces" class="btn btn-primary btn-lg">Crear Entrenamiento de Luces</a>
-                    <a href="lista_de_sistema_de_luces" class="btn btn-primary btn-lg">Entrenamiento de Luces Registrados</a>
+                    <a href="/light/add" class="btn btn-primary btn-lg">Crear Entrenamiento de Luces</a>
+                    <a href="{{ route('light.list') }}" class="btn btn-primary btn-lg">Entrenamiento de Luces Registrados</a>
                 </div>
             </div>
         </div>

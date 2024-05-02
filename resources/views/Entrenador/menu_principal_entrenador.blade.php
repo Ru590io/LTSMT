@@ -16,7 +16,7 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-end">
-                        <a href="/entrenadorinfo" class="btn btn-primary mb-3">Información del Entrenador</a>
+                        <a href="{{ route('coach.index', ['user' => $user->id]) }}" class="btn btn-primary mb-3">Información del Entrenador</a>
                 </div>
                 <!-- Big Buttons -->
                 <div class="d-grid gap-3">

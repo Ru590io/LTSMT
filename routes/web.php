@@ -46,27 +46,50 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
 Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     //Informacion de Entrenador
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+    Route::get('/entrenadorinfo/{user}', [UserController::class, 'entrenadorindexs'])->name('coach.index');
+    Route::get('/entrenadorinfo/coach/{user}/edit', [UserController::class, 'entrenadoredits'])->name('entrenador.edit');
+    Route::put('/entrenadorinfo/coach/{user}/update', [UserController::class, 'coachupdates'])->name('entrenador.update');
+    Route::get('/entrenadorinfo/coach/password', [PasswordResetController::class, 'editpassword'])->name('password.edit');
+    Route::post('/entrenadorinfo/coach/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updates');
     //Home de Entrenador
     Route::get('/home', [UserController::class, 'homepage'])->name('home');
-    Route::get('/lista', [UserController::class, 'athleteindexs'])->name('users.index');
-    Route::get('/entrenadorinfo', [UserController::class, 'entrenadorindexs'])->name('coach.index');
-    Route::get('/light', [LighttrainingController::class, 'create'])->name('light');
-    Route::get('/competition', [CompetitionController::class, 'creates'])->name('competition');
     Route::get('/schedule', [WeeklysheduleController::class, 'create'])->name('schedule');
 
     //Compartir pagina y codigo de acceso
+    Route::get('/lista', [UserController::class, 'athleteindexs'])->name('users.index');
     Route::get('/generate_code', [AccessCodeController::class, 'shareweb'])->name('generate_code');
     Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
+    Route::get('/lista/deleted', [UserController::class, 'showdeleted'])->name('users.deleted');
+    Route::post('/lista/{user}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
 
+    //Sistema de Luces
+    Route::get('/light', [LighttrainingController::class, 'create'])->name('light.index');
+    Route::get('/light/add', [LighttrainingController::class, 'index'])->name('light.add');
+    Route::post('/light/add', [LighttrainingController::class, 'store'])->name('light.add');
+    Route::get('/light/list', [LighttrainingController::class, 'lighttraininglist'])->name('light.list');
+    Route::delete('/light/list/{lighttraining}/destroy', [LighttrainingController::class, 'destroy'])->name('light.delete');
+    Route::get('/light/list/{lighttraining}',[LighttrainingController::class, 'show'])->name('light.show');
+
+    //Competitions
+    Route::get('/competition', [CompetitionController::class, 'competitionlist'])->name('competition.list');
+    Route::get('/competition/list/{competition}',[CompetitionController::class, 'shows'])->name('competition.show');
+    Route::get('/competition/add', [CompetitionController::class, 'addindex'])->name('competition.add');
+    Route::post('/competition/add', [CompetitionController::class, 'stores'])->name('competition.add');
+    Route::get('/competition/list/updates/{competition}/edit', [CompetitionController::class, 'edits'])->name('competition.edit');
+    Route::put('/competition/list/updates/{competition}/update', [CompetitionController::class, 'updates'])->name('competition.update');
+    Route::delete('/competition/list/{competition}/destroy', [CompetitionController::class, 'destroys'])->name('competition.delete');
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {
-    //Route::get('/home', [AuthController::class, 'homepage'])->name('home');
-    //Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logouts', [AuthController::class, 'athletelogout'])->name('atlogout');
+    Route::get('/atlhome', [UserController::class, 'athletehome'])->name('home.atleta');
+    Route::get('/atletainfo/{user}', [UserController::class, 'atletaindex'])->name('atleta.index');
+    Route::get('/atletainfo/athlete/{user}/edit', [UserController::class, 'athletedits'])->name('atleta.edit');
+    Route::put('/atletainfo/athlete/{user}/update', [UserController::class, 'coachupdates'])->name('atleta.update');
+    Route::get('/atletainfo/athlete/password', [PasswordResetController::class, 'atletaeditpassword'])->name('password.edits');
+    Route::post('/atletainfo/athlete/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updated');
 });
 
-Route::post('/users/{userId}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
 Route::post('/send-training-data', [LighttrainingController::class, 'sendTrainingData']);
 
 Route::get('/register', [UserController::class, 'create'])->name('register')->middleware('guest');

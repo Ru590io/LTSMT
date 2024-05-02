@@ -16,11 +16,11 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('coach.index', ['user' => $user->id]) }}" class="btn btn-primary">Regresar</a>
+                    <a href="{{ route('atleta.index', ['user' => $user->id]) }}" class="btn btn-primary">Regresar</a>
                 </div>
 
                 <!--Need to update password.update route-->
-                <form class= "form mt-5" action="{{route('password.updates')}}" method="post">
+                <form class= "form mt-5" action="{{route('password.updated')}}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="password" class="form-label">Nueva Contraseña</label>

@@ -31,6 +31,10 @@ h1 {
     background-color: #0c5700; /* Darker blue on hover */
     border-color: #0c5700; /* Darker blue border on hover */
 }
+.btn-primary:disabled {
+    background-color: #8d8d8d; /* Darker blue on hover */
+    border-color: #8d8d8d; /* Darker blue border on hover */
+}
 
 .btn-primary:active{
     background-color: #094200 !important; /* Darker blue on hover */

@@ -16,7 +16,7 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="d-flex justify-content-end">
-                    <a href="informacion_del_usuario_atleta" class="btn btn-primary mb-3">Información del Usuario</a>
+                    <a href="{{ route('atleta.index', ['user' => $user->id]) }}" class="btn btn-primary mb-3">Información del Usuario</a>
                 </div>
                 <div class="card mb-5">
                     <div class="card-header"><h3 class="centered-text">Entrenamiento de Hoy:</h3></div>

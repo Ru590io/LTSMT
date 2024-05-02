@@ -17,9 +17,8 @@
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
                     <a href="/home" class="btn btn-primary mb-3">Regresar</a>
-                    <a href="editar_informacion_del_usuario_entrenador" class="btn btn-primary mb-3">Editar Información</a>
+                    <a href="{{route('entrenador.edit', ['user' => $user])}}" class="btn btn-primary mb-3">Editar Información</a>
                 </div>
-                @foreach ($users as $user)
                 <div class="mb-3">
                     <label class="form-label">Nombre:</label> <span class="form-label"> {{ $user->first_name }} {{ $user->last_name }}</span>
                 </div>
@@ -29,9 +28,8 @@
                 <div class="mb-3">
                     <label class="form-label">Número de Teléfono:</label> <span class="form-label"> {{$user->phone_number}}</span>
                 </div>
-                @endforeach
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <a href="/reestablecer_contraseña" class="btn btn-primary">Cambiar Contraseña</a>
+                    <a href="/entrenadorinfo/coach/password" class="btn btn-primary">Cambiar Contraseña</a>
                     <form class= "form" action="{{route('logout')}}" method="post">
                         @csrf
                         <button class="btn btn-danger " type="submit">Terminar Sesión </button>

@@ -13,8 +13,8 @@ class LighttrainingController extends Controller
     /*Views*/
     public function index()
     {
-        $lighttrainings = lighttraining::with('user')->get(); // Load the user relationship
-        return view('lighttrainings.indexs', compact('lighttrainings'));
+        //$lighttraining = lighttraining::with('user')->get(); // Load the user relationship
+    return view('Entrenador.Sistema_de_Luces.crear_sistema_de_luces'/*, compact('lighttraining')*/);
     }
 
     public function create()
@@ -22,27 +22,49 @@ class LighttrainingController extends Controller
         return view('Entrenador.Sistema_de_Luces.sistema_de_luces');
     }
 
-    public function store(Request $request)
+    public function lighttraininglist()
     {
-        $request->validate([
-            'ttime' => 'required|integer|max:50000',
-            'tdistance' => 'required|integer|max:15000',
-            'users_id' => 'required|exists:users,id',
-        ]);
+        $lighttrainings = LightTraining::orderBy('id', 'asc')->orderBy('tname', 'asc')->orderBy('ttime', 'asc')->orderBy('tdistance', 'asc')->get(['id','tname', 'ttime', 'tdistance']);
 
-        LightTraining::create($request->all());
-
-        return redirect()->route('lighttrainings.indexs')->with('Exito', 'Entrenamiento de Luz Creado.');
+       return view('Entrenador.Sistema_de_Luces.lista_de_sistema_de_luces', compact('lighttrainings'));
     }
 
-    public function show(LightTraining $lighttraining, $id)
-    {
-        $item = lighttraining::find($id);
-
-        if (!$item) {
-        return redirect()->route('home')->withErrors('No hay nada aqui para ver.');
+    /*private function formatTime($totalSeconds) {
+        $minutes = floor($totalSeconds / 60);
+        $seconds = $totalSeconds % 60;
+        return sprintf('%02d:%02d', $minutes, $seconds);
+        foreach ($lighttraining as $training) {
+            $training->ttime = $this->formatTime($training->ttime);
         }
-        return view('lighttrainings.shows', compact('lighttraining'));
+    }*/
+
+    public function store(Request $request)
+    {
+        $message = [
+            'tname.regex' => 'El Nombre no puede tener numeros, caracteres especiales y debe tener Mayuscula',
+            //'ttime.regex' => 'El tiempo debe estar en formato mm:ss.',
+        ];
+        //regex:/^\d{1,2}:\d{2}$/
+        $validatedData = $request->validate([
+            'tname' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
+            'ttime' => 'required|max:50000',
+            'tdistance' => 'required|integer|max:15000',
+        ], $message);
+
+        $timeParts = explode(':', $validatedData['ttime']);
+        $totalSeconds = (int)$timeParts[0] * 60 + (int)$timeParts[1];
+
+        $validatedData['users_id'] = auth()->id();
+        $validatedData['ttime'] = $totalSeconds;
+
+        LightTraining::create($validatedData);
+
+        return redirect()->route('light.index')->with('Exito', 'Entrenamiento de Luz Creado.');
+    }
+
+    public function show(LightTraining $lighttraining)
+    {
+        return view('Entrenador.Sistema_de_Luces.entrenamiento_de_luces', compact('lighttraining'));
     }
 
     public function edit(LightTraining $lighttraining, $id)
@@ -57,13 +79,17 @@ class LighttrainingController extends Controller
 
     public function update(Request $request, LightTraining $lighttraining)
     {
-        $request->validate([
+        $message = [
+            'tname.regex' => 'El Nombre no puede tener numeros, caracteres especiales y debe tener Mayuscula',
+        ];
+        $validatedData = $request->validate([
+            'tname' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
             'ttime' => 'required|integer|max:50000',
             'tdistance' => 'required|integer|max:15000',
-            'users_id' => 'required|exists:users,id',
-        ]);
+            //'users_id' => 'required|exists:users,id',
+        ], $message);
 
-        $lighttraining->update($request->all());
+        $lighttraining->update($validatedData);
 
         return redirect()->route('lighttrainings.indexs')->with('Exito', 'Entrenamiento de Luz Actualizado.');
     }
@@ -72,7 +98,7 @@ class LighttrainingController extends Controller
     {
         $lighttraining->delete();
 
-        return redirect()->route('lighttrainings.indexs')->with('Exito', 'Entrenamiento de Luz Borrado.');
+        return redirect()->route('light.list')->with('Exito', 'Entrenamiento de Luz Eliminado.');
     }
     public function sendPostRequestToESP($time, $distance){
     $url = 'http://<ESP-IP-ADDRESS>/endpoint'; // Replace with your ESP's actual IP address and endpoint
