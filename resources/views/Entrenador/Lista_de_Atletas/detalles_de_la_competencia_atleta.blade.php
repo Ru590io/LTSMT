@@ -86,7 +86,6 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <label class="form-label me-2">Evento</label>
                                         <select class="form-select me-2">
-                                            <option selected>Elige un evento</option>
                                             <option value="800">800m</option>
                                             <option value="1500">1500m</option>
                                             <option value="3000obs">3000m Obs</option>

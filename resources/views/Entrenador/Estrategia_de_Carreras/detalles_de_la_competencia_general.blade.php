@@ -49,7 +49,7 @@
         <div class="d-flex justify-content-between mt-4 mb-3">
             <a href="/competition" class="btn btn-primary">Regresar</a>
         {{--@foreach ($competitions as $competition)--}}
-            <a href="{{route('competition.edit', ['competition' => $competition])}}" class="btn btn-primary">Editar Detalles de Competencia</a>
+            <a href="{{route('competition.edit', ['competition' => $competition->id])}}" class="btn btn-primary">Editar Detalles de Competencia</a>
         </div>
         <div class="card mb-4">
             <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
@@ -61,8 +61,8 @@
         {{--@endforeach--}}
 
         <div class="d-grid gap-3">
-            <a href="/lista_de_competidores" class="btn btn-primary btn-lg">Ver Competidores</a>
-            <a href="/ver_split_table_general" class="btn btn-primary btn-lg">Ver Split Tables</a>
+            <a href="/competition/list/asignar/atleta" class="btn btn-primary btn-lg">Ver Competidores</a>
+            <a href="/competition/list/tabla/general/atleta" class="btn btn-primary btn-lg">Ver Split Tables</a>
         </div>
 
         <div class="d-grid gap-3 mt-3">

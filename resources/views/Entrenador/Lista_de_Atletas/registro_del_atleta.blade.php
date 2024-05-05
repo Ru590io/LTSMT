@@ -53,6 +53,7 @@
                     <button onclick="location.href='/lista'" class="btn btn-primary">Regresar</button>
                     <button onclick="location.href='{{ route('athlete.info', ['user' => $user->id]) }}'" id="athleteInfoButton" class="btn btn-primary">Información del Atleta</button>
                     {{-- {{ url('athlete/athleteinfo/' . $user->id) }} --}}
+
                 </div>
 
                 <!-- Today's Training Box -->

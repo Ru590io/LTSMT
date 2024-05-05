@@ -44,9 +44,9 @@
             </div>
         </nav>
         <h1 class="text-center">Split Tables para Atleta</h1>
-        <h2 class="text-center mt-5">Axel Rosado</h2>
+        <h2 class="text-center mt-5">{{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
         <div class="text-left mt-4">
-            <a href="eventos_del_atleta" class="btn btn-primary mb-3">Regresar</a>
+            <a href="{{ route('competitors.listing', $competitor->id) }}" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <div id="splitsContainer" class="mt-5">
             <!-- Las tablas de splits y la información del atleta se generarán aquí -->
@@ -56,7 +56,7 @@
 
     <script>
         // Function to convert seconds to mm:ss format
-        function secondsToMMSS(seconds) {
+        /*function secondsToMMSS(seconds) {
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
@@ -119,10 +119,73 @@
                 const result = eventString.match(/\d+/); // This regex matches any sequence of digits in the string
                 return result ? parseInt(result[0], 10) : null; // Convert the found string to a number, or return null if nothing is found
             }
+        var tDistance = {{ json_encode($competitor->events) }};
+        var tTime = {{ json_encode($competitor->events) }};
+        var name = {{json_encode($competitor->users->first_name)}}
+        generateSplitTable(getNumber("1500m"), 170, 'Axel Rosado'); // For 800m in 120 seconds
+       generateSplitTable(getNumber("1500m"), 170, 'Axel Rosado'); // For 1500m in 240 seconds
+        generateSplitTable(getNumber("3000m obstáculos"), 630, 'Axel Rosado'); // For 3000m in 630 seconds*/
+        document.addEventListener('DOMContentLoaded', function() {
+        const events = JSON.parse('{!! $events !!}');
 
-        generateSplitTable(getNumber("800m"), 90, 'Axel Rosado'); // For 800m in 120 seconds
-        generateSplitTable(getNumber("1500m"), 170, 'Axel Rosado'); // For 1500m in 240 seconds
-        generateSplitTable(getNumber("3000m obstáculos"), 630, 'Axel Rosado'); // For 3000m in 630 seconds
+        events.forEach(event => {
+            generateSplitTable(event.distance, event.time, '{{ $competitor->users->first_name }} {{ $competitor->users->last_name }}');
+        });
+    });
+
+function secondsToMMSS(seconds) {
+    const minutes = Math.floor(seconds / 60); // Find whole minutes
+    const secs = Math.round(seconds % 60); // Find remaining seconds, rounded to nearest whole number
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function generateSplitTable(eventDistance, eventTimeInSeconds, athleteName) {
+    const splitsContainer = document.getElementById('splitsContainer');
+    const athleteSection = document.createElement('div');
+    athleteSection.classList.add('athlete-section');
+
+    // Create the athlete information
+    const athleteInfo = document.createElement('h3');
+    athleteInfo.textContent = `${eventDistance}m (${secondsToMMSS(eventTimeInSeconds)})`;
+    athleteSection.appendChild(athleteInfo);
+
+    // Create the responsive table container with horizontal scrolling
+    const responsiveTableContainer = document.createElement('div');
+    responsiveTableContainer.classList.add('table-responsive');
+    responsiveTableContainer.style.overflowX = 'auto';  // Ensures horizontal scrolling
+
+    // Create the split table
+    const table = document.createElement('table');
+    table.classList.add('table', 'table-striped');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+
+    // Header row for distances
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = `<th>Distancia</th>`;
+    for (let distance = 100; distance <= eventDistance; distance += 100) {
+        let className = distance % 400 === 0 ? 'highlight-column' : '';
+        headerRow.innerHTML += `<th class="${className}">${distance}m</th>`;
+    }
+    thead.appendChild(headerRow);
+
+    // Row for times
+    const timeRow = document.createElement('tr');
+    timeRow.innerHTML = `<td>Tiempo</td>`;
+    for (let distance = 100; distance <= eventDistance; distance += 100) {
+        const timeInSeconds = (distance / eventDistance) * eventTimeInSeconds;
+        let className = distance % 400 === 0 ? 'highlight-column' : '';
+        timeRow.innerHTML += `<td class="${className}">${secondsToMMSS(timeInSeconds)}</td>`;
+    }
+    tbody.appendChild(timeRow);
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    responsiveTableContainer.appendChild(table);
+    athleteSection.appendChild(responsiveTableContainer);
+    splitsContainer.appendChild(athleteSection);
+}
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

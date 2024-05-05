@@ -52,6 +52,10 @@ class UserController extends Controller
        return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
     }
 
+    public function showathlete(User $user){
+        return view('Entrenador.Lista_de_Atletas.registro_del_atleta', compact('user'));
+    }
+
     public function entrenadorindexs(User $user)
     {
         $this->authorize('view', $user);

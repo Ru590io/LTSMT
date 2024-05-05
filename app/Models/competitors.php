@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class competitors extends Model
+class competitors extends Pivot
 {
     use HasFactory;
 
@@ -15,6 +16,14 @@ class competitors extends Model
     ];
 
     protected $table = 'competitors';
+
+    public function users() {
+        return $this->belongsTo(User::class, 'users_id');
+    }
+
+    public function competition() {
+        return $this->belongsTo(Competition::class, 'competition_id');
+    }
 
     public function events(){
         return $this->hasMany(Event::class, 'competitors_id');
