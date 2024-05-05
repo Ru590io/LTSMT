@@ -17,7 +17,7 @@
             <div class="col-md-6">
                 <!-- Athlete Info Button -->
                 <div class="d-flex justify-content-between mb-3">
-                    <button onclick="location.href='lista_de_atletas'" class="btn btn-primary">Regresar</button>
+                    <button onclick="location.href='/lista' "class="btn btn-primary">Regresar</button>
                     <button onclick="location.href='informacion_del_atleta'" id="athleteInfoButton" class="btn btn-primary">Información del Atleta</button>
                 </div>
 

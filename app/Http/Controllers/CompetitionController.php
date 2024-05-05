@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Event;
 use App\Models\competition;
+use App\Models\competitors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,7 +15,7 @@ class CompetitionController extends Controller
     // Display a listing of the competition.
     public function competitionlist()
     {
-        $competitions = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->get(['id','cname']);
+        $competitions = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->get(['id','cname', 'ctime']);
 
         return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general', compact('competitions'));
     }
@@ -53,6 +56,7 @@ class CompetitionController extends Controller
     // Display the specified competition.
     public function shows(competition $competition)
     {
+        //$competition = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->get(['id','cname', 'ctime']);
         $competition->ctime = Carbon::createFromFormat('H:i:s', $competition->ctime)->format('h:i A');
         return view('Entrenador.Estrategia_de_Carreras.detalles_de_la_competencia_general', compact('competition'));
     }
@@ -60,9 +64,11 @@ class CompetitionController extends Controller
     // Show the form for editing the specified competition.
     public function edits(competition $competition)
     {
+        //$competition = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->get(['id','cname', 'ctime']);
         $competition->ctime = Carbon::createFromFormat('H:i:s', $competition->ctime)->format('h:i A');
         return view('Entrenador.Estrategia_de_Carreras.editar_detalles_de_la_competencia', compact('competition'));
     }
+
 
     // Update the specified competition in storage.
     public function updates(Request $request, competition $competition)
@@ -90,9 +96,39 @@ class CompetitionController extends Controller
     // Remove the specified competition from storage.
     public function destroys(competition $competition)
     {
+        //$competition->users()->detach();
         $competition->delete();
         return redirect()->route('competition.list')->with('Exito', 'Competencia Borrada.');
     }
+
+    public function competitionshows()
+    {
+        $competitions = Competition::with('users')->get();
+        $users = User::where('role', 'Atleta')->get();
+        return view('Entrenador.Estrategia_de_Carreras.lista_de_competidores', compact('competitions', 'users'));
+    }
+
+    /*public function compshows($id)
+    {
+        $competitor = Competitors::with(['events'])->findOrFail($id);
+        return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitor'));
+    }*/
+
+    public function assignarAtleta(Request $request) {
+        $this->authorize('assignAthlete', Competition::class);  // Ensure only coaches can perform this action
+
+        $competition = Competition::findOrFail($request->competition_id);
+        $user = User::findOrFail($request->users_id);
+
+        if (!$competition->users()->where('users_id', $user->id)->exists()) {
+            $competition->users()->attach($user);
+            return back()->with('Exito', 'Atleta asignado a la competencia exitosamente.');
+        }
+
+        return back()->with('error', 'El atleta ya está asignado a esta competencia.');
+    }
+
+
     //API//
     // GET /competitions
     public function indexs()

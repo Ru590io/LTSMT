@@ -17,19 +17,22 @@
 <body>
     <div class="container">
         <h1 class="text-center">Lista de Competidores</h1>
-        <h2 class="text-center">Competencia 1</h2>
+    @foreach($competitions as $competition)
+        <h2 class="text-center">{{$competition->cname}}</h2>
         <div class="d-flex justify-content-between mb-4">
-            <a href="detalles_de_la_competencia_general" class="btn btn-primary">Regresar</a>
+            <a href="{{ route('competition.show', ['competition' => $competition->id]) }}" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Competidores</button>
         </div>
         <div class="d-grid gap-3">
             <!-- Lista de competidores con sus eventos -->
-            <button class="btn btn-primary btn-lg" onclick="location.href='eventos_del_atleta'">Axel Rosado - 800m, 1500m</button>
-            <button class="btn btn-primary btn-lg" onclick="location.href='eventos_del_atleta'">Rubén Marrero - 5k, 10k</button>
-            <button class="btn btn-primary btn-lg" onclick="location.href='eventos_del_atleta'">Enrique Compré - 3000m obstáculos</button>
-
-            <!-- Más botones de competidores pueden ser añadidos aquí -->
+        @foreach($competition->users as $user)
+            {{--@foreach($user->competitors as $competitor)--}}
+                <button class="btn btn-primary btn-lg" onclick="location.href='{{ route('competitors.listing', $user->pivot->id) }}'"> {{ $user->first_name }} {{$user->last_name}}</button>
+                <!-- Más botones de competidores pueden ser añadidos aquí -->
+            {{--@endforeach--}}
+        @endforeach
         </div>
+    @endforeach
     </div>
 <!-- Modal -->
 <!-- Modal -->
@@ -43,17 +46,19 @@
 
             <div class="modal-body">
                 <!-- Formulario para añadir competidor -->
-                <form id="addCompetitorForm">
+                <form id="addCompetitorForm" method="POST" action="{{ route('competition.atleta') }}">
+                    @csrf
                     <!-- Lista desplegable de competidores -->
                             <!-- Selector de atletas con búsqueda -->
+                    <input type="hidden" name="competition_id" value="{{ $competition->id }}">
                     <div class="mb-3">
                         <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
-                        <select class="form-control" id="athleteSelector">
+                        <select class="form-control" id="athleteSelector" name="users_id">
                             <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
                             <option></option> <!-- Opción vacía para la búsqueda -->
-                            <option value="1">Axel Rosado</option>
-                            <option value="2">Guillermo Colón</option>
-                            <option value="3">Rubén Marrero</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{$user->first_name}} {{$user->last_name}}</option>
+                            @endforeach
                             <!-- más atletas -->
                         </select>
                     </div>
@@ -86,13 +91,12 @@
                             </div>
                         </div>
                     </div> --}}
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="submit" form="addCompetitorForm" class="btn btn-primary">Añadir</button>
             </div>
-
+                </form>
         </div>
     </div>
 </div>
@@ -104,6 +108,12 @@
 <!-- Disable Bootstrap's modal focus management -->
 <script>
     $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+</script>
+
+<script>
+    /*function setCompetitionId(competitionId) {
+        document.getElementById('competitionIdInput').value = competitionId;
+    }*/
 </script>
 
 <!-- Initialize Select2 with proper configurations -->

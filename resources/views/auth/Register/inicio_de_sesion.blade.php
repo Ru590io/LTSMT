@@ -34,11 +34,11 @@
                 </div>
                 @endif
 
-                @if ($errors->has('throttle'))
+                {{--@if ($errors->has('throttle'))
                 <div class="alert alert-warning">
                     {{ $errors->first('throttle') }}
                 </div>
-                @endif
+                @endif--}}
                 <!-- Login form -->
                 <form class= "form mt-5" action="{{route('login')}}" method="post">
                     @csrf
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    <button type="submit" id="loginButton" class="btn btn-primary">Iniciar Sesión</button>
                     <a href="/register" class="btn btn-primary">Registrarse</a>
                     @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -121,6 +121,22 @@
 
             }
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const loginButton = document.getElementById('loginButton');
+
+    // Check if there's a throttle time set by Laravel and disable the button accordingly
+        @if ($errors->has('throttle'))
+        // Laravel passes the remaining time in seconds, JavaScript needs milliseconds
+        const throttleTime = {{ $errors->first('throttle') }} * 1000;
+        loginButton.disabled = true;
+
+        setTimeout(() => {
+            loginButton.disabled = false;
+        }, throttleTime);
+        @endif
+    });
     </script>
 </body>
 </html>

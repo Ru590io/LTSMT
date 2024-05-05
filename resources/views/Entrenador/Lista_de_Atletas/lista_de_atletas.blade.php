@@ -19,7 +19,7 @@
         </div>
         <div class="d-grid gap-3" id="athletes-list">
             @foreach($users as $user)
-                    <a class="btn btn-primary btn-lg">{{ $user->first_name }} {{ $user->last_name }}</a>
+                    <a href="{{ route('user.lista', ['user' => $user->id]) }}" class="btn btn-primary btn-lg">{{ $user->first_name }} {{ $user->last_name }}</a>
             @endforeach
         </div>
         <div class="d-flex justify-content-end">

@@ -22,7 +22,7 @@
                 <div class="d-grid gap-3">
                     <a href="/lista" id="rosterButton" class="btn btn-primary btn-lg">Lista de Atletas</a>
                     <a href="/schedule" id="trainingLogButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</a>
-                    <a href="/competition" id="raceStrategyButton" class="btn btn-primary btn-lg">Estrategia de Carreras</a>
+                    <a href="/competition" id="raceStrategyButton" class="btn btn-primary btn-lg">Lista de Competencias</a>
                     <a href="/light" id="raceStrategyButton" class="btn btn-primary btn-lg">Sistema de Luces</a>
                 </div>
             </div>

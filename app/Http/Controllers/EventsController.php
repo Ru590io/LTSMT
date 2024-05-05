@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\competitors;
+use App\Models\User;
 use App\Models\Event;
+use App\Models\competition;
+use App\Models\competitors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class EventsController extends Controller
 {
-    public function indexs()
+    public function indexs(Event $event)
     {
         $events = Event::with('competitors')->get();
-        return view('events.indexs', compact('events'));
+        $competitors = competitors::with('user', 'competition');
+        return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('events', 'competitors'));
     }
 
     public function creates()
@@ -28,9 +31,70 @@ class EventsController extends Controller
             'edistance' => 'required|string|max:20|min:4|alpha_num',
         ]);
 
-        Event::create($validated);
+        $competitor = Competitors::findOrFail($validated['competitors_id']);
+
+        $event = new Event([
+            'etime_range' => $validated['etime_range'],
+            'edistance' => $validated['edistance'],
+        ]);
+
+        $competitor->event()->save($event);
+
+        //Event::create($validated);
 
         return redirect()->route('events.indexs')->with('Exito', 'Evento Agregado.');
+    }
+
+    public function compshows($id)
+    {
+        //$user = User::with('competitions')->get();
+        //$competitions = competition::with('users')->get();
+        $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);
+        $event = Event::with('competitors')->get();
+        //$competitors = Competitors::with('events')->findOrFail($id)->get();
+        //$events = Event::get();
+        return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitor', 'event'/*, 'competitions', 'events', 'user'*/));
+    }
+
+    public function asignarEvento(Request $request, $id) {
+        //$this->authorize('assignAthlete', competitors::class);
+        //$events = Event::findOrFail($request->events_id);
+        $competitor = competitors::findOrFail($id);
+        $validated = $request->validate([
+            'etime_range' => 'required|max:10000',
+            'edistance' => 'required|string|max:20|min:4',
+        ]);
+
+        $timeParts = explode(':', $validated['etime_range']);
+        $totalSeconds = (int)$timeParts[0] * 60 + (int)$timeParts[1];
+
+        $event = new Event([
+            'competitors_id' => $competitor->id,
+            'etime_range' => $totalSeconds,
+            'edistance' => $validated['edistance'],
+        ]);
+
+       // $competitors->event()->attach($events);
+        $competitor->events()->save($event);
+
+        return back()->with('Exito', 'Añadido exitosamente.');
+    }
+
+    public function storeEvents(Request $request, $id) {
+        $competitor = Competitors::findOrFail($id);
+
+    foreach ($request->events as $event) {
+        $timeParts = explode(':', $event['etime_range']);
+        $totalSeconds = (int)$timeParts[0] * 60 + (int)$timeParts[1];
+
+        Event::create([
+            'competitors_id' => $competitor->id,
+            'etime_range' => $totalSeconds,
+            'edistance' => $event['edistance'],
+        ]);
+    }
+
+    return back()->with('Exito', 'Eventos añadidos exitosamente.');
     }
 
     public function shows(Event $event, $id)
@@ -70,8 +134,49 @@ class EventsController extends Controller
     {
         $event->delete();
 
-        return redirect()->route('events.indexs')->with('Exito', 'Evento Borrado.');
+        return back()->with('Exito', 'Evento Eliminado.');
     }
+
+    public function atheltedestroy(competitors $competitor)
+    {
+        $competitor->delete();
+        return redirect()->route('competition.listatleta')->with('Exito', 'Competidor Eliminado.');
+    }
+
+    public function splittableatleta($id){
+        $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);
+        $events = $competitor->events->map(function ($event) {
+            return [
+                'distance' => preg_replace('/[^0-9]/', '', $event->edistance),
+                'time' => $event->etime_range
+            ];
+        })->toJson(); // Convert the collection to JSON here in the controller
+
+    return view('Entrenador.Estrategia_de_Carreras.ver_split_table_atleta', compact('competitor', 'events'));
+    }
+
+    public function splittablegeneral(){
+    $competitors = Competitors::with(['competition', 'users', 'events'])->get();
+    $allEvents = collect();
+
+    foreach ($competitors as $competitor) {
+        foreach ($competitor->events as $event) {
+            $allEvents->push([
+                'name' => $competitor->users->first_name . ' ' . $competitor->users->last_name,
+                'distance' => preg_replace('/[^0-9]/', '', $event->edistance),
+                'time' => $event->etime_range
+            ]);
+        }
+    }
+
+    $eventsJson = $allEvents->toJson();
+    return view('Entrenador.Estrategia_de_Carreras.ver_split_table_general', [
+        'competitors' => $competitors,
+        'eventsJson' => $eventsJson,
+        'competition' => Competition::orderBy('id', 'asc')->first()
+    ]);
+    }
+
     //API//
     // GET /events
     public function index()

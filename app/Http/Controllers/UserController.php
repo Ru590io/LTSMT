@@ -48,8 +48,12 @@ class UserController extends Controller
 
     public function athleteindexs()
     {
-       $users = User::where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
+       $users = User::where('role', 'Atleta')->orderBy('id','asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get(['id','first_name', 'last_name']);
        return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
+    }
+
+    public function showathlete(User $user){
+        return view('Entrenador.Lista_de_Atletas.registro_del_atleta', compact('user'));
     }
 
     public function entrenadorindexs(User $user)

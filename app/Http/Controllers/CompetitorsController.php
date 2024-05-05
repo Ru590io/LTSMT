@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Event;
 use App\Models\competitors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -33,7 +35,28 @@ class CompetitorsController extends Controller
 
     public function shows(competitors $competitor)
     {
-        return view('competitors.shows', compact('competitor'));
+        $events = Event::with('competitors')->get();
+        $competitors = competitors::with('user', 'competition');
+        return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitors', 'events'));
+    }
+
+    public function assignarAtleta(Request $request) {
+        $this->authorize('assignAthlete', Competitors::class);  // Ensure only coaches can perform this action
+
+        $competitionId = $request->competitors_id;
+        $userId = $request->users_id; // ID of the athlete
+
+        $competition = Competitors::find($competitionId);
+        $user = User::find($userId);
+
+        if (!$competition || !$user) {
+            return back()->with('error', 'Invalida competencia o atleta.');
+        }
+
+        // Attach the athlete to the competition
+        $competition->users()->attach($userId);
+
+        return back()->with('Exito', 'Atleta asignado a una competencia exitosamente.');
     }
 
     public function edits(Competitors $competitor)

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('competitors_id')->constrained();
+            $table->foreignId('competitors_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('etime_range');
             $table->string('edistance');
             $table->timestamps();
