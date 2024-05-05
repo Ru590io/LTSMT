@@ -83,7 +83,10 @@ class User extends Authenticatable
         return $this->hasMany(AccessCode::class, 'users_id');
     }
 
-    public function competition(){
-        return $this->belongsToMany(competition::class, 'competitors', 'users_id', 'competition_id')->withTimestamps();
+    public function competitions(){
+        return $this->belongsToMany(competition::class, 'competitors', 'users_id', 'competition_id')->using(competitors::class)->withTimestamps();
     }
+   /* public function competitions() {
+        return $this->belongsToMany(Competition::class, 'competitors');
+    }*/
 }

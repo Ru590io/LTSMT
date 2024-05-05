@@ -20,6 +20,10 @@ class competition extends Model
     ];
 
     public function users(){
-        return $this->belongsToMany(User::class, 'competitors', 'competition_id', 'users_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'competitors', 'competition_id', 'users_id')->withPivot('id')->withTimestamps();
     }
+
+    /*public function users() {
+        return $this->belongsToMany(User::class, 'competitors');
+    }*/
 }
