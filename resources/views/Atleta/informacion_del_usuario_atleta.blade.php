@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Información del Atleta</title>
-    <div class="logo-container text-center my-4">
-        <div class="logo-text">LTSMT</div>
-    </div>
+    <a href="/atlhome" style="text-decoration: none;">
+        <div class="logo-container">
+            <div class="logo-text">LTSMT</div>
+        </div>
+    </a>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
 </head>
 <body>

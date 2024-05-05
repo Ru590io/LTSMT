@@ -9,12 +9,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Crear Semana de Entrenamiento</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
+    <a href="/home" style="text-decoration: none;">
+        <div class="logo-container">
+            <div class="logo-text">LTSMT</div>
+        </div>
+    </a>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-    <div class="logo-container">
-        <div class="logo-text">LTSMT</div>
-    </div>
     <div class="container">
+
+        <nav class="navbar custom-navbar">
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Menú Principal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/lista">Lista de Atletas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedule">Registro de Entrenamientos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/competition">Lista de Competencias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/light">Sistema de Luces</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <h1 class="text-center">Crear Semana de Entrenamiento</h1>
         {{-- method (post?) can be added down here? (method="post") --}}
         <form id="trainingForm">
@@ -390,9 +420,11 @@
 
             if (option === 'Fondo') {
                 optionsContainer.innerHTML = `
-                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (Kilometros)" min="1" max="30" title= "Distancia entre 1 y 10" required />
+                    <input type="number" style="width: 189px;" placeholder="Distancia (Kilometros)" min="1" max="30"
+                    oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
+                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
+                    title="Kilometros entre 1 a 30." required />Km  Zona:
                     <select>
-                        <option value="">Zona</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
@@ -401,10 +433,26 @@
                 `;
             } else if (option === 'Repeticion') {
                 optionsContainer.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title= "Sets entre 1 a 30." required />
-                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
-                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" title= "Porfavor, siga el formato (MM:SS)." required />
-                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
+                    oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
+                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
+                    title="Sets entre 1 a 30." required />
+
+
+                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
+                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+                    title="Distancia entre 100 y 10000" required />m
+
+                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
+                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
+                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+                    title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
+
+                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
+                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
+                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+                    title="Por favor, siga el formato (MM:SS) para la recuperación." required />
+
                     <div id="${timeOfDay}-repetition-container">
 
                     </div>
@@ -464,10 +512,26 @@
                 let newRepetitionBlock = document.createElement('div');
                 newRepetitionBlock.classList.add('mt-2');
                 newRepetitionBlock.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title="Sets entre 1 a 30." required />
-                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
-                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
-                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
+                    oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
+                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
+                    title="Sets entre 1 a 30." required />
+
+
+                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
+                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+                    title="Distancia entre 100 y 10000" required />m
+
+                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
+                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
+                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+                    title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
+
+                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
+                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
+                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+                    title="Por favor, siga el formato (MM:SS) para la recuperación." required />
+
                     <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
                 `;
                 container.appendChild(newRepetitionBlock);

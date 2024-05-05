@@ -48,7 +48,7 @@ class UserController extends Controller
 
     public function athleteindexs()
     {
-       $users = User::where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
+        $users = User::where('role', 'Atleta')->orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('phone_number')->get(['first_name', 'id', 'last_name', 'phone_number']);
        return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
     }
 
@@ -70,9 +70,9 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u',
             'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u',
-            'email' => 'required|string|email|max:35|unique:users,email|ends_with:@upr.edu',
+            'email' => 'required|string|email|max:60|unique:users,email|ends_with:@upr.edu',
             'phone_number' => ['required', 'string', 'digits:10', 'numeric', new UniquePhoneNumber()],
-            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
             'code' => 'required|string',
         ], $message);
 
@@ -109,11 +109,11 @@ class UserController extends Controller
             'last_name.regex' => 'El Apellido no puede tener numeros, caracteres especiales y debe tener Mayuscula',
         ];
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'last_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'email' => 'required|string|email|max:50|unique:users,email|ends_with:@upr.edu',
+            'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'email' => 'required|string|email|max:60|unique:users,email|ends_with:@upr.edu',
             'phone_number' => ['required', 'string', 'digits:10', 'numeric', new UniquePhoneNumber()],
-            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
 
         ], $message);
 
@@ -176,7 +176,7 @@ class UserController extends Controller
             'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
         ];
         $validatedData = $request->validate([
-            'password' => 'required|string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:8|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
         ], $messages);
 
         $dataToUpdate = [];
@@ -200,9 +200,9 @@ class UserController extends Controller
             'last_name.regex' => 'El Apellido no puede tener numeros, caracteres especiales y debe tener Mayuscula',
         ];
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'last_name' => 'required|string|max:50|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'email' => 'required|string|email|max:50|ends_with:@upr.edu,' .$user->id,
+            'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+            'email' => 'required|string|email|max:60|ends_with:@upr.edu,' .$user->id,
             'phone_number' => 'required|string|digits:10|numeric|unique:users,phone_number,' .$user->id,
         ], $messages);
 
@@ -241,21 +241,50 @@ class UserController extends Controller
     }
 
     public function showdeleted(){
-        $users = User::onlyTrashed()->where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
-
+        //$users = User::onlyTrashed()->where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
+        $users = User::onlyTrashed()->get();
         return view('Entrenador.Lista_de_Atletas.rehabilitar_cuentas', compact('users'));
     }
 
-    public function restoreUser(User $user)
+    public function restoreUser($userId)
     {
-        $user = User::onlyTrashed()->where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
+        $user = User::onlyTrashed()->findOrFail($userId);
         //if ($user) {
             $user->restore();
-        //    return redirect()->route('users.index')->with('success', 'Atleta Restaurado.');
+        return redirect()->route('users.index')->with('success', 'Atleta Restaurado.');
         //}
        // else {
         //    return redirect()->back()->with('error', 'Atleta no se encontro.');
        //}
+    }
+
+    //Lista de Atletas web routes to files views
+    public function showAthleteDetails(User $user)
+    {
+        //$this->authorize('view', $user);
+        return view('Entrenador.lista_de_atletas.registro_del_atleta', compact('user'));
+    }
+    public function viewAthleteInfo(User $user)
+    {
+        //$this->authorize('view', $user);
+       $user->phone_number = Crypt::decryptString($user->phone_number);
+        return view('Entrenador.lista_de_atletas.informacion_del_atleta', compact('user'));
+    }
+    public function trainingLogs(User $user)
+    {
+        //$this->authorize('view', $user);
+        return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user'));
+    }
+    public function raceStrategy(User $user)
+    {
+        //$this->authorize('view', $user);
+        return view('Entrenador.lista_de_atletas.estrategia_de_carrera_atleta', compact('user'));
+    }
+    public function destroyAthlete(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('users.index')->with('Exito', 'Cuenta Inhabilitada.');
     }
 
     //API///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -280,9 +309,9 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
             'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'email' => 'required|string|email|max:35|unique:users,email|ends_with:@upr.edu',
+            'email' => 'required|string|email|max:60|unique:users,email|ends_with:@upr.edu',
             'phone_number' => ['required', 'string', 'digits:10', 'numeric', new UniquePhoneNumber()],
-            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
             'code' => 'required|string',
         ], $messages);
 
@@ -331,9 +360,9 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
             'last_name' => 'required|string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-            'email' => 'required|string|email|max:35|unique:users,email|ends_with:@upr.edu',
+            'email' => 'required|string|email|max:60|unique:users,email|ends_with:@upr.edu',
             'phone_number' => ['required', 'string', 'digits:10', 'numeric', new UniquePhoneNumber()],
-            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
         ], $messages);
 
         if ($validator->fails()) {
@@ -431,11 +460,11 @@ class UserController extends Controller
     }
 
     $rules = [
-        'first_name' => 'string|max:35|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-        'last_name' => 'string|max:35|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
-        'email' => 'string|email|max:20|ends_with:@upr.edu|unique:users,email,' . $user->id,
+        'first_name' => 'string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+        'last_name' => 'string|max:25|regex:/^[\pL\s]*$/u|regex:/^[A-Z]/',
+        'email' => 'string|email|max:60|ends_with:@upr.edu|unique:users,email,' . $user->id,
         'phone_number' => ['string', 'digits:10', 'numeric', new UpdateUniquePhoneNumber($user->id)],
-        'password' => 'string|min:6|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+        'password' => 'string|min:8|max:16|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
     ];
 
     $messages = [
@@ -498,4 +527,6 @@ class UserController extends Controller
     $user->restore();
     return response()->json(['message' => 'Atleta restaurado.'], 200);
     }
+
+
 }

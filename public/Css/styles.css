@@ -80,6 +80,16 @@ h1 {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
     border: 5px solid #0fb00c; /* Optional: border color matching the logo */
 }
+/* custom.css */
+.custom-navbar {
+    background-color: #F2FFF6; /* Change this to your desired background color */
+}
+
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 
 .logo-text {
     font-family: 'Arial', sans-serif; /* Or any other preferred font */
@@ -99,6 +109,9 @@ h1 {
     z-index: 1100 !important; /* Set z-index higher than that of Bootstrap modal */
 }
 
+.logo-container a {
+    text-decoration: none; /* Remove underline */
+}
 
 
 .select2-dropdown {

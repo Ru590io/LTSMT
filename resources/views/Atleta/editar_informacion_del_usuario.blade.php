@@ -6,9 +6,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Editar Información del Atleta</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
-    <div class="logo-container text-center my-4">
-        <div class="logo-text">LTSMT</div>
-    </div>
+    <a href="/atlhome" style="text-decoration: none;">
+        <div class="logo-container">
+            <div class="logo-text">LTSMT</div>
+        </div>
+    </a>
 </head>
 <body>
     <div class="container">
@@ -24,7 +26,7 @@
                     <div class="mb-3">
                         <label for="first_name" class="form-label">Nombre</label>
                         <!-- Solo letras y espacios, máximo 50 caracteres -->
-                        <input type="text" class="form-control" id="first_name" name="first_name" value= "{{ $user->first_name }}" pattern="[a-zA-Z\sáéíóúñ]{1,50}" title="Solo letras y espacios, hasta 50 caracteres." required>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value= "{{ $user->first_name }}" pattern="[a-zA-Z\sáéíóúñ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres." required>
                         @error('first_name')
 
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
@@ -32,7 +34,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}" pattern="[a-zA-Z\sáéíóúñ]{1,50}" title="Solo letras y espacios, hasta 50 caracteres." required>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}" pattern="[a-zA-Z\sáéíóúñ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres." required>
                     </div>
                         @error('last_name')
 
@@ -41,7 +43,7 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
                         <!-- Debe terminar en @upr.edu -->
-                        <input type="email" class="form-control" id="email" name="email" value= "{{$user->email }}" pattern=".*@upr\.edu$" title="Debe ser un correo electrónico de UPR." required>
+                        <input type="email" class="form-control" id="email" name="email" value= "{{$user->email }}" pattern="[a-zA-Z0-9._%+-]+@upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos." required>
                     </div>
                         @error('email')
 
@@ -50,7 +52,7 @@
                     <div class="mb-3">
                         <label for="phone_number" class="form-label">Número de Teléfono</label>
                         <!-- Solo números, 10 dígitos -->
-                        <input type="tel" class="form-control" id="phone_number" name="phone_number" value= "{{$user->phone_number }}" pattern="\d{10}" title="Debe ser un número de 10 dígitos." required>
+                        <input type="tel" class="form-control" id="phone_number" name="phone_number" value= "{{$user->phone_number }}" pattern="\d{10}" maxlength="10" title="Debe ser un número de 10 dígitos." required>
                     </div>
                         @error('phone_number')
 
