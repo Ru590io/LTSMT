@@ -14,18 +14,18 @@
     <div class="container">
         <h1 class="text-center">Restablecer Contraseña</h1>
         <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
+            <div class="col">
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('coach.index', ['user' => $user->id]) }}" class="btn btn-primary">Regresar</a>
                 </div>
 
                 <!--Need to update password.update route-->
 
-                <form class= "form mt-5" action="{{route('password.updates')}}" method="post">
+                <form id="passwordForm" class= "form mt-3" action="{{route('password.updates')}}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="password" class="form-label">Nueva Contraseña</label>
-                        <input type="password" name="password" class="form-control" @error('password') is-invalid @enderror name="password" required autocomplete="new-password" id="password" placeholder="Escriba su nueva contraseña" required minlength="6" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 6 a 16 caracteres.">
+                        <input id="new-password" type="password" name="password" class="form-control" @error('password') is-invalid @enderror name="password" required autocomplete="new-password" id="password" placeholder="Escriba su nueva contraseña" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 8 a 16 caracteres.">
                         @error('password')
                                 <strong class="d-block fs-6 text-danger mt-2">{{$message}}</strong>
 
@@ -33,7 +33,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="password-confirm" class="form-label">Confirmar Nueva Contraseña</label>
-                        <input type="password" name="password_confirmation" class="form-control" id="password-confirm" placeholder="Confirme su nueva contraseña" required>
+                        <input id="confirm-new-password" type="password" name="password_confirmation" class="form-control" id="password-confirm" placeholder="Confirme su nueva contraseña" require maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 8 a 16 caracteres.">
                         @error('password_confirmation')
                                 <strong class="d-block fs-6 text-danger mt-2">{{$message}}</strong>
                         @enderror

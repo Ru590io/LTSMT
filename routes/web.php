@@ -62,8 +62,8 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('lista/{user}', [UserController::class, 'showathlete'])->name('user.lista');
     Route::get('/generate_code', [AccessCodeController::class, 'shareweb'])->name('generate_code');
     Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
-    Route::get('/lista/deleted', [UserController::class, 'showdeleted'])->name('users.deleted');
-    Route::post('/lista/{user}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+    Route::get('/lista/delete', [UserController::class, 'showdeleted'])->name('users.deleted');
+    Route::put('/lista/{user}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
 
     //Sistema de Luces
     Route::get('/light', [LighttrainingController::class, 'create'])->name('light.index');
@@ -81,6 +81,14 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/competition/list/updates/{competition}/edit', [CompetitionController::class, 'edits'])->name('competition.edit');
     Route::put('/competition/list/updates/{competition}/update', [CompetitionController::class, 'updates'])->name('competition.update');
     Route::delete('/competition/list/{competition}/destroy', [CompetitionController::class, 'destroys'])->name('competition.delete');
+
+    //Lista de Atletas
+    Route::get('/athlete/{user}', [UserController::class, 'showAthleteDetails'])->name('athlete.details');
+    Route::get('/athlete/athleteinfo/{user}', [UserController::class, 'viewAthleteInfo'])->name('athlete.info');
+    Route::get('/athlete/athletetraining/{user}', [UserController::class, 'trainingLogs'])->name('athlete.training');
+    Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'raceStrategy'])->name('athlete.strategy');
+    Route::delete('/athlete/athleteinfo/{user}/distroyAthlete', [UserController::class, 'destroyAthlete'])->name('athlete.delete');
+
     Route::post('/competition/list/asignar/atleta', [CompetitionController::class, 'assignarAtleta'])->name('competition.atleta');
     Route::get('/competition/list/asignar/atleta', [CompetitionController::class, 'competitionshows'])->name('competition.listatleta');
 
@@ -93,6 +101,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     //Split_Tables
     Route::get('/competition/list/asignar/atleta/{id}/tabla', [EventsController::class, 'splittableatleta'])->name('table.atleta');
     Route::get('/competition/list/tabla/general/atleta', [EventsController::class, 'splittablegeneral'])->name('table.general');
+
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {

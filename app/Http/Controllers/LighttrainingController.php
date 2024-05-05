@@ -41,12 +41,12 @@ class LighttrainingController extends Controller
     public function store(Request $request)
     {
         $message = [
-            'tname.regex' => 'El Nombre no puede tener numeros, caracteres especiales y debe tener Mayuscula',
+            'tname.regex' => 'El Nombre no puede tener caracteres especiales.',
             //'ttime.regex' => 'El tiempo debe estar en formato mm:ss.',
         ];
         //regex:/^\d{1,2}:\d{2}$/
         $validatedData = $request->validate([
-            'tname' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
+            'tname' => 'required|string|max:50|regex:/^[\pL\pN\s]*$/u',
             'ttime' => 'required|max:50000',
             'tdistance' => 'required|integer|max:15000',
         ], $message);
@@ -80,10 +80,10 @@ class LighttrainingController extends Controller
     public function update(Request $request, LightTraining $lighttraining)
     {
         $message = [
-            'tname.regex' => 'El Nombre no puede tener numeros, caracteres especiales y debe tener Mayuscula',
+            'tname.regex' => 'El Nombre no puede tener caracteres especiales',
         ];
         $validatedData = $request->validate([
-            'tname' => 'required|string|max:50|regex:/^[\pL\s]*$/u',
+            'tname' => 'required|string|max:50|regex:/^[\pL\pN\s]*$/u',
             'ttime' => 'required|integer|max:50000',
             'tdistance' => 'required|integer|max:15000',
             //'users_id' => 'required|exists:users,id',

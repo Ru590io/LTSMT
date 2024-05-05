@@ -24,14 +24,14 @@
                     @csrf
                     <div class="mb-3">
                         <label for="password" class="form-label">Nueva Contraseña</label>
-                        <input type="password" name="password" class="form-control" @error('password') is-invalid @enderror name="password" required autocomplete="new-password" id="password" placeholder="Escriba su nueva contraseña" required>
+                        <input type="password" name="password" class="form-control" @error('password') is-invalid @enderror name="password" required autocomplete="new-password" id="password" placeholder="Escriba su nueva contraseña" minlength="8" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 8 a 16 caracteres.">
                         @error('password')
                                 <strong class="d-block fs-6 text-danger mt-2">{{$message}}</strong>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password-confirm" class="form-label">Confirmar Nueva Contraseña</label>
-                        <input type="password" name="password_confirmation" class="form-control" id="password-confirm" placeholder="Confirme su nueva contraseña" required>
+                        <input type="password" name="password_confirmation" class="form-control" id="password-confirm" placeholder="Confirme su nueva contraseña" required minlength="8" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 8 a 16 caracteres.">
                         @error('password_confirmation')
                                 <strong class="d-block fs-6 text-danger mt-2">{{$message}}</strong>
                         @enderror

@@ -22,7 +22,7 @@ class PasswordResetController extends Controller
     // Send the password reset link
     public function sendResetLinkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|string|email|max:50|ends_with:@upr.edu',]);
+        $request->validate(['email' => 'required|string|email|max:60|ends_with:@upr.edu',]);
 
         // Send the password reset link
         $status = Password::sendResetLink(
@@ -49,8 +49,8 @@ class PasswordResetController extends Controller
 
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email|string|max:50|ends_with:@upr.edu',
-            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'email' => 'required|email|string|max:60|ends_with:@upr.edu',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
             'password.not_same' => 'La nueva contraseña debe ser diferente de la contraseña anterior.',
         ], $message);
 
@@ -96,7 +96,7 @@ class PasswordResetController extends Controller
         ];
 
         $request->validate([
-            'password' => 'required|string|min:6|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
             //'password.not_same' => 'La nueva contraseña debe ser diferente de la contraseña anterior.',
         ], $message);
 
@@ -118,7 +118,7 @@ class PasswordResetController extends Controller
     // Send the password reset link
     public function apisendResetLinkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|string|email|max:50|ends_with:@upr.edu']);
+        $request->validate(['email' => 'required|string|email|max:60|ends_with:@upr.edu']);
 
         $status = Password::sendResetLink($request->only('email'));
 
@@ -137,8 +137,8 @@ class PasswordResetController extends Controller
 
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email|string|max:50|ends_with:@upr.edu',
-            'password' => 'required|string|min:6|max:12|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+            'email' => 'required|email|string|max:60|ends_with:@upr.edu',
+            'password' => 'required|string|min:8|max:16|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
         ], $message);
 
         $status = Password::reset(

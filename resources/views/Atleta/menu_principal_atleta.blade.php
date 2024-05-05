@@ -6,9 +6,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Menú Principal</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
-    <div class="logo-container">
-        <div class="logo-text">LTSMT</div>
-    </div>
+    <a href="/atlhome" style="text-decoration: none;">
+        <div class="logo-container">
+            <div class="logo-text">LTSMT</div>
+        </div>
+    </a>
 </head>
 <body>
     <div class="container">
