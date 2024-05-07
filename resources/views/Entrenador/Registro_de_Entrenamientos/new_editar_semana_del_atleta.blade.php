@@ -49,7 +49,7 @@
         {{-- method (post?) can be added down here? (method="post") --}}
         <form id="trainingForm">
         <div class="text-left mt-4">
-            <a href="calendario_de_atletas" class="btn btn-primary mb-3">Regresar</a>
+            <a href="new_detalles_de_la_semana_del_atleta" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <!-- Campo para el nombre de la semana -->
         {{-- <div class="mb-3">
@@ -69,7 +69,17 @@
                 <!-- más atletas -->
             </select>
         </div> --}}
-        <h2 class="text-center mt-2">Axel Rosado</h2>
+        <div class="mb-3">
+            <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
+            <select class="form-control" id="athleteSelector">
+                <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
+                <option></option> <!-- Opción vacía para la búsqueda -->
+                <option value="1">Axel Rosado</option>
+                <option value="2">Guillermo Colón</option>
+                <option value="3">Rubén Marrero</option>
+                <!-- más atletas -->
+            </select>
+        </div>
         <div class="mb-3">
             <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
             <select class="form-control" id="weekSelector">
@@ -407,7 +417,7 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+            <button onclick="location.href='detalles_de_la_semana_del_atleta'" type="submit" class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
         </div>

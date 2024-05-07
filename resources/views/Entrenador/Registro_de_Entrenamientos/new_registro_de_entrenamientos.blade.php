@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Lista de Atletas</title>
-    <link href="/Css/styles.css" rel="stylesheet">
+    <title>Registro de Entrenamientos</title>
+    <link href="{{url('Css/styles.css')}}" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
             <div class="logo-text">LTSMT</div>
@@ -18,6 +18,7 @@
 
 <body>
     <div class="container">
+
         <nav class="navbar custom-navbar">
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,18 +43,14 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Semanas Asignadas del Atleta</h1>
-        <h2 class="text-center mt-4 mb-3"> Axel Rosado </h2>
-        <div class="d-flex justify-content-between mb-4">
-            <a href="/atletas_con_semanas_asignadas" class="btn btn-primary">Regresar</a>
+        <h1 class="text-center">Registro de Entrenamientos</h1>
+        <div class="text-left mt-4">
+            <button onclick="location.href='/home'" class="btn btn-primary">Regresar</button>
         </div>
-        <div class="d-grid gap-3" id="athletes-list">
-            <a href="/detalles_de_la_semana_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
-            <a href="/detalles_de_la_semana_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
-            <a href="/detalles_de_la_semana_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
+        <div class="d-grid gap-3 mt-4">
+            <a href="new_crear_semana_de_entrenamiento" id="createTrainingWeekButton" class="btn btn-primary btn-lg">Crear Semana de Entrenamiento</a>
+            <a href="new_atletas_con_semanas_asignadas" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Atletas con Semanas Asignadas</a>
         </div>
-
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

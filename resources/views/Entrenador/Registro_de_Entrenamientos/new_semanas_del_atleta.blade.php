@@ -42,14 +42,15 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Atletas con Semanas Asignadas</h1>
+        <h1 class="text-center">Semanas Asignadas del Atleta</h1>
+        <h2 class="text-center mt-4 mb-3"> Axel Rosado </h2>
         <div class="d-flex justify-content-between mb-4">
-            <a href="/schedule" class="btn btn-primary">Regresar</a>
+            <a href="/new_atletas_con_semanas_asignadas" class="btn btn-primary">Regresar</a>
         </div>
         <div class="d-grid gap-3" id="athletes-list">
-            <a href="/semanas_del_atleta" class="btn btn-primary btn-lg">John Doe</a>
-            <a href="/semanas_del_atleta" class="btn btn-primary btn-lg">Jane Smith</a>
-            <a href="/semanas_del_atleta" class="btn btn-primary btn-lg">Alex Johnson</a>
+            <a href="/new_detalles_de_la_semana_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
+            <a href="/new_detalles_de_la_semana_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
+            <a href="/new_detalles_de_la_semana_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
         </div>
 
 

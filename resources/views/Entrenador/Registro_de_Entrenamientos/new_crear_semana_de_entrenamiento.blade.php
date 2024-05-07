@@ -49,12 +49,7 @@
         {{-- method (post?) can be added down here? (method="post") --}}
         <form id="trainingForm">
         <div class="text-left mt-4">
-            <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
-        </div>
-        <!-- Campo para el nombre de la semana -->
-        <div class="mb-3">
-            <label for="weekName" class="form-label">Nombre de la Semana:</label>
-            <input type="text" class="form-control" id="weekName" placeholder="Ej: Entrenamiento Regular" maxlength="50" title="No más de 50 caracteres." required>
+            <a href="new_registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
         {{-- <!-- Selector de atletas con búsqueda -->
@@ -416,7 +411,7 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+            <button onclick="location.href='new_asignar_semana_de_entrenamiento'" type="submit" class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
         </div>
 

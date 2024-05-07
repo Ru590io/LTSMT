@@ -221,32 +221,32 @@ Route::get('/editar_detalles_de_la_competencia', function () {
 
 // Entrenador -> Registro de Entrenamientos (NEW VERSION)
 
-Route::get('/asignar_semana_de_entrenamiento', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.asignar_semana_de_entrenamiento');
+Route::get('/new_asignar_semana_de_entrenamiento', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_asignar_semana_de_entrenamiento');
 });
 
-Route::get('/atletas_con_semanas_asignadas', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.atletas_con_semanas_asignadas');
+Route::get('/new_atletas_con_semanas_asignadas', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_atletas_con_semanas_asignadas');
 });
 
-Route::get('/crear_semana_de_entrenamiento', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.crear_semana_de_entrenamiento');
+Route::get('/new_crear_semana_de_entrenamiento', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_crear_semana_de_entrenamiento');
 });
 
-Route::get('/detalles_de_la_semana_del_atleta', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.detalles_de_la_semana_del_atleta');
+Route::get('/new_detalles_de_la_semana_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_detalles_de_la_semana_del_atleta');
 });
 
-Route::get('/editar_semana_del_atleta', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.editar_semana_del_atleta');
+Route::get('/new_editar_semana_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_editar_semana_del_atleta');
 });
 
-Route::get('/registro_de_entrenamientos', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.registro_de_entrenamientos');
+Route::get('/new_registro_de_entrenamientos', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_registro_de_entrenamientos');
 });
 
-Route::get('/semanas_del_atleta', function () {
-    return view('Entrenador.Registro_de_Entrenamientos.semanas_del_atleta');
+Route::get('/new_semanas_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_semanas_del_atleta');
 });
 
 

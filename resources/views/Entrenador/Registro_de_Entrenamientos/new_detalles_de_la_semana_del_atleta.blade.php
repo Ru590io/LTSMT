@@ -50,8 +50,8 @@
         <h2 class="text-center mt-3">Axel Rosado</h2>
         <h2 class="text-center">Fecha 1 - Fecha 2</h2>
         <div class="d-flex justify-content-between mb-3">
-            <button onclick="location.href='semanas_del_atleta'" class="btn btn-primary">Regresar</button>
-            <button onclick="location.href='editar_semana_del_atleta'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
+            <button onclick="location.href='new_semanas_del_atleta'" class="btn btn-primary">Regresar</button>
+            <button onclick="location.href='new_editar_semana_del_atleta'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
         </div>
         {{-- <div class="text-center mb-3">
             <!-- Athlete navigation -->
