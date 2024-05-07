@@ -48,7 +48,6 @@
             </div>
         </nav>
         <h1 class="text-center">Lista de Competidores</h1>
-    @foreach($competitions as $competition)
         <h2 class="text-center">{{$competition->cname}}</h2>
         <div class="d-flex justify-content-between mb-4">
             <a href="{{ route('competition.show', ['competition' => $competition->id]) }}" class="btn btn-primary">Regresar</a>
@@ -56,14 +55,11 @@
         </div>
         <div class="d-grid gap-3">
             <!-- Lista de competidores con sus eventos -->
-        @foreach($competition->users as $user)
-            {{--@foreach($user->competitors as $competitor)--}}
-                <button class="btn btn-primary btn-lg" onclick="location.href='{{ route('competitors.listing', $user->pivot->id) }}'"> {{ $user->first_name }} {{$user->last_name}}</button>
+                @foreach($competitors as $competitor)
+                <button class="btn btn-primary btn-lg" onclick="location.href='{{ route('competitors.listing', $competitor->id) }}'"> {{ $competitor->users->first_name }} {{$competitor->users->last_name}}</button>
                 <!-- Más botones de competidores pueden ser añadidos aquí -->
-            {{--@endforeach--}}
-        @endforeach
+                @endforeach
         </div>
-    @endforeach
     </div>
 <!-- Modal -->
 <!-- Modal -->

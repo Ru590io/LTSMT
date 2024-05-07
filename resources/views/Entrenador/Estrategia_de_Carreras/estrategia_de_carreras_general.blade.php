@@ -43,7 +43,7 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Estrategia de Carreras</h1>
+        <h1 class="text-center">Lista de Competencias</h1>
         <div class="d-flex justify-content-between mb-4">
             <a href="/home" class="btn btn-primary">Regresar</a>
             <a href="/competition/add" class="btn btn-primary">Crear Competencia</a>
