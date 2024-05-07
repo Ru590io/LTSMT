@@ -231,4 +231,5 @@ class CompetitionController extends Controller
         $competition->delete();
         return response()->json(['message' => 'Competencia eliminada exitosamente']);
     }
+    
 }

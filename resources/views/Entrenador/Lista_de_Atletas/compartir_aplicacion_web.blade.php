@@ -57,16 +57,16 @@
             <!-- Hidden section for access code -->
             <input type="hidden" id="accessCode" value="{{ $code->code }}">
             <!-- Button to copy both link and access code -->
-            <button class="btn btn-primary mb-3" type="button" onclick="copyToClipboard()">Copiar Link y Codigo de Acceso</button>
+            <button class="btn btn-primary mb-3" type="button" onclick="copyToClipboard()">Copiar Enlace y Código de Acceso</button>
             <div class="mb-0">
                 <span id="webAppLink">Enlace puede ser usado solo por una persona.</span>
             </div>
             <div class="mb-3">
                 <span id="webAppLink"> El enlace expira en: {{ $formattedDisplayTime }}. Luego de ese tiempo el enlace será invalido.</span>
             </div>
-            <form action="{{ route('generate_code') }}" method="POST">
+            <form action="{{ route('generate_code') }}" method="POST" id="generateCodeForm">
                 @csrf
-                <button type="submit" class="btn btn-outline-primary">Generar Código de Acceso</button>
+                <button type="submit" class="btn btn-primary" id="generateCodeButton">Generar Código de Acceso</button>
             </form>
         </div>
     </div>
@@ -81,6 +81,18 @@
     });
 }
     </script>
+
+    {{-- Anti-spam delay --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.getElementById('generateCodeButton');
+            button.disabled = true; // Disable the button initially
+
+            setTimeout(() => {
+                button.disabled = false; // Enable the button after 5 seconds
+            }, 5000);
+        });
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -50,13 +50,16 @@
         </div>
         <div class="d-grid gap-3" id="athletes-list">
             @foreach($users as $user)
-
                 <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary btn-lg">{{ $user->first_name }} {{ $user->last_name }}</a>
-
             @endforeach
         </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ $users->links('pagination::bootstrap-4') }}
+        </div>
+
         <div class="d-flex justify-content-end">
-            <a href="/lista/delete" class="btn btn-primary mt-4">Rehabilitar Cuentas</a>
+            <a href="/lista/restore/delete" class="btn btn-primary mt-4">Activar Cuentas</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

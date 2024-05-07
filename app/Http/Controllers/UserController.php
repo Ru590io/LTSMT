@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Event;
 use App\Models\AccessCode;
+use App\Models\competition;
+use App\Models\competitors;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Rules\UniquePhoneNumber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
 use App\Rules\UpdateUniquePhoneNumber;
 use Illuminate\Support\Facades\Validator;
@@ -48,9 +52,16 @@ class UserController extends Controller
 
     public function athleteindexs()
     {
-        $users = User::where('role', 'Atleta')->orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('phone_number')->get(['first_name', 'id', 'last_name', 'phone_number']);
-       return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
+        $users = User::where('role', 'Atleta')
+                     ->orderBy('id', 'asc')
+                     ->orderBy('first_name', 'asc')
+                     ->orderBy('last_name', 'asc')
+                     ->orderBy('phone_number', 'asc')
+                     ->paginate(5, ['first_name', 'id', 'last_name', 'phone_number']);
+
+        return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
     }
+
 
     public function showathlete(User $user){
         return view('Entrenador.Lista_de_Atletas.registro_del_atleta', compact('user'));
@@ -532,5 +543,86 @@ class UserController extends Controller
     return response()->json(['message' => 'Atleta restaurado.'], 200);
     }
 
+    // IMPORTANTE PARA ESTRATEGIA_DE_CARRERA_ATLETA Y DETALLES_DE_LA_COMPETENCIA_ATLETA!!!!!!!!!!!!!!
+    public function athleteCompetitions(User $user, Competition $competition)
+{
+    // Fetch all competitions
+    $all_competitions = Competition::all();
+
+    // Fetch competitions that the user is part of
+    $user_competitions = $user->competitions;
+
+    return view('Entrenador.Lista_de_Atletas.estrategia_de_carrera_atleta', compact('user', 'all_competitions', 'user_competitions', 'competition'));
+}
+public function competitionDetails(User $user, Competition $competition)
+{
+    // Fetch all competitions
+    $all_competitions = Competition::all();
+
+    // Fetch competitions that the user is part of
+    $user_competitions = $user->competitions;
+
+    // Assuming you need to fetch events related to the competitor in this competition
+    $competitor = Competitors::with(['competition', 'users', 'events'])
+                  ->where('competition_id', $competition->id)
+                  ->where('users_id', $user->id)
+                  ->first();
+
+    $events = $competitor ? $competitor->events : collect(); // Ensure $events is not null
+
+    // Now pass all these details to the view
+    return view('Entrenador.Lista_de_Atletas.detalles_de_la_competencia_atleta', compact('user', 'all_competitions', 'user_competitions', 'competition', 'competitor', 'events'));
+}
+
+public function compshows($id)
+{
+    //$user = User::with('competitions')->get();
+    //$competitions = competition::with('users')->get();
+    $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);
+    $event = Event::with('competitors')->get();
+    //$competitors = Competitors::with('events')->findOrFail($id)->get();
+    //$events = Event::get();
+    return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitor', 'event'/*, 'competitions', 'events', 'user'*/));
+}
+public function storeEvents(Request $request, User $user, Competition $competition): RedirectResponse
+{
+    $validated = $request->validate([
+        'events.*.etime_range' => 'required|regex:/^[0-5]?[0-9]:[0-5][0-9]$/',
+        'events.*.edistance' => 'required|string|max:20|min:4|alpha_num',
+    ]);
+
+    $competitor = competitors::where('users_id', $user->id)
+        ->where('competition_id', $competition->id)
+        ->firstOrFail();
+
+    foreach ($validated['events'] as $eventData) {
+        $timeParts = explode(':', $eventData['etime_range']);
+        $totalSeconds = (int)$timeParts[0] * 60 + (int)$timeParts[1];
+
+        $event = new Event([
+            'competitors_id' => $competitor->id,
+            'etime_range' => $totalSeconds,
+            'edistance' => $eventData['edistance'],
+        ]);
+
+        $competitor->events()->save($event);
+    }
+
+    return back()->with('Exito', 'Eventos añadidos exitosamente.');
+}
+
+    public function destroysEvent(User $user, Competition $competition, Event $event): RedirectResponse
+{
+    $competitor = competitors::where('users_id', $user->id)
+        ->where('competition_id', $competition->id)
+        ->firstOrFail();
+
+    if ($event->competitors_id == $competitor->id) {
+        $event->delete();
+        return back()->with('Exito', 'Evento Eliminado.');
+    }
+
+    return back()->withErrors('No se encontró el evento para este atleta y competencia.');
+}
 
 }

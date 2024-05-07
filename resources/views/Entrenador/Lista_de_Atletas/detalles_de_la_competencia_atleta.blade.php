@@ -1,3 +1,9 @@
+@php
+    $currentEvents = $competitor->events->count();
+    $maxEventsAllowed = 5;
+    $maxAdditionalEvents = $maxEventsAllowed - $currentEvents;
+@endphp
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,101 +50,210 @@
             </div>
         </nav>
         <h1 class="text-center">Detalles de la Competencia</h1>
-        <h2 class="text-center mt-5">Competencia 1 - Axel Rosado</h2>
+        <h2 class="text-center mt-5">{{$competition->cname}} - {{ $user->first_name}} {{ $user->last_name}}</h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="estrategia_de_carrera_atleta" class="btn btn-primary">Regresar</a>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Editar Eventos</button>
+            <a href="{{ url('athlete/athletecompetitions/' . $user->id) }}" class="btn btn-primary">Regresar</a>
+            <button class="btn btn-primary" id="addEventButton" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Eventos</button>
         </div>
         <div class="card mb-5">
-            <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
-            <div class="card-body">
-                <p>Fecha y hora: 24 marzo 2024, 4:30 pm</p>
-                <hr>
-                <p>Lugar: Villalba, Puerto Rico</p>
+                <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
+                <div class="card-body">
+                    <p id="competitionDateTime"> Fecha y Hora: {{$competition->cdate}}, {{$competition->ctime}}</p>
+                    <p id="competitionLocation"> Lugar: {{$competition->cplace}}</p>
+                </div>
             </div>
-        </div>
 
-        <div class="card mb-5">
-            <div class="card-header"><h3 class="centered-text">Eventos del Atleta</h3></div>
-            <div class="card-body">
-                <p>Evento: 800m - Tiempo: 1:30</p>
-                <hr>
-                <p>Evento: 1500m - Tiempo: 2:50</p>
-                <!-- Más eventos pueden ser agregados aquí -->
+            <div class="card mb-5">
+                <div class="card-header"><h3 class="centered-text">Eventos del Atleta</h3></div>
+                <div class="card-body">
+
+                    @foreach($competitor->events as $event)
+                    <p class="d-flex justify-content-between align-items-center">
+                       Evento: {{$event->edistance}} - Tiempo: {{sprintf('%02d:%02d', floor($event->etime_range / 60), $event->etime_range % 60)}}
+                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmRemoveEventModal" data-eventid="{{$event->id}}"> Eliminar</button>
+                        <hr>
+                    </p>
+                         @endforeach
+
+                </div>
             </div>
-        </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="addCompetitorModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addCompetitorModalLabel">Editar Eventos</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Formulario para añadir competidor -->
-                        <form id="addCompetitorForm">
-                            <!-- Sección de eventos -->
-                            <div id="eventsSection">
-                                <!-- Un solo conjunto de evento y tiempo para empezar -->
-                                <div class="event-time-pair mb-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <label class="form-label me-2">Evento</label>
-                                        <select class="form-select me-2">
-                                            <option value="800">800m</option>
-                                            <option value="1500">1500m</option>
-                                            <option value="3000obs">3000m Obs</option>
-                                            <option value="5k">5k</option>
-                                            <option value="10k">10k</option>
-                                        </select>
-                                        <input type="text" class="form-control me-2" placeholder="mm:ss">
-                                        <button type="button" class="btn btn-success add-event">+</button>
-                                    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="addEventButton" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Añadir Eventos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para añadir competidor -->
+                <form id="addCompetitorForm" method="POST" action="{{ route('event.add', $competitor->id) }}">
+                        @csrf
+                        <input type="hidden" name="competitor_id" value="{{ $competitor->id }}">
+                        <!-- Sección de eventos -->
+                        <div id="eventsSection">
+                            <!-- Un solo conjunto de evento y tiempo para empezar -->
+                            <div class="event-time-pair mb-3" data-index="0">
+                                <div class="d-flex align-items-center mb-2">
+                                    <label class="form-label me-2">Evento</label>
+                                    <select class="form-select me-2" name="events[0][edistance]" id="edistance">
+                                        <option value="800m">800m</option>
+                                        <option value="1500m">1500m</option>
+                                        <option value="3000obs">3000m Obstáculos</options>
+                                        <option value="5000m">5000m</options>
+                                        <option value="10000m">10000m</options>
+                                    </select>
+                                    <input type="text" class="form-control me-2" placeholder="mm:ss" name="events[0][etime_range]" id="etime_range" required>
+                                    <button type="button" class="btn btn-success add-event">+</button>
+                                   <button type="button" class="btn btn-danger remove-event" style="display: none;">-</button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                    <div class="modal-footer">
+                        <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" form="addCompetitorForm" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="submit" form="addCompetitorForm" class="btn btn-primary" id="guardarCambiosButton">Guardar Cambios</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <script>
-        document.querySelector('.add-event').addEventListener('click', function() {
-            var select = document.querySelector('.form-select');
-            var input = document.querySelector('input[type="text"]');
-            var eventsSection = document.getElementById('eventsSection');
+        <!-- Modal for Confirming Removal of Event -->
+        <div class="modal fade" id="confirmRemoveEventModal" tabindex="-1" aria-labelledby="confirmRemoveEventModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmRemoveEventModalLabel">Confirmar Eliminación del Evento</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas remover este Evento?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        @if($competitor->events->isNotEmpty())
+                        <form class= "form" action="{{ route('event.delete', ['event' => $event->id]) }}" method="post" id="deleteEventForm">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" id="removeEvent" class="btn btn-danger"> Remover </button>
+                        </form>
+                        @else
+                        <p>No events to display.</p>
+                        @endif
+                       {{-- @endforeach--}}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            var div = document.createElement('div');
-            div.className = 'd-flex align-items-center mb-2';
-            div.innerHTML = `
-                <label class="form-label me-2">Evento</label>
-                <select class="form-select me-2">
-                    <option selected>Elige un evento</option>
-                    <option value="800">800m</option>
-                    <option value="1500">1500m</option>
-                    <option value="3000obs">3000m Obs</option>
-                    <option value="5k">5k</option>
-                    <option value="10k">10k</option>
-                </select>
-                <input type="text" class="form-control me-2" placeholder="mm:ss">
-                <button type="button" class="btn btn-danger remove-event">-</button>
-            `;
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const maxAdditionalEvents = {{ $maxAdditionalEvents }};
+                const addEventButton = document.getElementById('addEventButton');
+                const eventsSection = document.getElementById('eventsSection');
 
-            eventsSection.appendChild(div);
-        });
+                function updateAttributes(element, index) {
+                    element.querySelectorAll('input, select').forEach(input => {
+                        const name = input.name.replace(/\[\d+\]/, `[${index}]`); // Update index in name attribute
+                        input.name = name;
+                        if (input.tagName === 'INPUT' && input.type === 'text') input.value = ''; // Reset text inputs
+                    });
+                }
 
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('remove-event')) {
-                e.target.parentElement.remove();
-            }
-        });
-    </script>
+                function manageButtons() {
+                    const allEvents = eventsSection.querySelectorAll('.event-time-pair');
+                    const currentEvents = allEvents.length;
+                    const addButtons = document.querySelectorAll('.add-event');
+                    addButtons.forEach((addBtn, index) => {
+                        const removeBtn = allEvents[index].querySelector('.remove-event');
+                        // Only the last event-time-pair should show the add button
+                        if (index === allEvents.length - 1 && currentEvents < maxAdditionalEvents) {
+                            addBtn.style.display = 'inline-block';
+                            removeBtn.style.display = 'inline-block'; // Show remove if not the first
+                            addEventButton.disabled = false;
+                        } else {
+                            addBtn.style.display = 'none';
+                        }
+                        // Do not show remove button for the first event
+                        if (index === 0) {
+                            removeBtn.style.display = 'none';
+                        } else {
+                            removeBtn.style.display = 'inline-block';
+                        }
+                    });
+
+                    // Disable add event button if the maximum is reached
+                    if (currentEvents >= maxAdditionalEvents+1) {
+                        addEventButton.disabled = true;
+                    } else {
+                        addEventButton.disabled = false;
+                    }
+                }
+
+                eventsSection.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('add-event')) {
+                        const currentEvent = e.target.closest('.event-time-pair');
+                        const newIndex = document.querySelectorAll('.event-time-pair').length; // Get new index based on total count
+
+                        const newEvent = currentEvent.cloneNode(true);
+                        newEvent.setAttribute('data-index', newIndex);
+                        updateAttributes(newEvent, newIndex);
+
+                        eventsSection.appendChild(newEvent); // Append the new event at the end
+                        manageButtons(); // Update button visibility based on new structure
+                    }
+
+                    if (e.target.classList.contains('remove-event')) {
+                        const eventToRemove = e.target.closest('.event-time-pair');
+                        eventToRemove.parentNode.removeChild(eventToRemove);
+                        manageButtons(); // Re-evaluate button visibility after removal
+                    }
+                });
+
+                manageButtons(); // Initial call to set up correct button visibility
+            });
+                    </script>
+
+                    {{-- Prevent spamming of submit --}}
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const guardarCambiosButton = document.getElementById('guardarCambiosButton');
+                            const addCompetitorForm = document.getElementById('addCompetitorForm');
+
+                            addCompetitorForm.addEventListener('submit', function() {
+                                guardarCambiosButton.disabled = true;
+                            });
+                        });
+                    </script>
+
+                    {{-- Prevent spamming of remove on modals (Remover Evento) --}}
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const removeEventButton = document.getElementById('removeEvent');
+                            const deleteEventForm = document.getElementById('deleteEventForm');
+
+                            if (removeEventButton && deleteEventForm) {
+                                deleteEventForm.addEventListener('submit', function() {
+                                    removeEventButton.disabled = true;
+                                });
+                            }
+                        });
+                    </script>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const removeAthleteButton = document.getElementById('removeAthlete');
+                            const deleteAthleteForm = document.getElementById('deleteAthleteForm');
+
+                            if (removeAthleteButton && deleteAthleteForm) {
+                                deleteAthleteForm.addEventListener('submit', function() {
+                                    removeAthleteButton.disabled = true;
+                                });
+                            }
+                        });
+                    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

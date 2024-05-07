@@ -78,10 +78,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form class= "form" action="{{ route('light.delete', ['lighttraining' => $lighttraining->id]) }}" method="post">
+                    <form class= "form" action="{{ route('light.delete', ['lighttraining' => $lighttraining->id]) }}" method="post" id="eliminarTrainingForm">
                         @csrf
                         @method('delete')
-                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                    <button class="btn btn-danger" type="submit" id="eliminarTraining">Eliminar</button>
                     </form>
                 </div>
             </div>
@@ -126,6 +126,15 @@
         var tDistance = {{ json_encode($lighttraining->tdistance) }};
         var tTime = {{ json_encode($lighttraining->ttime) }}; // Make sure tTime is in seconds if needed
         calculateSegmentTimes(tDistance, tTime);
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeCompetitionForm = document.getElementById('eliminarTrainingForm');
+            const removeCompetitionButton = document.getElementById('eliminarTraining');
+            removeCompetitionForm.addEventListener('submit', function() {
+                removeCompetitionButton.disabled = true;
+            });
+        });
     </script>
 </body>
 </html>

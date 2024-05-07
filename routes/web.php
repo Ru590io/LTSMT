@@ -62,8 +62,8 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('lista/{user}', [UserController::class, 'showathlete'])->name('user.lista');
     Route::get('/generate_code', [AccessCodeController::class, 'shareweb'])->name('generate_code');
     Route::post('/generate_code', [AccessCodeController::class, 'generateAccessCode'])->name('generate_code');
-    Route::get('/lista/delete', [UserController::class, 'showdeleted'])->name('users.deleted');
-    Route::put('/lista/{user}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+    Route::get('/lista/restore/delete', [UserController::class, 'showdeleted'])->name('users.deleted');
+    Route::put('/lista/restore/{user}/restore', [UserController::class, 'restoreUser'])->name('users.restore');
 
     //Sistema de Luces
     Route::get('/light', [LighttrainingController::class, 'create'])->name('light.index');
@@ -91,11 +91,19 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'raceStrategy'])->name('athlete.strategy');
     Route::delete('/athlete/athleteinfo/{user}/distroyAthlete', [UserController::class, 'destroyAthlete'])->name('athlete.delete');
 
+    Route::post('/competition/list/asignar/atleta', [CompetitionController::class, 'assignarAtleta'])->name('competition.atleta');
+    Route::get('/competition/list/asignar/atleta', [CompetitionController::class, 'competitionshows'])->name('competition.listatleta');
+    Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'athleteCompetitions'])->name('athlete.strategy');
+    Route::get('/athlete/athletecompetitions/{user}/detalles/{competition}', [UserController::class, 'competitionDetails'])->name('competition.details');
+    Route::post('/athlete/{user}/competitions/{competition}/events', [EventsController::class, 'storeEvents'])->name('event.add');
+    Route::delete('/athlete/{user}/competitions/{competition}/events/{event}', [EventsController::class, 'destroys'])->name('event.delete');
+
     //Eventos
     Route::get('/competition/list/asignar/atleta/done/{id}', [EventsController::class, 'compshows'])->name('competitors.listing');
     Route::post('/competition/list/asignar/atleta/done/{id}', [EventsController::class, 'storeEvents'])->name('event.add');
     Route::delete('/competition/list/asignar/atleta/done/{event}/destroy', [EventsController::class, 'destroys'])->name('event.delete');
     Route::delete('/competition/list/asignar/atleta/done/comp/{competitor}/destroy', [EventsController::class, 'atheltedestroy'])->name('competitor.delete');
+
 
     //Split_Tables
     Route::get('/competition/list/asignar/atleta/{id}/tabla', [EventsController::class, 'splittableatleta'])->name('table.atleta');
@@ -216,6 +224,39 @@ Route::get('/ver_split_table_general', function () {
 Route::get('/editar_detalles_de_la_competencia', function () {
     return view('Entrenador.Estrategia_de_Carreras.editar_detalles_de_la_competencia');
 });
+
+
+// Entrenador -> Registro de Entrenamientos (NEW VERSION)
+
+Route::get('/new_asignar_semana_de_entrenamiento', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_asignar_semana_de_entrenamiento');
+});
+
+Route::get('/new_atletas_con_semanas_asignadas', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_atletas_con_semanas_asignadas');
+});
+
+Route::get('/new_crear_semana_de_entrenamiento', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_crear_semana_de_entrenamiento');
+});
+
+Route::get('/new_detalles_de_la_semana_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_detalles_de_la_semana_del_atleta');
+});
+
+Route::get('/new_editar_semana_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_editar_semana_del_atleta');
+});
+
+Route::get('/new_registro_de_entrenamientos', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_registro_de_entrenamientos');
+});
+
+Route::get('/new_semanas_del_atleta', function () {
+    return view('Entrenador.Registro_de_Entrenamientos.new_semanas_del_atleta');
+});
+
+
 
 //Entrenador-> Lista de Atletas
 Route::get('/compartir_aplicacion_web', function () {

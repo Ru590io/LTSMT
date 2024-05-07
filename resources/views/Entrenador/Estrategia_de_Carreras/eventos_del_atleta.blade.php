@@ -1,3 +1,9 @@
+@php
+    $currentEvents = $competitor->events->count();
+    $maxEventsAllowed = 5;
+    $maxAdditionalEvents = $maxEventsAllowed - $currentEvents;
+@endphp
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,8 +53,10 @@
         <h1 class="text-center">Eventos del Atleta</h1>
         <h2 class="text-center mt-2">{{ $competitor->competition->cname }} - {{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
+
             <a href="{{route('competition.listatleta', $competitor->competition->id)}}" class="btn btn-primary">Regresar</a>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Eventos</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal" id="addEventButton">Añadir Eventos</button>
+
         </div>
 
         <div class="card mb-5">
@@ -76,11 +84,12 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="addEventButton" aria-hidden="true">
+    <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="
+    " aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" {{--id="addEventButton"--}}>Añadir Eventos</h5>
+                    <h5 class="modal-title">Añadir Eventos</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -97,11 +106,11 @@
                                     <select class="form-select me-2" name="events[0][edistance]" id="edistance">
                                         <option value="800m">800m</option>
                                         <option value="1500m">1500m</option>
-                                        <option value="3000obs">3000m Obstáculos</option>
-                                        <option value="5000m">5000m</option>
-                                        <option value="10000m">10000m</option>
+                                        <option value="3000obs">3000m Obstáculos</options>
+                                        <option value="5000m">5000m</options>
+                                        <option value="10000m">10000m</options>
                                     </select>
-                                    <input type="text" class="form-control me-2" placeholder="mm:ss" name="events[0][etime_range]" id="edistance">
+                                    <input type="text" class="form-control me-2" placeholder="mm:ss" name="events[0][etime_range]" id="etime_range" required>
                                     <button type="button" class="btn btn-success add-event">+</button>
                                    <button type="button" class="btn btn-danger remove-event" style="display: none;">-</button>
                                 </div>
@@ -110,35 +119,35 @@
                     </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" form="addCompetitorForm" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="submit" form="addCompetitorForm" class="btn btn-primary" id="guardarCambiosButton">Guardar Cambios</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Confirming Removal of Athlete -->
-    <div class="modal fade" id="confirmRemoveAthleteModal" tabindex="-1" aria-labelledby="confirmRemoveAthleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmRemoveAthleteModalLabel">Confirmar Eliminación del Atleta</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas remover al atleta de la competencia?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                     <form class= "form" action="{{ route('competitor.delete', ['competitor' => $competitor->id]) }}" method="post">
+<!-- Modal for Confirming Removal of Athlete -->
+        <div class="modal fade" id="confirmRemoveAthleteModal" tabindex="-1" aria-labelledby="confirmRemoveAthleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmRemoveAthleteModalLabel">Confirmar Eliminación del Atleta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas remover al atleta de la competencia?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form class="form" action="{{ route('competitor.delete', ['competitor' => $competitor->id]) }}" method="post" id="deleteAthleteForm">
                             @csrf
                             @method('delete')
-                    <button type="submit" class="btn btn-danger">Remover</button>
-                    </form>
+                            <button type="submit" class="btn btn-danger" id="removeAthlete">Remover</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <!-- Modal for Confirming Removal of Event -->
         <div class="modal fade" id="confirmRemoveEventModal" tabindex="-1" aria-labelledby="confirmRemoveEventModalLabel" aria-hidden="true">
@@ -157,29 +166,21 @@
                         <form class= "form" action="{{ route('event.delete', ['event' => $event->id]) }}" method="post" id="deleteEventForm">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger"> Remover </button>
+                            <button type="submit" id="removeEvent" class="btn btn-danger"> Remover </button>
                         </form>
                         @else
                         <p>No events to display.</p>
                         @endif
+
                     </div>
                 </div>
             </div>
         </div>
-        <script>
-         document.addEventListener('DOMContentLoaded', function() {
-    var deleteButtons = document.querySelectorAll('[data-bs-target="#confirmRemoveEventModal"]');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            var eventId = this.getAttribute('data-eventid');
-            var form = document.querySelector('#confirmRemoveEventModal form');
-            form.action = `/competition/list/asignar/atleta/${eventId}/destroy`;
-        });
-    });
-});
-        </script>
+
         <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const maxAdditionalEvents = {{ $maxAdditionalEvents }};
+    const addEventButton = document.getElementById('addEventButton');
     const eventsSection = document.getElementById('eventsSection');
 
     function updateAttributes(element, index) {
@@ -192,13 +193,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function manageButtons() {
         const allEvents = eventsSection.querySelectorAll('.event-time-pair');
-        allEvents.forEach((event, index) => {
-            const addBtn = event.querySelector('.add-event');
-            const removeBtn = event.querySelector('.remove-event');
+        const currentEvents = allEvents.length;
+        const addButtons = document.querySelectorAll('.add-event');
+        addButtons.forEach((addBtn, index) => {
+            const removeBtn = allEvents[index].querySelector('.remove-event');
             // Only the last event-time-pair should show the add button
-            if (index === allEvents.length - 1) {
+            if (index === allEvents.length - 1 && currentEvents < maxAdditionalEvents) {
                 addBtn.style.display = 'inline-block';
                 removeBtn.style.display = 'inline-block'; // Show remove if not the first
+                addEventButton.disabled = false;
             } else {
                 addBtn.style.display = 'none';
             }
@@ -209,6 +212,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 removeBtn.style.display = 'inline-block';
             }
         });
+
+        // Disable add event button if the maximum is reached
+        if (currentEvents >= maxAdditionalEvents+1) {
+            addEventButton.disabled = true;
+        } else {
+            addEventButton.disabled = false;
+        }
     }
 
     eventsSection.addEventListener('click', function(e) {
@@ -233,8 +243,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     manageButtons(); // Initial call to set up correct button visibility
 });
-
         </script>
+
+        {{-- Prevent spamming of submit --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const guardarCambiosButton = document.getElementById('guardarCambiosButton');
+                const addCompetitorForm = document.getElementById('addCompetitorForm');
+
+                addCompetitorForm.addEventListener('submit', function() {
+                    guardarCambiosButton.disabled = true;
+                });
+            });
+        </script>
+
+        {{-- Prevent spamming of remove on modals (Remover Evento) --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const removeEventButton = document.getElementById('removeEvent');
+                const deleteEventForm = document.getElementById('deleteEventForm');
+
+                if (removeEventButton && deleteEventForm) {
+                    deleteEventForm.addEventListener('submit', function() {
+                        removeEventButton.disabled = true;
+                    });
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const removeAthleteButton = document.getElementById('removeAthlete');
+                const deleteAthleteForm = document.getElementById('deleteAthleteForm');
+
+                if (removeAthleteButton && deleteAthleteForm) {
+                    deleteAthleteForm.addEventListener('submit', function() {
+                        removeAthleteButton.disabled = true;
+                    });
+                }
+            });
+        </script>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

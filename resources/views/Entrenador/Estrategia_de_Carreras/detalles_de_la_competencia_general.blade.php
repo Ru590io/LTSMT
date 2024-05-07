@@ -88,10 +88,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form class= "form" action="{{ route('competition.delete', ['competition' => $competition->id]) }}" method="post">
+                    <form class= "form" action="{{ route('competition.delete', ['competition' => $competition->id]) }}" method="post" id="removeCompetitionForm" >
                         @csrf
                         @method('delete')
-                    <button type="submit" class="btn btn-danger">Remover</button>
+                    <button type="submit" class="btn btn-danger" id="removeCompetitionButton">Remover</button>
                     </form>
                 </div>
             </div>
@@ -111,5 +111,16 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeCompetitionForm = document.getElementById('removeCompetitionForm');
+            const removeCompetitionButton = document.getElementById('removeCompetitionButton');
+            removeCompetitionForm.addEventListener('submit', function() {
+                removeCompetitionButton.disabled = true;
+            });
+        });
+    </script>
+
 </body>
 </html>

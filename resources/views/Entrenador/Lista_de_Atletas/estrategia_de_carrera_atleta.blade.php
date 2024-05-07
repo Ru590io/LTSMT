@@ -1,3 +1,5 @@
+<!-- estrategia_de_carrera_atleta.blade.php -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,47 +46,57 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Estrategia de Carrera</h1>
-        <h2 class="text-center mt-5">Axel Rosado</h2>
+        <h1 class="text-center">Competencias del Atleta</h1>
+        <h2 class="text-center mt-5">{{ $user->first_name }} {{ $user->last_name }}</h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="registro_del_atleta" class="btn btn-primary">Regresar</a>
-            <!-- Botón para abrir el modal -->
+            <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary">Regresar</a>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitionModal">Agregar Competencia</button>
         </div>
         <div class="d-grid gap-3">
-            <!-- List of events -->
-            <a href="detalles_de_la_competencia_atleta" class="btn btn-primary btn-lg">Competencia 1</a>
-            <a href="detalles_de_la_competencia_atleta" class="btn btn-primary btn-lg">Competencia 2</a>
-            <!-- More events can be added here -->
+            @foreach($user_competitions as $competition)
+                <a href="{{ route('competition.details', ['user' => $user->id, 'competition' => $competition->id]) }}" class="btn btn-primary btn-lg">{{ $competition->cname }}</a>
+            @endforeach
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="addCompetitionModal" tabindex="-1" aria-labelledby="addCompetitionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCompetitionModalLabel">Agregar Competencia</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="competitionSelect" class="form-label">Selecciona una Competencia</label>
-                            <select class="form-select" id="competitionSelect">
-                                <option selected>Elige una competencia</option>
-                                <option value="Competencia 3">Competencia 3</option>
-                                <option value="Competencia 4">Competencia 4</option>
-                                <option value="Competencia 5">Competencia 5</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </form>
-                </div>
+<!-- Modal -->
+<div class="modal fade" id="addCompetitionModal" tabindex="-1" aria-labelledby="addCompetitionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCompetitionModalLabel">Agregar Competencia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="competitionForm" action="{{ route('competition.atleta') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="users_id" value="{{ $user->id }}">
+                    <div class="mb-3">
+                        <label for="competitionSelect" class="form-label">Selecciona una Competencia</label>
+                        <select class="form-select" id="competitionSelect" name="competition_id">
+                            @foreach($all_competitions as $competition)
+                                <option value="{{ $competition->id }}">{{ $competition->cname }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="guardarButton">Guardar</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('competitionForm');
+        const guardarButton = document.getElementById('guardarButton');
+
+        form.addEventListener('submit', function() {
+            guardarButton.disabled = true;
+        });
+    });
+</script>

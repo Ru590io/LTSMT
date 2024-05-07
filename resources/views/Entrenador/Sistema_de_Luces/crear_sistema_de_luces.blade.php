@@ -78,7 +78,7 @@
                 @enderror
 
             </div>
-            <button type="submit" class="btn btn-primary">Guardar Entrenamiento</button>
+            <button type="submit" class="btn btn-primary" id="crearLightstrip" >Guardar Entrenamiento</button>
         </form>
     </div>
 
@@ -94,5 +94,15 @@
             // Aquí iría el código para guardar los datos en la base de datos o enviarlos a un servidor.
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeCompetitionForm = document.getElementById('workoutForm');
+        const removeCompetitionButton = document.getElementById('crearLightstrip');
+        removeCompetitionForm.addEventListener('submit', function() {
+            removeCompetitionButton.disabled = true;
+        });
+    });
+</script>
 </body>
 </html>

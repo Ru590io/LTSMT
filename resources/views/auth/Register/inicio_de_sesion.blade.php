@@ -47,7 +47,7 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
 
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus pattern="[a-zA-Z0-9._%+-]+@upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos.">
                         @error('email')
 
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Escriba su contraseña" value="{{ old('upassword') }}" required autocomplete="upassword" autofocus>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Escriba su contraseña" value="{{ old('upassword') }}" required autocomplete="upassword" autofocus pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$" title="La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial. Longitud de 8 a 16 caracteres.">
                         @error('password')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
