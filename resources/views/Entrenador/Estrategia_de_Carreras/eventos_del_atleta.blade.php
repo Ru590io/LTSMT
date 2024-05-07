@@ -47,7 +47,7 @@
         <h1 class="text-center">Eventos del Atleta</h1>
         <h2 class="text-center mt-2">{{ $competitor->competition->cname }} - {{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="/competition/list/asignar/atleta" class="btn btn-primary">Regresar</a>
+            <a href="{{route('competition.listatleta', $competitor->competition->id)}}" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Eventos</button>
         </div>
 
@@ -153,13 +153,15 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        {{--@foreach($competitor->events as $event)--}}
+                        @if($competitor->events->isNotEmpty())
                         <form class= "form" action="{{ route('event.delete', ['event' => $event->id]) }}" method="post" id="deleteEventForm">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger"> Remover </button>
                         </form>
-                       {{-- @endforeach--}}
+                        @else
+                        <p>No events to display.</p>
+                        @endif
                     </div>
                 </div>
             </div>

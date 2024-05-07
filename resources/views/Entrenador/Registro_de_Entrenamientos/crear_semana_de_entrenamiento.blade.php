@@ -47,14 +47,15 @@
         </nav>
         <h1 class="text-center">Crear Semana de Entrenamiento</h1>
         {{-- method (post?) can be added down here? (method="post") --}}
-        <form id="trainingForm">
+        <form id="trainingForm" action="{{ route('schedule.add') }}" method="post">
+            @csrf
         <div class="text-left mt-4">
-            <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
+            <a href="/schedule" class="btn btn-primary mb-3">Regresar</a>
         </div>
         <!-- Campo para el nombre de la semana -->
         <div class="mb-3">
             <label for="weekName" class="form-label">Nombre de la Semana:</label>
-            <input type="text" class="form-control" id="weekName" placeholder="Ej: Entrenamiento Regular" maxlength="50" title="No más de 50 caracteres." required>
+            <input type="text" class="form-control" name="wname" id="wname" placeholder="Ej: Entrenamiento Regular" maxlength="50" title="No más de 50 caracteres." required>
         </div>
 
         {{-- <!-- Selector de atletas con búsqueda -->
@@ -117,7 +118,7 @@
                     <!-- Notas -->
                     <div class="notes-section">
                         <label for="lunes-notas">Notas:</label>
-                        <textarea class="form-control" id="lunes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                        <textarea class="form-control" name="notes" id="lunes-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -163,7 +164,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="martes-notas">Notas:</label>
-                            <textarea class="form-control" id="martes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="martes-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -210,7 +211,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="miércoles-notas">Notas:</label>
-                            <textarea class="form-control" id="miércoles-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="miércoles-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -257,7 +258,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="jueves-notas">Notas:</label>
-                            <textarea class="form-control" id="jueves-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="jueves-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -304,7 +305,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="viernes-notas">Notas:</label>
-                            <textarea class="form-control" id="viernes-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="viernes-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -351,7 +352,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="sábado-notas">Notas:</label>
-                            <textarea class="form-control" id="sábado-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="sábado-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
                     </div>
                 </div>
@@ -399,7 +400,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="domingo-notas">Notas:</label>
-                            <textarea class="form-control" id="domingo-notas" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="domingo-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
 
                     </div>
@@ -410,7 +411,7 @@
             <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
         </div>
-
+        </form>
     </div>
 
     <script>
@@ -420,11 +421,11 @@
 
             if (option === 'Fondo') {
                 optionsContainer.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Distancia (Kilometros)" min="1" max="30"
+                    <input type="number" name="${timeOfDay}-Fdistancia" style="width: 189px;" placeholder="Distancia (Kilometros)" min="1" max="30"
                     oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
                     oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
                     title="Kilometros entre 1 a 30." required />Km  Zona:
-                    <select>
+                    <select name="${timeOfDay}-Fzona">
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
@@ -433,34 +434,33 @@
                 `;
             } else if (option === 'Repeticion') {
                 optionsContainer.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
-                    oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
-                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
-                    title="Sets entre 1 a 30." required />
+                <input type="number" name="${timeOfDay}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
+            oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
+            oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
+            title="Sets entre 1 a 30." required />
 
+            <input type="number" name="${timeOfDay}-Rdistancia[]" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
+            oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+            title="Distancia entre 100 y 10000" required />m
 
-                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
-                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
-                    title="Distancia entre 100 y 10000" required />m
+            <input type="text" name="${timeOfDay}-Rtiempoesperado[]" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
+            pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
+            oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+            title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
 
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
-                    title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
+            <input type="text" name="${timeOfDay}-Rrecuperacion[]" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
+            pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
+            oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
+            title="Por favor, siga el formato (MM:SS) para la recuperación." required />
 
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
-                    title="Por favor, siga el formato (MM:SS) para la recuperación." required />
-
-                    <div id="${timeOfDay}-repetition-container">
-
-                    </div>
-                    <button type="button" class="btn btn-success mt-2" onclick="addRepetition('${timeOfDay}-repetition-container')">+</button>
+            <div id="${timeOfDay}-repetition-container"></div>
+            <button type="button" class="btn btn-success mt-2" onclick="addRepetition('${timeOfDay}-repetition-container')">+</button>
+        `;
+        // Increment the index for next use
+            } else if (option === 'Descanso') {
+                 optionsContainer.innerHTML = ` <input type="hidden" name="Descanso" value="Descanso">
 
                 `;
-            } else if (option === 'Descanso') {
-                // optionsContainer.innerHTML = 'Descanso';
             }
         }
     </script>
@@ -477,8 +477,8 @@
             resetRadioGroup('jueves-pm');
             resetRadioGroup('viernes-am');
             resetRadioGroup('viernes-pm');
-            resetRadioGroup('sabado-am');
-            resetRadioGroup('sabado-pm');
+            resetRadioGroup('sábado-am');
+            resetRadioGroup('sábado-pm');
             resetRadioGroup('domingo-am');
             resetRadioGroup('domingo-pm');
 
@@ -502,46 +502,30 @@
             document.getElementById(groupName + '-descanso').checked = true;
             toggleTrainingOptions(groupName, 'Descanso');
         };
-2
+
         function resetNotes(notesId) {
             document.getElementById(notesId).value = '';
         };
         function addRepetition(containerId) {
-            let container = document.getElementById(containerId);
-            if (container) {
-                let newRepetitionBlock = document.createElement('div');
-                newRepetitionBlock.classList.add('mt-2');
-                newRepetitionBlock.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
-                    oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2); this.setCustomValidity('');"
-                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
-                    title="Sets entre 1 a 30." required />
+    let baseName = containerId.replace('-repetition-container', '');
+    let container = document.getElementById(containerId);
+    if (container) {
+        let newRepetitionBlock = document.createElement('div');
+        newRepetitionBlock.classList.add('mt-2', 'repetition-block');
+        newRepetitionBlock.innerHTML = `
+            <input type="number" name="${baseName}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" required />
+            <input type="number" name="${baseName}-Rdistancia[]" style="width: 189px;" placeholder="Distancia (metros)" min="100" max="10000" step="100" required />
+            <input type="text" name="${baseName}-Rtiempoesperado[]" style="width: 189px;" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+            <input type="text" name="${baseName}-Rrecuperacion[]" style="width: 189px;" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+            <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">Remove</button>
+        `;
+        container.appendChild(newRepetitionBlock);
+    }
+}
 
-
-                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
-                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
-                    title="Distancia entre 100 y 10000" required />m
-
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
-                    title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
-
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);"
-                    title="Por favor, siga el formato (MM:SS) para la recuperación." required />
-
-                    <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
-                `;
-                container.appendChild(newRepetitionBlock);
-            }
-        }
-
-        function removeRepetition(button) {
-            button.parentElement.remove();
-        }
-
+function removeRepetition(button) {
+    button.parentElement.remove();
+}
 
     </script>
 
@@ -651,7 +635,7 @@
 
     </script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            /*document.addEventListener('DOMContentLoaded', function() {
                 $('#athleteSelector, #weekSelector').select2({
                     placeholder: "Seleccione",
                     allowClear: true,
@@ -672,7 +656,7 @@
                     }
                 });
 
-            });
+            });*/
         </script>
 
 

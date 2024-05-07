@@ -84,7 +84,7 @@ class User extends Authenticatable
     }
 
     public function competitions(){
-        return $this->belongsToMany(competition::class, 'competitors', 'users_id', 'competition_id')->using(competitors::class)->withTimestamps();
+        return $this->belongsToMany(competition::class, 'competitors', 'users_id', 'competition_id')->withPivot('id')->withTimestamps();
     }
    /* public function competitions() {
         return $this->belongsToMany(Competition::class, 'competitors');

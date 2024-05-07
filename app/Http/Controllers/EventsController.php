@@ -47,13 +47,9 @@ class EventsController extends Controller
 
     public function compshows($id)
     {
-        //$user = User::with('competitions')->get();
-        //$competitions = competition::with('users')->get();
         $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);
         $event = Event::with('competitors')->get();
-        //$competitors = Competitors::with('events')->findOrFail($id)->get();
-        //$events = Event::get();
-        return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitor', 'event'/*, 'competitions', 'events', 'user'*/));
+        return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitor', 'event'));
     }
 
     public function asignarEvento(Request $request, $id) {

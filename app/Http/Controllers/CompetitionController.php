@@ -56,9 +56,10 @@ class CompetitionController extends Controller
     // Display the specified competition.
     public function shows(competition $competition)
     {
-        //$competition = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->get(['id','cname', 'ctime']);
+        $competitors = Competitors::with('competition', 'users', 'events')->get('id');
+        $competitions = competition::get();
         $competition->ctime = Carbon::createFromFormat('H:i:s', $competition->ctime)->format('h:i A');
-        return view('Entrenador.Estrategia_de_Carreras.detalles_de_la_competencia_general', compact('competition'));
+    return view('Entrenador.Estrategia_de_Carreras.detalles_de_la_competencia_general', compact('competition', 'competitors', 'competitions'));
     }
 
     // Show the form for editing the specified competition.
@@ -101,11 +102,13 @@ class CompetitionController extends Controller
         return redirect()->route('competition.list')->with('Exito', 'Competencia Borrada.');
     }
 
-    public function competitionshows()
+    public function competitionshows($id)
     {
-        $competitions = Competition::with('users')->get();
+        $competitors = Competitors::with('competition', 'users', 'events')->where('competition_id', $id)->get();
+        $competition = Competition::with('users')->findOrFail($id);
+        //$competition = Competition::with('users')->get();
         $users = User::where('role', 'Atleta')->get();
-        return view('Entrenador.Estrategia_de_Carreras.lista_de_competidores', compact('competitions', 'users'));
+    return view('Entrenador.Estrategia_de_Carreras.lista_de_competidores', compact('competition', 'users', 'competitors'));
     }
 
     /*public function compshows($id)
@@ -116,7 +119,6 @@ class CompetitionController extends Controller
 
     public function assignarAtleta(Request $request) {
         $this->authorize('assignAthlete', Competition::class);  // Ensure only coaches can perform this action
-
         $competition = Competition::findOrFail($request->competition_id);
         $user = User::findOrFail($request->users_id);
 

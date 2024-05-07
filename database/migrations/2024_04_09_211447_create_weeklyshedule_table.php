@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('weeklyshedule', function (Blueprint $table) {
             $table->id();
-            $table->date('wstart_date');
-            $table->date('wend_date');
+            $table->date('wstart_date')->nullable();
+            $table->date('wend_date')->nullable();
             $table->string('wname');
             $table->foreignId('users_id')->constrained();
             $table->timestamps();
