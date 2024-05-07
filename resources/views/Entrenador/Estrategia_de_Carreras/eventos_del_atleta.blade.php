@@ -53,8 +53,10 @@
         <h1 class="text-center">Eventos del Atleta</h1>
         <h2 class="text-center mt-2">{{ $competitor->competition->cname }} - {{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="/competition/list/asignar/atleta" class="btn btn-primary">Regresar</a>
-            <button class="btn btn-primary" id="addEventButton" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Eventos</button>
+
+            <a href="{{route('competition.listatleta', $competitor->competition->id)}}" class="btn btn-primary">Regresar</a>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal" id="addEventButton">Añadir Eventos</button>
+
         </div>
 
         <div class="card mb-5">
@@ -82,7 +84,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="addEventButton" aria-hidden="true">
+    <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="
+    " aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -168,7 +171,7 @@
                         @else
                         <p>No events to display.</p>
                         @endif
-                       {{-- @endforeach--}}
+
                     </div>
                 </div>
             </div>

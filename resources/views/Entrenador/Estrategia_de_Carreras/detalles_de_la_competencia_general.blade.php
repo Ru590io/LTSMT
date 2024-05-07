@@ -44,7 +44,8 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Detalles de la Competencia</h1>
+        <h1 class="text-center mb-5">Detalles de la Competencia</h1>
+        <h2 class="text-center mt-5"> {{$competition->cname}} <h2>
         <h2 class="text-center mt-5" id="competitionName"></h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
             <a href="/competition" class="btn btn-primary">Regresar</a>
@@ -54,17 +55,22 @@
         <div class="card mb-4">
             <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
             <div class="card-body">
-                <p id="competitionDateTime"> {{$competition->cdate}} {{$competition->ctime}}</p>
-                <p id="competitionLocation"> {{$competition->cname}} {{$competition->cplace}}</p>
+                <p id="competitionDateTime"> Fecha y Hora: {{$competition->cdate}}, {{$competition->ctime}}</p>
+                <p id="competitionLocation"> Lugar: {{$competition->cplace}}</p>
             </div>
         </div>
         {{--@endforeach--}}
 
         <div class="d-grid gap-3">
-            <a href="/competition/list/asignar/atleta" class="btn btn-primary btn-lg">Ver Competidores</a>
+            {{--@if($competitors->isNotEmpty())
+            @foreach ($competitors as $competitor)--}}
+            <a href="{{route('competition.listatleta', $competition->id)}}" class="btn btn-primary btn-lg">Ver Competidores</a>
+            {{--@endforeach
+            @else
+            <p>No competitors have been added to this competition yet.</p>
+            @endif--}}
             <a href="/competition/list/tabla/general/atleta" class="btn btn-primary btn-lg">Ver Split Tables</a>
         </div>
-
         <div class="d-grid gap-3 mt-3">
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeCompetitionModal">Remover Competencia</button>
         </div>

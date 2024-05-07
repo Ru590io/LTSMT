@@ -48,7 +48,7 @@
         </nav>
         <h1 class="text-center">Calendario de Atletas</h1>
         <div class="d-flex justify-content-between mb-3">
-            <button onclick="location.href='registro_de_entrenamientos'" class="btn btn-primary">Regresar</button>
+            <button onclick="location.href='/schedule'" class="btn btn-primary">Regresar</button>
             <button onclick="location.href='editar_semana_del_atleta'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
         </div>
         {{-- <div class="text-center mb-3">

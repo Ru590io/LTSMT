@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('days', function (Blueprint $table) {
             $table->id();
             $table->string('day');
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->foreignId('weeklyshedule_id')->constrained(table: 'weeklyshedule', indexName: 'days_weeklyshedule_id');
             $table->timestamps();
         });

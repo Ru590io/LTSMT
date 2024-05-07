@@ -53,9 +53,9 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::put('/entrenadorinfo/coach/{user}/update', [UserController::class, 'coachupdates'])->name('entrenador.update');
     Route::get('/entrenadorinfo/coach/password', [PasswordResetController::class, 'editpassword'])->name('password.edit');
     Route::post('/entrenadorinfo/coach/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updates');
+
     //Home de Entrenador
     Route::get('/home', [UserController::class, 'homepage'])->name('home');
-    Route::get('/schedule', [WeeklysheduleController::class, 'create'])->name('schedule');
 
     //Compartir pagina y codigo de acceso
     Route::get('/lista', [UserController::class, 'athleteindexs'])->name('users.index');
@@ -81,6 +81,8 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/competition/list/updates/{competition}/edit', [CompetitionController::class, 'edits'])->name('competition.edit');
     Route::put('/competition/list/updates/{competition}/update', [CompetitionController::class, 'updates'])->name('competition.update');
     Route::delete('/competition/list/{competition}/destroy', [CompetitionController::class, 'destroys'])->name('competition.delete');
+    Route::post('/competition/list/asignar/atleta', [CompetitionController::class, 'assignarAtleta'])->name('competition.atleta');
+    Route::get('/competition/list/{id}/asignar/atleta', [CompetitionController::class, 'competitionshows'])->name('competition.listatleta');
 
     //Lista de Atletas
     Route::get('/athlete/{user}', [UserController::class, 'showAthleteDetails'])->name('athlete.details');
@@ -96,22 +98,27 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::post('/athlete/{user}/competitions/{competition}/events', [EventsController::class, 'storeEvents'])->name('event.add');
     Route::delete('/athlete/{user}/competitions/{competition}/events/{event}', [EventsController::class, 'destroys'])->name('event.delete');
 
-
-
-
     //Eventos
-    Route::get('/competition/list/asignar/atleta/{id}', [EventsController::class, 'compshows'])->name('competitors.listing');
-    Route::post('/competition/list/asignar/atleta/{id}', [EventsController::class, 'storeEvents'])->name('event.add');
-    Route::delete('/competition/list/asignar/atleta/{event}/destroy', [EventsController::class, 'destroys'])->name('event.delete');
-    Route::delete('/competition/list/asignar/atleta/delete/{competitor}/destroy', [EventsController::class, 'atheltedestroy'])->name('competitor.delete');
+    Route::get('/competition/list/asignar/atleta/done/{id}', [EventsController::class, 'compshows'])->name('competitors.listing');
+    Route::post('/competition/list/asignar/atleta/done/{id}', [EventsController::class, 'storeEvents'])->name('event.add');
+    Route::delete('/competition/list/asignar/atleta/done/{event}/destroy', [EventsController::class, 'destroys'])->name('event.delete');
+    Route::delete('/competition/list/asignar/atleta/done/comp/{competitor}/destroy', [EventsController::class, 'atheltedestroy'])->name('competitor.delete');
+
 
     //Split_Tables
     Route::get('/competition/list/asignar/atleta/{id}/tabla', [EventsController::class, 'splittableatleta'])->name('table.atleta');
     Route::get('/competition/list/tabla/general/atleta', [EventsController::class, 'splittablegeneral'])->name('table.general');
 
+    //Weeklyshedule
+    Route::get('/schedule', [WeeklysheduleController::class, 'optionsweek'])->name('schedule');
+    Route::get('/schedule/add', [WeeklysheduleController::class, 'createweek'])->name('schedule.add');
+    Route::post('/schedule/add', [WeeklysheduleController::class, 'createweekschedules'])->name('schedule.add');
+    Route::get('/schedule/list', [WeeklysheduleController::class, 'listweek'])->name('schedule.list');
+    Route::get('/schedule/calendar', [WeeklysheduleController::class, 'seeweek'])->name('schedule.atleta');
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {
+    //Informacion del Atleta
     Route::post('/logouts', [AuthController::class, 'athletelogout'])->name('atlogout');
     Route::get('/atlhome', [UserController::class, 'athletehome'])->name('home.atleta');
     Route::get('/atletainfo/{user}', [UserController::class, 'atletaindex'])->name('atleta.index');

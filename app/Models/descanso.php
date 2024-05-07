@@ -12,7 +12,7 @@ class descanso extends Model
     protected $table = 'descanso';
 
     protected $fillable = [
-        'ddescanso',
+        'Descanso',
     ];
 
     public function am()
