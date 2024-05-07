@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Atletas con Cuentas Inhabilitadas</title>
+    <title>Atletas con Cuentas Desactivadas</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
@@ -43,30 +43,62 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center mb-4">Atletas con Cuentas Inhabilitadas</h1>
+        <h1 class="text-center mb-4">Atletas con Cuentas Desactivadas</h1>
         <a href="/lista" class="btn btn-primary mb-4">Regresar</a>
         <div class="list-group">
             <!-- List of athletes with invalid accounts -->
             @foreach ($users as $user)
             <div class="list-group-item d-flex justify-content-between align-items-center">
-                {{ $user->first_name }} {{ $user->last_name }}
-                <form action="{{ route('users.restore', $user->id) }}" method="POST" class="form mt-5">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-success">Rehabilitar Cuenta</button>
-                </form>
+                <h5>{{ $user->first_name }} {{ $user->last_name }}<h5>
+                <button class="btn btn-primary rehabilitarButton mb-2 mt-3" data-bs-toggle="modal" data-bs-target="#confirmRestoreModal" data-userid="{{ $user->id }}">Activar Cuenta</button>
             </div>
             @endforeach
         </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmRestoreModal" tabindex="-1" aria-labelledby="confirmRestoreModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmRestoreModalLabel">Confirmar Activación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas activar esta cuenta?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form action="{{ route('users.restore', ':id') }}" method="POST" id="confirmRestoreForm">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-primary" id="confirmRestoreButton">Confirmar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-       /* function rehabilitarCuenta(athleteId) {
-            // Aquí debes agregar la lógica para rehabilitar la cuenta del atleta
-            console.log("Rehabilitando cuenta para el atleta con ID:", athleteId);
-            // Por ejemplo, podrías enviar una solicitud a tu servidor aquí
-        }*/
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.rehabilitarButton');
+            const confirmRestoreForm = document.getElementById('confirmRestoreForm');
+            const confirmRestoreButton = document.getElementById('confirmRestoreButton');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-userid');
+                    confirmRestoreForm.action = confirmRestoreForm.action.replace(':id', userId);
+                });
+            });
+
+            confirmRestoreForm.addEventListener('submit', function() {
+                confirmRestoreButton.disabled = true;
+            });
+        });
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

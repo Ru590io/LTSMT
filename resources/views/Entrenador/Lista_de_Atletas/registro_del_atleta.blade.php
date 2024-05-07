@@ -70,7 +70,7 @@
                 <!-- Additional Buttons -->
                 <div class="d-grid gap-3">
                     <button onclick="location.href='{{ url('athlete/athletetraining/' . $user->id) }}'" id="trainingLogsButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</button>
-                    <button onclick="location.href='{{ url('athlete/athletecompetitions/' . $user->id) }}'" id="raceStrategyButton" class="btn btn-primary btn-lg">Estrategia de Carrera</button>
+                    <button onclick="location.href='{{ url('athlete/athletecompetitions/' . $user->id) }}'" id="raceStrategyButton" class="btn btn-primary btn-lg">Competencias del Atleta</button>
 
                 </div>
 

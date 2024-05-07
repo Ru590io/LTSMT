@@ -59,7 +59,7 @@ class LighttrainingController extends Controller
 
         LightTraining::create($validatedData);
 
-        return redirect()->route('light.index')->with('Exito', 'Entrenamiento de Luz Creado.');
+        return redirect()->route('light.list')->with('Exito', 'Entrenamiento de Luz Creado.');
     }
 
     public function show(LightTraining $lighttraining)

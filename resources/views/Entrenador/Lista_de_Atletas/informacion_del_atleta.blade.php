@@ -50,16 +50,16 @@
                     <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary mb-3">Regresar</a>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Nombre:</label> <span class="form-label"> {{ $user->first_name }} {{ $user->last_name }}</span>
+                    <h5><label class="form-label">Nombre:</label> <span class="form-label"> {{ $user->first_name }} {{ $user->last_name }}</span>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Correo Electrónico:</label> <span class="form-label"> {{$user->email}}</span>
+                    <h5><label class="form-label">Correo Electrónico:</label> <span class="form-label"> {{$user->email}}</span>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Número de Teléfono:</label> <span class="form-label"> {{$user->phone_number}}</span>
+                    <h5><label class="form-label">Número de Teléfono:</label> <span class="form-label"> {{$user->phone_number}}</span>
                 </div>
                 <div class="d-flex justify-content-end align-items-center mb-4">
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#invalidateSessionModal">Inhabilitar Cuenta</button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#invalidateSessionModal">Desactivar Cuenta</button>
                 </div>
                 <!-- Formulario oculto para la invalidación de la sesión -->
                 <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-none">
@@ -82,15 +82,26 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form id= athleteDelete class= "form" action="{{ route('athlete.delete', ['user' => $user->id]) }}" method="post">
+                    <form id="athleteDelete" class="form" action="{{ route('athlete.delete', ['user' => $user->id]) }}" method="post">
                         @csrf
                         @method('delete')
-                        <button type="button" class="btn btn-danger" onclick="document.getElementById('athleteDelete').submit();">Confirmar</button>
+                        <button type="submit" class="btn btn-danger" id="confirmButton">Confirmar</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmButton = document.getElementById('confirmButton');
+            const athleteDelete = document.getElementById('athleteDelete');
+
+            athleteDelete.addEventListener('submit', function() {
+                confirmButton.disabled = true;
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

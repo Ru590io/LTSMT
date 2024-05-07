@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <title>Crear Semana de Entrenamiento</title>
+    <title>Editar Semana del Atleta</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
@@ -45,15 +45,20 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Crear Semana de Entrenamiento</h1>
+        <h1 class="text-center">Editar Semana del Atleta</h1>
         {{-- method (post?) can be added down here? (method="post") --}}
         <form id="trainingForm">
         <div class="text-left mt-4">
-            <a href="registro_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
+            <a href="calendario_de_atletas" class="btn btn-primary mb-3">Regresar</a>
         </div>
+        <!-- Campo para el nombre de la semana -->
+        {{-- <div class="mb-3">
+            <label for="weekName" class="form-label">Nombre de la Semana:</label>
+            <input type="text" class="form-control" id="weekName" placeholder="Ej: Semana del 1 al 7 de Marzo">
+        </div> --}}
 
-        {{-- <!-- Selector de atletas con búsqueda -->
-        <div class="mb-3">
+        <!-- Selector de atletas con búsqueda -->
+        {{-- <div class="mb-3">
             <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
             <select class="form-control" id="athleteSelector">
                 <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
@@ -63,15 +68,15 @@
                 <option value="3">Rubén Marrero</option>
                 <!-- más atletas -->
             </select>
-        </div>
-
+        </div> --}}
+        <h2 class="text-center mt-2">Axel Rosado</h2>
         <div class="mb-3">
             <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
             <select class="form-control" id="weekSelector">
                 <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
                 <option></option> <!-- Opción vacía para la búsqueda -->
             </select>
-        </div> --}}
+        </div>
             <!--Lunes-->
             <div class="card mb-5 mt-5">
                 <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
@@ -307,7 +312,7 @@
 
             <!--Sábado-->
             <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
+                <div class="card-header"><h3 class="centered-text">Sabado</h3></div>
                     <div class="card-body">
                         <!-- Sección AM -->
                         <div class="time-of-day-section">
@@ -338,16 +343,7 @@
                             </div>
                             <!-- Contenido dinámico para PM -->
                             <div class="dynamic-content" id="sábado-pm-options"></div>
-                            <div class="time-of-day-section">
-                                <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="viernes-pm-descanso" name="viernes-pm" value="Descanso" onchange="toggleTrainingOptions('viernes-pm', this.value)" checked>
-                                <label for="viernes-pm-descanso">Descanso</label>
-                                <input type="radio" id="viernes-pm-fondo" name="viernes-pm" value="Fondo" onchange="toggleTrainingOptions('viernes-pm', this.value)">
-                                <label for="viernes-pm-fondo">Fondo</label>
-                                <input type="radio" id="viernes-pm-repeticion" name="viernes-pm" value="Repeticion" onchange="toggleTrainingOptions('viernes-pm', this.value)">
-                                <label for="viernes-pm-repeticion">Repetición</label>
-                            </div>
+
                         </div>
                         <!-- Línea divisoria -->
                         <hr>
@@ -411,10 +407,27 @@
             </div>
 
         <div class="d-grid gap-3 mt-5">
-            <button onclick="location.href='asignar_semana_de_entrenamiento'" type="submit" class="btn btn-primary btn-lg">Guardar</button>
+            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
             <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
         </div>
-
+    </div>
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta semana de entrenamiento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteWeek()">Eliminar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -424,13 +437,9 @@
 
             if (option === 'Fondo') {
                 optionsContainer.innerHTML = `
-                <input type="number" style="width: 189px;" placeholder="Distancia (Kilometros)" min="1" max="30"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
-                oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
-                title="Kilometros entre 1 a 30." required />Km Zona:
-
-
+                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (Kilometros)" min="1" max="30" title= "Distancia entre 1 y 10" required />
                     <select>
+                        <option value="">Zona</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
@@ -439,30 +448,10 @@
                 `;
             } else if (option === 'Repeticion') {
                 optionsContainer.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
-                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
-                    title="Sets entre 1 a 30." required />
-
-
-
-                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5); this.setCustomValidity('');"
-                    title="Distancia entre 100 y 10000" required />m
-
-
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if (/[^0-9:]/.test(this.value)) this.value = this.value.replace(/[^0-9:]/g, ''); this.setCustomValidity('');"
-                    title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
-
-
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if (/[^0-9:]/.test(this.value)) this.value = this.value.replace(/[^0-9:]/g, ''); this.setCustomValidity('');"
-                    title="Por favor, siga el formato (MM:SS) para la recuperación." required />
-
-
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title= "Sets entre 1 a 30." required />
+                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
+                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
                     <div id="${timeOfDay}-repetition-container">
 
                     </div>
@@ -522,29 +511,10 @@
                 let newRepetitionBlock = document.createElement('div');
                 newRepetitionBlock.classList.add('mt-2');
                 newRepetitionBlock.innerHTML = `
-                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
-                    oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
-                    title="Sets entre 1 a 30." required />
-
-
-
-                    <input type="number" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5); this.setCustomValidity('');"
-                    title="Distancia entre 100 y 10000" required />m
-
-
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if (/[^0-9:]/.test(this.value)) this.value = this.value.replace(/[^0-9:]/g, ''); this.setCustomValidity('');"
-                    title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
-
-
-                    <input type="text" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
-                    pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
-                    oninput="if (/[^0-9:]/.test(this.value)) this.value = this.value.replace(/[^0-9:]/g, ''); this.setCustomValidity('');"
-                    title="Por favor, siga el formato (MM:SS) para la recuperación." required />
-
+                    <input type="number" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" title="Sets entre 1 a 30." required />
+                    <input type="number" id="distance" placeholder="Distancia (metros)" min="100" title= "Distancia entre 100 y 10000" required />
+                    <input type="text" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
+                    <input type="text" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-9]{1,2}" title= "Porfavor, siga el formato (MM:SS)." required />
                     <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
                 `;
                 container.appendChild(newRepetitionBlock);
@@ -629,8 +599,7 @@
             }
 
             function formatDate(date) {
-                return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-                // return date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                return date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             }
 
             function generateWeekOptions() {

@@ -49,8 +49,7 @@
         </div>
         <div class="d-grid gap-3 mt-4">
             <a href="crear_semana_de_entrenamiento" id="createTrainingWeekButton" class="btn btn-primary btn-lg">Crear Semana de Entrenamiento</a>
-            <a href="lista_de_entrenamientos" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Ver Entrenamientos Guardados</a>
-            <a href="calendario_de_atletas" id="viewAthleteTrainingsCalendarButton" class="btn btn-primary btn-lg">Ver Calendario de Atletas</a>
+            <a href="atletas_con_semanas_asignadas" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Atletas con Semanas Asignadas</a>
         </div>
     </div>
 
