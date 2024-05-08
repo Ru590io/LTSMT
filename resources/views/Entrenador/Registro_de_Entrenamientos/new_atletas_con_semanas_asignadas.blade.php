@@ -44,15 +44,16 @@
         </nav>
         <h1 class="text-center">Atletas con Semanas Asignadas</h1>
         <div class="d-flex justify-content-between mb-4">
-            <a href="/new_registro_de_entrenamientos" class="btn btn-primary">Regresar</a>
+            <a href="/schedule" class="btn btn-primary">Regresar</a>
         </div>
+
+    @foreach ($users as $user)
         <div class="d-grid gap-3" id="athletes-list">
-            <a href="/new_semanas_del_atleta" class="btn btn-primary btn-lg">John Doe</a>
-            <a href="/new_semanas_del_atleta" class="btn btn-primary btn-lg">Jane Smith</a>
-            <a href="/new_semanas_del_atleta" class="btn btn-primary btn-lg">Alex Johnson</a>
+        <a href="{{ route('week.listed', $user->id) }}" class="btn btn-primary btn-lg mb-3">
+            {{ $user->first_name }} {{ $user->last_name }}
+        </a>
         </div>
-
-
+    @endforeach
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

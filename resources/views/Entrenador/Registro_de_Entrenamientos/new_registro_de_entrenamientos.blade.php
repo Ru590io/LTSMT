@@ -48,8 +48,9 @@
             <button onclick="location.href='/home'" class="btn btn-primary">Regresar</button>
         </div>
         <div class="d-grid gap-3 mt-4">
-            <a href="new_crear_semana_de_entrenamiento" id="createTrainingWeekButton" class="btn btn-primary btn-lg">Crear Semana de Entrenamiento</a>
-            <a href="new_atletas_con_semanas_asignadas" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Atletas con Semanas Asignadas</a>
+            <a href="/schedule/add" id="createTrainingWeekButton" class="btn btn-primary btn-lg">Crear Semana de Entrenamiento</a>
+            <a href="/schedule/add/show/week/athletes" id="viewSavedTrainingsButton" class="btn btn-primary btn-lg">Atletas con Semanas Asignadas</a>
+
         </div>
     </div>
 
