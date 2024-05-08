@@ -450,7 +450,7 @@
             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
             oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
             title="Sets entre 1 a 30." required />
-            
+
 
             <input type="number" name="${timeOfDay}-Rdistancia[]" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5); this.setCustomValidity('');"
@@ -523,26 +523,31 @@
             document.getElementById(notesId).value = '';
         };
         function addRepetition(containerId) {
-
-    let baseName = containerId.replace('-repetition-container', '');
-    let container = document.getElementById(containerId);
-    if (container) {
-        let newRepetitionBlock = document.createElement('div');
-        newRepetitionBlock.classList.add('mt-2', 'repetition-block');
-        newRepetitionBlock.innerHTML = `
-            <input type="number" name="${baseName}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" required />
-            <input type="number" name="${baseName}-Rdistancia[]" style="width: 189px;" placeholder="Distancia (metros)" min="100" max="10000" step="100" required />
-            <input type="text" name="${baseName}-Rtiempoesperado[]" style="width: 189px;" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
-            <input type="text" name="${baseName}-Rrecuperacion[]" style="width: 189px;" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
-            <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">Remove</button>
-        `;
-        container.appendChild(newRepetitionBlock);
+        let baseName = containerId.replace('-repetition-container', '');
+        let container = document.getElementById(containerId);
+        if (container) {
+            let repetitionBlocks = container.getElementsByClassName('repetition-block');
+            // Check if there are less than 4 repetition blocks already
+            if (repetitionBlocks.length < 9) { // Modified: Set limit to 4 additional blocks
+                let newRepetitionBlock = document.createElement('div');
+                newRepetitionBlock.classList.add('mt-2', 'repetition-block');
+                newRepetitionBlock.innerHTML = `
+                    <input type="number" name="${baseName}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" required />
+                    <input type="number" name="${baseName}-Rdistancia[]" style="width: 189px;" placeholder="Distancia (metros)" min="100" max="10000" step="100" required />
+                    <input type="text" name="${baseName}-Rtiempoesperado[]" style="width: 189px;" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+                    <input type="text" name="${baseName}-Rrecuperacion[]" style="width: 189px;" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+                    <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">Remove</button>
+                `;
+                container.appendChild(newRepetitionBlock);
+            } else {
+                alert('No se pueden agregar más de 10 repeticiones en total para esta sesión.'); // Added: Alert when limit is reached
+            }
+        }
     }
-}
 
-function removeRepetition(button) {
-    button.parentElement.remove();
-}
+    function removeRepetition(button) {
+        button.parentElement.remove();
+    }
 
     </script>
 

@@ -60,8 +60,10 @@
                 <!-- Más botones de competidores pueden ser añadidos aquí -->
                 @endforeach
         </div>
+        <div class="d-flex justify-content-center mt-3">
+            {{ $competitors->links('pagination::bootstrap-4') }}
+        </div>
     </div>
-<!-- Modal -->
 <!-- Modal -->
 <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="addCompetitorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -73,7 +75,7 @@
 
             <div class="modal-body">
                 <!-- Formulario para añadir competidor -->
-                <form id="addCompetitorForm" method="POST" action="{{ route('competition.atleta') }}">
+                <form id="addCompetitorForm" method="POST" action="{{ route('competition.atleta') }}" onsubmit="return validateForm()">
                     @csrf
                     <!-- Lista desplegable de competidores -->
                             <!-- Selector de atletas con búsqueda -->
@@ -89,35 +91,6 @@
                             <!-- más atletas -->
                         </select>
                     </div>
-                    {{-- <div class="mb-3">
-                        <label for="competitorSelect" class="form-label">Selecciona un Competidor</label>
-                        <select class="form-select" id="competitorSelect">
-                            <option selected>Elige un competidor</option>
-                            <option value="1">Competidor 1</option>
-                            <option value="2">Competidor 2</option>
-                            <option value="3">Competidor 3</option>
-                        </select>
-                    </div> --}}
-
-                    {{-- <!-- Sección de eventos -->
-                    <div id="eventsSection">
-                        <!-- Un solo conjunto de evento y tiempo para empezar -->
-                        <div class="event-time-pair mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <label class="form-label me-2">Evento</label>
-                                <select class="form-select me-2">
-                                    <option selected>Elige un evento</option>
-                                    <option value="800">800m</option>
-                                    <option value="1500">1500m</option>
-                                    <option value="3000obs">3000m Obs</option>
-                                    <option value="5k">5k</option>
-                                    <option value="10k">10k</option>
-                                </select>
-                                <input type="text" class="form-control me-2" placeholder="mm:ss">
-                                <button type="button" class="btn btn-success add-event">+</button>
-                            </div>
-                        </div>
-                    </div> --}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -178,7 +151,16 @@
             }
         });
     });
+    function validateForm() {
+        var selectedAthlete = $('#athleteSelector').val();
+        if (!selectedAthlete) {
+            alert('Por favor, selecciona un atleta.');
+            return false;
+        }
+        return true;
+    }
 </script>
+
 
 </body>
 </html>

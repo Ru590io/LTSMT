@@ -302,6 +302,23 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('Exito', 'Cuenta Inhabilitada.');
     }
 
+    public function trainingLogsList(User $user)
+    {
+        //$this->authorize('view', $user);
+        return view('Entrenador.lista_de_atletas.new_semanas_del_atleta', compact('user'));
+    }
+
+    public function trainingLogsWeekDetails(User $user)
+    {
+        //$this->authorize('view', $user);
+        return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user'));
+    }
+    public function trainingLogsWeekEdit(User $user)
+    {
+        //$this->authorize('view', $user);
+        return view('Entrenador.lista_de_atletas.editar_semana_de_entrenamiento_atleta', compact('user'));
+    }
+
     //API///////////////////////////////////////////////////////////////////////////////////////////////////
      // GET /users
      public function indexss()
@@ -624,5 +641,13 @@ public function storeEvents(Request $request, User $user, Competition $competiti
 
     return back()->withErrors('No se encontró el evento para este atleta y competencia.');
 }
+
+    // View athlete weeks (athlete views)
+    public function athleteweeks(){
+        //$users = User::orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('email', 'asc')->orderBy('phone_number', 'asc')->get(['id','first_name', 'last_name', 'email', 'phone_number']);
+        $user = auth()->user();
+        return view('Atleta.lista_de_semanas_asignadas', compact('user'));
+    }
+
 
 }

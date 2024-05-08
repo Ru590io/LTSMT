@@ -47,7 +47,7 @@
         <h1 class="text-center">{{ $user->first_name }} {{ $user->last_name }}</h1>
 
         <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
+
                 <!-- Athlete Info Button -->
                 <div class="d-flex justify-content-between mb-3">
                     <button onclick="location.href='/lista'" class="btn btn-primary">Regresar</button>
@@ -57,24 +57,33 @@
                 </div>
 
                 <!-- Today's Training Box -->
+            <!--Entrenamiento de Hoy-->
+            <div id="schedule">
                 <div class="card mb-3">
+                    <div class="card-header"><h3 class="centered-text">Entrenamiento de Hoy</h3></div>
                     <div class="card-body">
-                        <h5 class="card-title">Entrenamiento de Hoy</h5>
-                        <p class="card-text">
-                            pm: cal. 15' + driles + 5 x 60m rectas +
-                            1 x km (3:05) rec. 2'
-                            5 x 200m (29") rec. 2' + enf. 10' + flex.
-                        </p>
+                        <h3>AM:</h3>
+                            <div>rec. 2' 5 x 200m (29") </div>
+                            <div>rec. 2' + enf. 10' + flex.</div>
+                        <hr>
+                        <h3>PM:</h3>
+                        Descanso
+                        <hr>
+                        <div class="notes-section">
+                            <label for="lunes-notas"><h4>Notas:</h4></label>
+                            Baño de agua fria.
+                        </div>
                     </div>
                 </div>
                 <!-- Additional Buttons -->
-                <div class="d-grid gap-3">
-                    <button onclick="location.href='{{ url('athlete/athletetraining/' . $user->id) }}'" id="trainingLogsButton" class="btn btn-primary btn-lg">Registro de Entrenamientos</button>
+                <div class="d-grid gap-3 mt-3">
+                    {{-- <button onclick="location.href='{{ url('athlete/athletetraining/' . $user->id) }}'" id="trainingLogsButton" class="btn btn-primary btn-lg">Entrenamiento del Atleta</button> --}}
+                    <button onclick="location.href='{{ url('athlete/athletetraininglist/' . $user->id) }}'" id="trainingLogsButton" class="btn btn-primary btn-lg">Semanas Asignadas del Atleta</button>
                     <button onclick="location.href='{{ url('athlete/athletecompetitions/' . $user->id) }}'" id="raceStrategyButton" class="btn btn-primary btn-lg">Competencias del Atleta</button>
 
                 </div>
 
-            </div>
+
         </div>
     </div>
 

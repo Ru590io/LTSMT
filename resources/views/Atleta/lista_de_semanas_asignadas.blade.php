@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Sistema de Luces</title>
-    <link href="{{url('Css/styles.css')}}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Lista de Atletas</title>
+    <link href="/Css/styles.css" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
             <div class="logo-text">LTSMT</div>
@@ -18,7 +18,6 @@
 
 <body>
     <div class="container">
-
         <nav class="navbar custom-navbar">
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,22 +42,19 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Sistema de Luces</h1>
-        <div class="row justify-content-center mt-5">
-
-                <div class="d-flex text-left">
-                    <a href="/home" class="btn btn-primary mb-3">Regresar</a>
-                </div>
-                <!-- Big Buttons -->
-                <div class="d-grid gap-3">
-                    <a href="/light/add" class="btn btn-primary btn-lg">Crear Entrenamiento de Luces</a>
-                    <a href="{{ route('light.list') }}" class="btn btn-primary btn-lg">Entrenamientos de Luces Registrados</a>
-                </div>
-
+        <h1 class="text-center">Semanas Asignadas del Atleta</h1>
+        <div class="d-flex justify-content-between mb-4">
+            <a href="/atlhome" class="btn btn-primary">Regresar</a>
         </div>
+        <div class="d-grid gap-3" id="athletes-list">
+            <a href="/calendario_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
+            <a href="/calendario_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
+            <a href="/calendario_del_atleta" class="btn btn-primary btn-lg">Fecha 1 - Fecha 2</a>
+        </div>
+
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 </body>
 </html>

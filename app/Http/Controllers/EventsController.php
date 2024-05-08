@@ -135,9 +135,16 @@ class EventsController extends Controller
 
     public function atheltedestroy(competitors $competitor)
     {
+        // If the relationship is correctly defined, you can directly access the competition_id attribute
+        $competitionId = $competitor->competition_id;
+
+        // Delete the competitor
         $competitor->delete();
-        return redirect()->route('competition.listatleta')->with('Exito', 'Competidor Eliminado.');
+
+        // Redirect to the specific competition's list of athletes, passing the competition ID
+        return redirect()->route('competition.listatleta', ['id' => $competitionId])->with('Exito', 'Competidor Eliminado.');
     }
+
 
     public function splittableatleta($id){
         $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);

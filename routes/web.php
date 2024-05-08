@@ -91,12 +91,19 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'raceStrategy'])->name('athlete.strategy');
     Route::delete('/athlete/athleteinfo/{user}/distroyAthlete', [UserController::class, 'destroyAthlete'])->name('athlete.delete');
 
+
     Route::post('/competition/list/asignar/atleta', [CompetitionController::class, 'assignarAtleta'])->name('competition.atleta');
     //Route::get('/competition/list/{id}/asignar/atleta', [CompetitionController::class, 'competitionshows'])->name('competition.listatleta');
+
     Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'athleteCompetitions'])->name('athlete.strategy');
     Route::get('/athlete/athletecompetitions/{user}/detalles/{competition}', [UserController::class, 'competitionDetails'])->name('competition.details');
     Route::post('/athlete/{user}/competitions/{competition}/events', [EventsController::class, 'storeEvents'])->name('event.add');
     Route::delete('/athlete/{user}/competitions/{competition}/events/{event}', [EventsController::class, 'destroys'])->name('event.delete');
+
+    //Lista de Atletas (new)
+    Route::get('/athlete/athletetraininglist/{user}', [UserController::class, 'trainingLogsList'])->name('athlete.traininglist');
+    Route::get('/athlete/athletetraininglist/{user}/weekdetails', [UserController::class, 'trainingLogsWeekDetails'])->name('athlete.trainingweekdetails');
+    Route::get('/athlete/athletetraininglist/{user}/weekdetails/edit', [UserController::class, 'trainingLogsWeekEdit'])->name('athlete.trainingweekedit');
 
     //Eventos
     Route::get('/competition/list/asignar/atleta/done/{id}', [EventsController::class, 'compshows'])->name('competitors.listing');
@@ -133,6 +140,7 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
     Route::put('/atletainfo/athlete/{user}/update', [UserController::class, 'coachupdates'])->name('atleta.update');
     Route::get('/atletainfo/athlete/password', [PasswordResetController::class, 'atletaeditpassword'])->name('password.edits');
     Route::post('/atletainfo/athlete/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updated');
+    Route::get('/atletaweeks', [UserController::class, 'athleteweeks'])->name('atleta.weeks');
 });
 
 Route::post('/send-training-data', [LighttrainingController::class, 'sendTrainingData']);

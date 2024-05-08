@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Entrenamiento del Atleta</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <title>Detalles de la Semana</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
@@ -12,7 +15,6 @@
         </div>
     </a>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
@@ -44,12 +46,15 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Entrenamiento del Atleta</h1>
+        <h1 class="text-center">Detalles de la Semana</h1>
+        <h2 class="text-center mt-3">{{ $user->first_name }} {{ $user->last_name }}</h2>
+        <h2 class="text-center">Fecha 1 - Fecha 2</h2>
         <div class="d-flex justify-content-between mb-3">
-            <button onclick="location.href='registro_del_atleta'" class="btn btn-primary">Regresar</button>
-            <button onclick="location.href='editar_semana_de_entrenamiento_atleta'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
+            <button onclick="location.href='{{ url('athlete/athletetraininglist/' . $user->id) }}'" class="btn btn-primary">Regresar</button>
+            <button onclick="location.href='{{ route('athlete.trainingweekedit', ['user'=> $user->id]) }}'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
+
         </div>
-        <div class="text-center mb-3">
+        {{-- <div class="text-center mb-3">
             <!-- Athlete navigation -->
             <a href="#" class="btn">&lt;</a> <!-- Previous athlete -->
             <select class="form-select d-inline-block w-auto" id="athleteDropdown">
@@ -69,7 +74,8 @@
                 <!-- More weeks can be added here -->
             </select>
             <a href="#" class="btn">&gt;</a> <!-- Next week -->
-        </div>
+        </div> --}}
+
         <div id="schedule">
             <!-- Cards for each day -->
             <!--Lunes-->
@@ -164,7 +170,7 @@
 
             <!--Sabado-->
             <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sabao</h3></div>
+                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
                 <div class="card-body">
                     <h3>AM:</h3>
                         <div>rec. 2' 5 x 200m (29") </div>
@@ -200,11 +206,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        // JavaScript for navigating weeks and updating schedule goes here
-        // Example: document.getElementById('weekDropdown').addEventListener('change', function() {...});
-        // Example: document.getElementById('athleteDropdown').addEventListener('change', function() {...});
-    </script>
+
 </body>
 </html>
