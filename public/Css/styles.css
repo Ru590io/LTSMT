@@ -150,6 +150,36 @@ table .highlight-column {
     color: #0A9909; /* Change to your desired hover color */
 }
 
+/* Resalta el como se ven las opciones del navegation bar */
+.navbar-nav .nav-link {
+    color: #000; /* Default text color */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link:focus {
+    color: #dfffe4; /* Brighter color on hover */
+    background-color: #0A7302; /* Optional: add a background color */
+    text-decoration: none; /* Remove underline */
+}
+
+/* Adding a subtle text shadow can also help make text pop out more */
+.navbar-nav .nav-link:hover {
+    text-shadow: 0 0 10px rgba(255,255,255,0.7); /* White glow for dark backgrounds */
+}
+.nav-link {
+    display: block;
+    padding: 10px 20px; /* Adjust padding to provide more space around the text */
+    border-radius: 5px; /* Rounded corners for the background */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for background and text color */
+}
+
+.nav-link:hover, .nav-link:focus {
+    background-color: #004d40; /* Slightly different shade for the hover state */
+    color: #ffffff; /* Ensure text color is also contrasting */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: subtle shadow */
+}
+
+
 colors{
 
     /* Primary: Lush Plains */

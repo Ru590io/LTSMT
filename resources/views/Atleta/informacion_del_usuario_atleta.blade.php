@@ -22,19 +22,25 @@
 
                     <a href="{{route('atleta.edit', ['user' => $user])}}" class="btn btn-primary mb-3">Editar Información</a>
                 </div>
+                <div class="card mb-3">
+                    <div class="card-body text-center">
                 <div class="mb-3">
                     <h5><label class="form-label">Nombre:</label> <span class="form-label" id="nombre"> {{ $user->first_name }} {{ $user->last_name }}</span>
                 </div>
+                <hr>
                 <div class="mb-3">
                     <h5><label class="form-label">Correo Electrónico:</label> <span class="form-label" id="correo"> {{$user->email}} </span>
                 </div>
+                <hr>
                 <div class="mb-3">
                     <h5><label class="form-label">Número de Teléfono:</label> <span class="form-label" id="telefono"> {{$user->phone_number}} </span>
                 </div>
+            </div>
+        </div>
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <a href="/atletainfo/athlete/password" class="btn btn-primary">Cambiar Contraseña</a>
                     <!-- Logout Button Trigger -->
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal">Terminar Sesión</button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal" id="logoutButton">Terminar Sesión</button>
                 </div>
             </div>
         </div>
@@ -64,6 +70,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const phoneNumberSpan = document.getElementById('telefono');
+            const phoneNumber = phoneNumberSpan.textContent.trim();
+            const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+            phoneNumberSpan.textContent = formattedPhoneNumber;
+
             const logoutConfirmButton = document.getElementById('logoutConfirmButton');
             const logoutForm = document.getElementById('logoutForm');
 
@@ -71,6 +82,21 @@
                 logoutConfirmButton.disabled = true;
             });
         });
+
+        function formatPhoneNumber(phoneNumber) {
+            // Remove any non-digit characters from the phone number
+            const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
+            // Match and extract groups from the cleaned phone number
+            const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+            if (match) {
+                // Format the phone number as (###) ###-####
+                return '(' + match[1] + ') ' + match[2] + ' - ' + match[3];
+            }
+
+            return phoneNumber; // Return original phone number if the format is invalid
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

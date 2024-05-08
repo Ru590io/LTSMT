@@ -15,7 +15,7 @@ class CompetitionController extends Controller
     // Display a listing of the competition.
     public function competitionlist()
     {
-        $competitions = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->get(['id','cname', 'ctime']);
+        $competitions = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->paginate(5, ['id','cname', 'ctime']);
 
         return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general', compact('competitions'));
     }
@@ -104,7 +104,7 @@ class CompetitionController extends Controller
 
     public function competitionshows($id)
     {
-        $competitors = Competitors::with('competition', 'users', 'events')->where('competition_id', $id)->get();
+        $competitors = Competitors::with('competition', 'users', 'events')->where('competition_id', $id)->paginate(5);
         $competition = Competition::with('users')->findOrFail($id);
         //$competition = Competition::with('users')->get();
         $users = User::where('role', 'Atleta')->get();
@@ -231,5 +231,5 @@ class CompetitionController extends Controller
         $competition->delete();
         return response()->json(['message' => 'Competencia eliminada exitosamente']);
     }
-    
+
 }

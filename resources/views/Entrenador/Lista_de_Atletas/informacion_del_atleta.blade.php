@@ -45,22 +45,32 @@
         </nav>
         <h1 class="text-center">Información del Atleta</h1>
         <div class="row justify-content-center mt-5">
+
             <div class="col-md-6">
-                <div class="d-flex justify-content-between">
-                    <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary mb-3">Regresar</a>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary">Regresar</a>
+                    </div>
+
+                <div class="card mb-3 mt-3">
+                    <div class="card-body text-center">
+                    <div class="mb-3">
+                        <h5><label class="form-label">Nombre:</label> <span class="form-label"> {{ $user->first_name }} {{ $user->last_name }}</span>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h5><label class="form-label">Correo Electrónico:</label> <span class="form-label"> {{$user->email}}</span>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h5><label class="form-label">Número de Teléfono:</label> <span class="form-label" id="telefono"> {{$user->phone_number}}</span>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <h5><label class="form-label">Nombre:</label> <span class="form-label"> {{ $user->first_name }} {{ $user->last_name }}</span>
                 </div>
-                <div class="mb-3">
-                    <h5><label class="form-label">Correo Electrónico:</label> <span class="form-label"> {{$user->email}}</span>
-                </div>
-                <div class="mb-3">
-                    <h5><label class="form-label">Número de Teléfono:</label> <span class="form-label"> {{$user->phone_number}}</span>
-                </div>
-                <div class="d-flex justify-content-end align-items-center mb-4">
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#invalidateSessionModal">Desactivar Cuenta</button>
-                </div>
+
+                    <div class="d-flex justify-content-end align-items-center mb-4">
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#invalidateSessionModal" id="invalidateButton">Desactivar Cuenta</button>
+
+                    </div>
                 <!-- Formulario oculto para la invalidación de la sesión -->
                 <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-none">
                     @csrf
@@ -95,12 +105,41 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const confirmButton = document.getElementById('confirmButton');
+            const invalidateButton = document.getElementById('invalidateButton');
             const athleteDelete = document.getElementById('athleteDelete');
+
+            invalidateButton.addEventListener('click', function() {
+                invalidateButton.disabled = true;
+            });
 
             athleteDelete.addEventListener('submit', function() {
                 confirmButton.disabled = true;
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneNumberSpan = document.getElementById('telefono');
+            const phoneNumber = phoneNumberSpan.textContent.trim();
+            const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+            phoneNumberSpan.textContent = formattedPhoneNumber;
+        });
+
+        function formatPhoneNumber(phoneNumber) {
+            // Remove any non-digit characters from the phone number
+            const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
+            // Match and extract groups from the cleaned phone number
+            const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+            if (match) {
+                // Format the phone number as (###) ###-####
+                return '(' + match[1] + ') ' + match[2] + ' - ' + match[3];
+            }
+
+            return phoneNumber; // Return original phone number if the format is invalid
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

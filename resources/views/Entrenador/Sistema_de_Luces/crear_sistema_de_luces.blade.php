@@ -48,7 +48,7 @@
             <a href="/light" class="btn btn-primary mb-3">Regresar</a>
         </div>
 
-        <form id="workoutForm" class= "form mt-5" action="{{route('light.add')}}" method="post">
+        <form id="workoutForm" class= "form" action="{{route('light.add')}}" method="post">
             @csrf
             <div class="mb-3">
                 <label for="tname" class="form-label">Nombre del Entrenamiento</label>

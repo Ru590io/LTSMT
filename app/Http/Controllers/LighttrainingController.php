@@ -24,7 +24,7 @@ class LighttrainingController extends Controller
 
     public function lighttraininglist()
     {
-        $lighttrainings = LightTraining::orderBy('id', 'asc')->orderBy('tname', 'asc')->orderBy('ttime', 'asc')->orderBy('tdistance', 'asc')->get(['id','tname', 'ttime', 'tdistance']);
+        $lighttrainings = LightTraining::orderBy('id', 'asc')->orderBy('tname', 'asc')->orderBy('ttime', 'asc')->orderBy('tdistance', 'asc')->paginate(5,['id','tname', 'ttime', 'tdistance']);
 
        return view('Entrenador.Sistema_de_Luces.lista_de_sistema_de_luces', compact('lighttrainings'));
     }

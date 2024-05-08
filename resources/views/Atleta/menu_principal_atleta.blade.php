@@ -16,29 +16,33 @@
     <div class="container">
         <h1 class="text-center">Entrenamiento de Hoy</h1>
         <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
+
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('atleta.index', ['user' => $user->id]) }}" class="btn btn-primary mb-3">Información del Usuario</a>
                 </div>
-                <div class="card mb-5">
-                    <div class="card-header"><h3 class="centered-text">Entrenamiento de Hoy:</h3></div>
-                    <div class="card-body">
-                        <h3>AM:</h3>
-                        <div id="training-am"></div>
-                        <hr>
-                        <h3>PM:</h3>
-                        <div id="training-pm"></div>
-                        <hr>
-                        <div class="notes-section">
-                            <label for="notas-hoy"><h4>Notas:</h4></label>
-                            <div id="notes-today"></div>
+                <div id="schedule">
+                    <!-- Cards for each day -->
+                    <!--Entrenamiento de Hoy-->
+                    <div class="card mb-5">
+                        <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
+                        <div class="card-body">
+                            <h3>AM:</h3>
+                                <div>rec. 2' 5 x 200m (29") </div>
+                                <div>rec. 2' + enf. 10' + flex.</div>
+                            <hr>
+                            <h3>PM:</h3>
+                            Descanso
+                            <hr>
+                            <div class="notes-section">
+                                <label for="lunes-notas"><h4>Notas:</h4></label>
+                                Baño de agua fria.
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-grid gap-3">
-                    <a href="calendario_del_atleta" class="btn btn-primary btn-lg">Calendario</a>
+                    <a href="{{ route('atleta.weeks', ['user' => $user->id]) }}" class="btn btn-primary btn-lg">Lista de Semanas Asignadas</a>
                 </div>
-            </div>
         </div>
     </div>
 
