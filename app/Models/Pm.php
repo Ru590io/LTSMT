@@ -25,17 +25,17 @@ class Pm extends Model
         return $this->belongsToMany(day::class, 'sessions', 'pm_id', 'days_id')->withPivot('am_id')->withTimestamps();
     }
 
-    public function descanso()
+    public function descansos()
     {
         return $this->belongsToMany(descanso::class, 'pmdescanso', 'pm_id', 'descanso_id')->withTimestamps();
     }
 
-    public function fondo()
+    public function fondos()
     {
         return $this->belongsToMany(fondo::class, 'pmfondo', 'pm_id', 'fondo_id')->withTimestamps();
     }
 
-    public function repeticion()
+    public function repeticiones()
     {
         return $this->belongsToMany(repeticiones::class, 'pmrepeticiones', 'pm_id', 'repeticion_id')->withTimestamps();
     }

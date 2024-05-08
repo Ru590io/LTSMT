@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateTimeZone;
 use App\Models\Am;
 use App\Models\Pm;
 use Carbon\Carbon;
@@ -25,44 +27,48 @@ class WeeklysheduleController extends Controller
 
     public function optionsweek()
     {
-        return view('Entrenador.Registro_de_Entrenamientos.registro_de_entrenamientos');
+        return view('Entrenador.Registro_de_Entrenamientos.new_registro_de_entrenamientos');
     }
 
     public function createweek()
     {
+        $users = User::where('role', 'Atleta')->get();
         $weeklyschedule = weeklyshedule::with([
-        'days.am.descanso',
-        'days.am.fondo',
-        'days.am.repeticion',
-        'days.pm.descanso',
-        'days.pm.fondo',
-        'days.pm.repeticion'
+            'days.am.descansos',
+            'days.am.fondos',
+            'days.am.repeticiones',
+            'days.pm.descansos',
+            'days.pm.fondos',
+            'days.pm.repeticiones'
         ])->first();
-        return view('Entrenador.Registro_de_Entrenamientos.crear_semana_de_entrenamiento', compact('weeklyschedule'));
+        return view('Entrenador.Registro_de_Entrenamientos.new_crear_semana_de_entrenamiento', compact('weeklyschedule', 'users'));
 
     }
 
     public function listofweekatheletes(){
-        $users = User::with('weeklyshedule')->get();
-        $weeklyschedule = weeklyshedule::with('users')->get();
+        //$users = User::with('weeklyshedules')->where('role', 'Atleta')->get();
+        //$weeklyShedules = weeklyshedule::with('user')->where('role', 'Atleta')->get();
+        $users = User::whereHas('weeklyshedules')->with('weeklyshedules')->where('role', 'Atleta')->get();
+    return view('Entrenador.Registro_de_Entrenamientos.new_atletas_con_semanas_asignadas', compact('users'/*, 'weeklyShedules'*/));
     }
 
-    public function listofweeks($u){
-        $users = User::with('weeklyshedule')->findOrFail($u);
-        $weeklyschedule = weeklyshedule::with('users')->get();
+    public function listofweeks($id){
+        $user = User::with('weeklyshedules')->findOrFail($id);
+        $weeklyShedule = weeklyshedule::with('user')->get();
+
+        return view('Entrenador.Registro_de_Entrenamientos.new_semanas_del_atleta', compact('user', 'weeklyShedule'));
     }
+
     public function showUserSchedules($id)
     {
 
-    $user = User::with('weeklyshedule')->findOrFail($id);
-    /*Carbon::parse($weeklySchedule->wstart_date)->formatLocalized('%d de %B %Y')
-    Carbon::parse($weeklySchedule->wend_date)->formatLocalized('%d de %B %Y')*/
+    $user = User::with('weeklyshedules')->findOrFail($id);
     $schedules = $user->weeklySchedules()
                       ->get()
                       ->map(function ($schedule) {
                           return [
-                              'start_date' => $schedule->wstart_date->formatLocalized('%d de %B %Y'),
-                              'end_date' => $schedule->wend_date->formatLocalized('%d de %B %Y')
+                              'wstart_date' => $schedule->wstart_date->formatLocalized('%d de %B %Y'),
+                              'wend_date' => $schedule->wend_date->formatLocalized('%d de %B %Y')
                           ];
                       });
 
@@ -72,28 +78,29 @@ class WeeklysheduleController extends Controller
     public function showweekly($id)
 {
     $weeklySchedule = WeeklyShedule::with([
-        'days.am.descanso',
-        'days.am.fondo',
-        'days.am.repeticion',
-        'days.pm.descanso',
-        'days.pm.fondo',
-        'days.pm.repeticion'
+        'days.am.descansos',
+        'days.am.fondos',
+        'days.am.repeticiones',
+        'days.pm.descansos',
+        'days.pm.fondos',
+        'days.pm.repeticiones'
     ])->findOrFail($id);
 
-    $users = User::get();
+    $users = User::where('role', 'Atleta')->get();
 
-    return view('weekly_schedules.show', compact('weeklySchedule', 'users'));
+    return view('Entrenador.Registro_de_Entrenamientos.new_asignar_semana_de_entrenamiento', compact('weeklySchedule', 'users'));
 }
 
     public function createweekschedules(Request $request)
 {
+
         // Create weekly schedule
-        $weeklyschedule = new WeeklyShedule();
-        $weeklyschedule->wname = $request->wname;
-        $weeklyschedule->users_id = auth()->id();  // or any other user identification method
-        $weeklyschedule->wstart_date = NULL;
-        $weeklyschedule->wend_date = NULL;
-        $weeklyschedule->save();
+        $weeklySchedule = new WeeklyShedule();
+        $weeklySchedule->wname = $request->wname;
+        $weeklySchedule->users_id = auth()->id();  // or any other user identification method
+        $weeklySchedule->wstart_date = NULL;
+        $weeklySchedule->wend_date = NULL;
+        $weeklySchedule->save();
 
         // Days array for iteration
         $days = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
@@ -103,7 +110,7 @@ class WeeklysheduleController extends Controller
             $dayModel = new Day();
             $dayModel->day = $day;
             $dayModel->notes = $request->notes; //$request->input($day . '-notes', '');
-            $dayModel->weeklyshedule_id = $weeklyschedule->id;
+            $dayModel->weeklyShedule_id = $weeklySchedule->id;
             $dayModel->save();
 
             // Process AM session
@@ -122,16 +129,16 @@ class WeeklysheduleController extends Controller
         $this->attachActivity($pmSession, $day, 'pm', $request->input($day . '-pm'), $request);
 
         }
-        /*return redirect()->route('weeklyschedule.edit', $weeklyschedule->id)
-                     ->with('success', 'Schedule created successfully!');*/
-        return redirect()->route('schedule')->with('success', 'Schedule created successfully!');
+        return redirect()->route('week.show', $weeklySchedule->id)
+                     ->with('success', 'Schedule created successfully!');
+        //return redirect()->route('schedule')->with('success', 'Schedule created successfully!');
 }
 
 public function attachActivity($session, $day, $timeOfDay, $type, Request $request) {
     switch ($type) {
         case 'Descanso':
             $descanso = Descanso::Create(['Descanso' => request('Descanso')]);
-            $session->descanso()->attach($descanso->id);
+            $session->descansos()->attach($descanso->id);
             break;
         case 'Fondo':
             $fondoKey = $day . '-' . $timeOfDay . '-Fdistancia';
@@ -140,7 +147,7 @@ public function attachActivity($session, $day, $timeOfDay, $type, Request $reque
                 'Fdistancia' => $request->input($fondoKey),
                 'Fzona' => $request->input($zonaKey)
             ]);
-            $session->fondo()->attach($fondo->id);
+            $session->fondos()->attach($fondo->id);
             break;
         case 'Repeticion':
             $sets = $request->input($day . '-' . $timeOfDay . '-Rsets', []);
@@ -159,7 +166,7 @@ public function attachActivity($session, $day, $timeOfDay, $type, Request $reque
                     'Rtiempoesperado' => $tiempoesperado,
                     'Rrecuperacion' => $recuperacion
                 ]);
-                $session->repeticion()->attach($repeticion->id);
+                $session->repeticiones()->attach($repeticion->id);
             }
             break;
     }
@@ -175,7 +182,10 @@ function convertTimeToSeconds($timeString) {
 
 public function updateweekly(Request $request, $id)
 {
-    $request->validate([
+    $dateRange = explode('/', $request->selectedWeek);
+    $startDate = new DateTime($dateRange[0]);
+    $endDate = new DateTime($dateRange[1]);
+    /*$request->validate([
         'wstart_date' => 'required|date',
         'wend_date' => [
             'required',
@@ -189,15 +199,19 @@ public function updateweekly(Request $request, $id)
             },
         ],
         'users_id' => 'required|exists:users,id',
-    ]);
+    ]);*/
+
+
 
     $weeklySchedule = WeeklyShedule::findOrFail($id);
     $weeklySchedule->users_id = $request->users_id;
-    $weeklySchedule->wstart_date = $request->wstart_date;
-    $weeklySchedule->wend_date = $request->wend_date;
+    /*$weeklySchedule->wstart_date = $request->wstart_date;
+    $weeklySchedule->wend_date = $request->wend_date;*/
+    $weeklySchedule->wstart_date = $startDate->format('Y-m-d');
+    $weeklySchedule->wend_date = $endDate->format('Y-m-d');
     $weeklySchedule->save();
 
-    return redirect()->route('weeklyschedules.indexs')->with('Exito', 'Horario Semanal Actualizado.');
+    return redirect()->route('week.athletes')->with('Exito', 'Horario Semanal Actualizado.');
 }
 
 public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
@@ -241,14 +255,31 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
 
     return redirect()->route('some.route')->with('success', 'Weekly schedule updated successfully!');
 }
-    public function listweek()
+    public function viewweek($id)
     {
-        return view('Entrenador.Registro_de_Entrenamientos.lista_de_entrenamientos');
+        $weeklySchedule = weeklyshedule::with([
+            'days.am.descansos',
+            'days.am.fondos',
+            'days.am.repeticiones',
+            'days.pm.descansos',
+            'days.pm.fondos',
+            'days.pm.repeticiones',
+            'user'
+            ])->findOrFail($id);
+        $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
+    return view('Entrenador.Registro_de_Entrenamientos.new_detalles_de_la_semana_del_atleta', compact('weeklySchedule', 'user'));
     }
 
-    public function seeweek()
+    public function editweek($id)
     {
-        return view('Entrenador.Registro_de_Entrenamientos.calendario_de_atletas');
+        $weeklyshedule = weeklyshedule::with('user')->get();
+        $user = User::with(['weeklyshedules'])->where('id', $id)->first();
+        return view('Entrenador.Registro_de_Entrenamientos.new_editar_semana_del_atleta', compact('user'));
+    }
+
+    public function updateweek(){
+
+        return redirect()->route('week.view')->with('Exito', 'Horario Semanal Actualizado.');
     }
 
     public function shows(WeeklyShedule $weeklyschedule, $id)
