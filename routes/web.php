@@ -57,7 +57,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     //Home de Entrenador
     Route::get('/home', [UserController::class, 'homepage'])->name('home');
 
-    //Compartir pagina y codigo de acceso
+    //Compartir pagina, Ccodigo de Acceso y Restaurar Atletas
     Route::get('/lista', [UserController::class, 'athleteindexs'])->name('users.index');
     Route::get('lista/{user}', [UserController::class, 'showathlete'])->name('user.lista');
     Route::get('/generate_code', [AccessCodeController::class, 'shareweb'])->name('generate_code');
@@ -92,7 +92,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::delete('/athlete/athleteinfo/{user}/distroyAthlete', [UserController::class, 'destroyAthlete'])->name('athlete.delete');
 
     Route::post('/competition/list/asignar/atleta', [CompetitionController::class, 'assignarAtleta'])->name('competition.atleta');
-    Route::get('/competition/list/asignar/atleta', [CompetitionController::class, 'competitionshows'])->name('competition.listatleta');
+    //Route::get('/competition/list/{id}/asignar/atleta', [CompetitionController::class, 'competitionshows'])->name('competition.listatleta');
     Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'athleteCompetitions'])->name('athlete.strategy');
     Route::get('/athlete/athletecompetitions/{user}/detalles/{competition}', [UserController::class, 'competitionDetails'])->name('competition.details');
     Route::post('/athlete/{user}/competitions/{competition}/events', [EventsController::class, 'storeEvents'])->name('event.add');
@@ -113,8 +113,15 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/schedule', [WeeklysheduleController::class, 'optionsweek'])->name('schedule');
     Route::get('/schedule/add', [WeeklysheduleController::class, 'createweek'])->name('schedule.add');
     Route::post('/schedule/add', [WeeklysheduleController::class, 'createweekschedules'])->name('schedule.add');
-    Route::get('/schedule/list', [WeeklysheduleController::class, 'listweek'])->name('schedule.list');
-    Route::get('/schedule/calendar', [WeeklysheduleController::class, 'seeweek'])->name('schedule.atleta');
+    Route::get('/schedule/add/show/{id}', [WeeklysheduleController::class, 'showweekly'])->name('week.show');
+    Route::put('/schedule/add/show/{id}', [WeeklysheduleController::class, 'updateweekly'])->name('week.assign');
+    Route::get('/schedule/add/show/week/athletes', [WeeklysheduleController::class, 'listofweekatheletes'])->name('week.athletes');
+    Route::get('/schedule/add/show/week/athletes/{id}', [WeeklysheduleController::class, 'listofweeks'])->name('week.listed');
+    Route::get('/schedule/add/show/week/athletes/view/{id}', [WeeklysheduleController::class, 'viewweek'])->name('week.view');
+    Route::get('/schedule/add/show/week/athletes/view/edit/{id}', [WeeklysheduleController::class, 'editweek'])->name('week.edit');
+    Route::put('/schedule/add/show/week/athletes/view/edit/{id}', [WeeklysheduleController::class, 'updateweek'])->name('week.update');
+
+
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {

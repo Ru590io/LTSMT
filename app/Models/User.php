@@ -67,7 +67,7 @@ class User extends Authenticatable
         return $this->hasMany(lighttraining::class, 'users_id');
     }
 
-    public function weeklyshedule(){
+    public function weeklyshedules(){
         return $this->hasMany(weeklyshedule::class, 'users_id');
     }
 

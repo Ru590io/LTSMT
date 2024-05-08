@@ -21,7 +21,9 @@
 
         <h1 class="text-center mb-5">Asignar Semana</h1>
         {{-- method (post?) can be added down here? (method="post") --}}
-        <form id="trainingForm">
+    <form id="trainingForm" method="POST" action="{{ route('week.assign', $weeklySchedule->id) }}">
+        @csrf
+        @method('put')
         <!-- Campo para el nombre de la semana -->
         {{-- <div class="mb-3">
             <label for="weekName" class="form-label">Nombre de la Semana:</label>
@@ -42,25 +44,24 @@
         </div> --}}
         <div class="mb-3">
             <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
-            <select class="form-control" id="athleteSelector">
-                <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
-                <option></option> <!-- Opción vacía para la búsqueda -->
-                <option value="1">Axel Rosado</option>
-                <option value="2">Guillermo Colón</option>
-                <option value="3">Rubén Marrero</option>
-                <!-- más atletas -->
+            <select class="form-control" id="athleteSelector" name="users_id">
+                <option value="">Seleccione un atleta</option> <!-- Opción vacía para la selección inicial -->
+                @foreach ($users as $user)
+                    <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
+                @endforeach
             </select>
         </div>
         <div class="mb-3">
             <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
-            <select class="form-control" id="weekSelector">
+            <select class="form-control" id="weekSelector" name="selectedWeek">
                 <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
                 <option></option> <!-- Opción vacía para la búsqueda -->
             </select>
         </div>
         <div class="d-grid gap-3 mt-5">
-            <button onclick="location.href='new_detalles_de_la_semana_del_atleta'" type="submit" class="btn btn-primary btn-lg">Guardar</button>
+            <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
         </div>
+    </form>
 
     <script>
         $(document).ready(function() {
@@ -122,7 +123,7 @@
 
     </script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+           /* document.addEventListener('DOMContentLoaded', function() {
                 $('#athleteSelector, #weekSelector').select2({
                     placeholder: "Seleccione",
                     allowClear: true,
@@ -143,7 +144,7 @@
                     }
                 });
 
-            });
+            });*/
         </script>
 
 
