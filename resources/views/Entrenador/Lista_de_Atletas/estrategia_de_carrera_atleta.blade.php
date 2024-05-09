@@ -53,11 +53,16 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitionModal">Agregar Competencia</button>
         </div>
         <div class="d-grid gap-3">
-            @foreach($user_competitions as $competition)
-                <a href="{{ route('competition.details', ['user' => $user->id, 'competition' => $competition->id]) }}" class="btn btn-primary btn-lg">{{ $competition->cname }}</a>
-            @endforeach
+            @if($user_competitions->isEmpty())
+                <h5 class="text-center">{{ $user->first_name }} {{ $user->last_name }} no está inscrito en una competencia actualmente.</h5>
+                @else
+                @foreach($user_competitions as $competition)
+                    <a href="{{ route('competition.details', ['user' => $user->id, 'competition' => $competition->id]) }}" class="btn btn-primary btn-lg">{{ $competition->cname }}</a>
+                @endforeach
+            @endif
         </div>
     </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="addCompetitionModal" tabindex="-1" aria-labelledby="addCompetitionModalLabel" aria-hidden="true">
@@ -68,7 +73,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="competitionForm" action="{{ route('competition.atleta') }}" method="POST">
+                <form id="competitionForm" action="{{ route('competition.atleta') }}" method="POST" onsubmit="return validateForm()">
                     @csrf
                     <input type="hidden" name="users_id" value="{{ $user->id }}">
                     <div class="mb-3">
@@ -79,17 +84,23 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary" id="guardarButton">Guardar</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
 
+{{-- Este codigo previene spam de guardar pero no es necesario y tranca la pagina si se da gaurdar sin seleccionar una compe --}}
+{{--
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('competitionForm');
@@ -99,4 +110,20 @@
             guardarButton.disabled = true;
         });
     });
+</script> --}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('competitionForm');
+    const competitionSelect = document.getElementById('competitionSelect');
+
+    form.addEventListener('submit', function(event) {
+        if (competitionSelect.value === "") {
+            event.preventDefault(); // Prevent form from submitting
+            alert('Por favor, selecciona una competencia antes de guardar.');
+            return false;
+        }
+        form.submit();
+    });
+});
 </script>
+

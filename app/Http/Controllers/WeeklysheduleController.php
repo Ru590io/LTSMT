@@ -48,15 +48,16 @@ class WeeklysheduleController extends Controller
     public function listofweekatheletes(){
         //$users = User::with('weeklyshedules')->where('role', 'Atleta')->get();
         //$weeklyShedules = weeklyshedule::with('user')->where('role', 'Atleta')->get();
-        $users = User::whereHas('weeklyshedules')->with('weeklyshedules')->where('role', 'Atleta')->get();
+        $users = User::whereHas('weeklyshedules')->with('weeklyshedules')->where('role', 'Atleta')->paginate(5);
     return view('Entrenador.Registro_de_Entrenamientos.new_atletas_con_semanas_asignadas', compact('users'/*, 'weeklyShedules'*/));
     }
 
-    public function listofweeks($id){
-        $user = User::with('weeklyshedules')->findOrFail($id);
-        $weeklyShedule = weeklyshedule::with('user')->get();
+    public function listofweeks($id) {
+        $user = User::findOrFail($id);
+        // Ensure that you are paginating the weekly schedules related to the specific user
+        $weeklySchedules = $user->weeklyshedules()->paginate(5);
 
-        return view('Entrenador.Registro_de_Entrenamientos.new_semanas_del_atleta', compact('user', 'weeklyShedule'));
+        return view('Entrenador.Registro_de_Entrenamientos.new_semanas_del_atleta', compact('user', 'weeklySchedules'));
     }
 
     public function showUserSchedules($id)

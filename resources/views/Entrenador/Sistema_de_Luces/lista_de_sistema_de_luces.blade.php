@@ -48,9 +48,13 @@
             <a href="/light" class="btn btn-primary">Regresar</a>
         </div>
         <div class="d-grid gap-3 mt-4" id="trainingList">
+            @if($lighttrainings->isEmpty())
+            <h5 class="text-center">No hay Entrenamiento de Luces registrados.</h5>
+            @else
             @foreach ($lighttrainings as $lighttraining)
             <a href="{{ route('light.show', ['lighttraining' => $lighttraining->id]) }}" class="btn btn-primary btn-lg"> {{ $lighttraining->tname }}:  {{ $lighttraining->tdistance }} metros  {{sprintf('%02d:%02d', floor($lighttraining->ttime / 60), $lighttraining->ttime % 60)}}</a>
             @endforeach
+            @endif
         </div>
         <div class="d-flex justify-content-center mt-3">
             {{ $lighttrainings->links('pagination::bootstrap-4') }}

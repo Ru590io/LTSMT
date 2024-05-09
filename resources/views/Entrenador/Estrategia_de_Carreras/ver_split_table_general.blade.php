@@ -59,10 +59,18 @@
                 <option value="5000">5000m</option>
                 <option value="10000">10000m</option>
             </select>
+
             <a href="javascript:void(0);" class="btn" onclick="navigateEventDistance(1)">&gt;</a>
+
         </div>
+        @if($eventsAreEmpty)
+        <h5 class="text-center">No hay eventos asignados.</h5>
+        @endif
+
         <div id="splitsContainer">
             <!-- Las tablas de splits para los atletas se generarán aquí -->
+
+
         </div>
     </div>
 
@@ -140,15 +148,25 @@ function generateSplitTable(eventDistance, eventTimeInSeconds, athleteName) {
 // Update tables based on selected event distance
 function updateEventDistance() {
     const splitsContainer = document.getElementById("splitsContainer");
-    splitsContainer.innerHTML = ''; // Clear previous tables
+    splitsContainer.innerHTML = ''; // Clear previous content
 
     const selectedDistance = document.getElementById("eventDistanceDropdown").value;
     let filteredEvents = (selectedDistance === "all") ? events : events.filter(event => parseInt(event.distance) === parseInt(selectedDistance));
 
-    filteredEvents.forEach(event => {
-        generateSplitTable(event.distance, event.time, event.name);
-    });
+    if (filteredEvents.length === 0) {
+        // Display a message if no events are available for the selected category
+        const noEventsMessage = document.createElement('h5');
+        noEventsMessage.className = 'text-center';
+        noEventsMessage.textContent = 'No hay eventos asignados para ' + selectedDistance + 'm.';
+        splitsContainer.appendChild(noEventsMessage);
+    } else {
+        // If events are available, generate the split tables
+        filteredEvents.forEach(event => {
+            generateSplitTable(event.distance, event.time, event.name);
+        });
+    }
 }
+
 
 // Navigate between event distances
 function navigateEventDistance(direction) {

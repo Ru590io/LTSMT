@@ -54,14 +54,18 @@
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Competidores</button>
         </div>
         <div class="d-grid gap-3">
+            <!-- Check if there are any competitors -->
+            @if($competitors->isEmpty())
+                <h5 class="text-center">No hay competidores registrados.</h5>
+            @else
             <!-- Lista de competidores con sus eventos -->
+            <input type="text" id="searchInput" onkeyup="filterList()" placeholder="Buscar competidores..." class="form-control mb-3">
+
                 @foreach($competitors as $competitor)
-                <button class="btn btn-primary btn-lg" onclick="location.href='{{ route('competitors.listing', $competitor->id) }}'"> {{ $competitor->users->first_name }} {{$competitor->users->last_name}}</button>
+                <button class="btn btn-primary btn-lg competitor-btn" onclick="location.href='{{ route('competitors.listing', $competitor->id) }}'"> {{ $competitor->users->first_name }} {{$competitor->users->last_name}}</button>
                 <!-- Más botones de competidores pueden ser añadidos aquí -->
                 @endforeach
-        </div>
-        <div class="d-flex justify-content-center mt-3">
-            {{ $competitors->links('pagination::bootstrap-4') }}
+            @endif
         </div>
     </div>
 <!-- Modal -->
@@ -160,6 +164,24 @@
         return true;
     }
 </script>
+
+<script>
+    function filterList() {
+        let input = document.getElementById('searchInput');
+        let filter = input.value.toUpperCase();
+        let buttons = document.getElementsByClassName('competitor-btn');
+
+        for (let i = 0; i < buttons.length; i++) {
+            let txtValue = buttons[i].textContent || buttons[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                buttons[i].style.display = "";
+            } else {
+                buttons[i].style.display = "none";
+            }
+        }
+    }
+    </script>
+
 
 
 </body>

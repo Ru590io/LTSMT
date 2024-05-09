@@ -60,7 +60,7 @@
             <!--Entrenamiento de Hoy-->
             <div id="schedule">
                 <div class="card mb-3">
-                    <div class="card-header"><h3 class="centered-text">Entrenamiento de Hoy</h3></div>
+                    <div class="card-header"><h3 class="centered-text">Todo: Entrenamiento de Hoy</h3></div>
                     <div class="card-body">
                         <h3>AM:</h3>
                             <div>rec. 2' 5 x 200m (29") </div>

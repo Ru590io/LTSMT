@@ -66,7 +66,9 @@
             <div class="card mb-5">
                 <div class="card-header"><h3 class="centered-text">Eventos del Atleta</h3></div>
                 <div class="card-body">
-
+                    @if($competitor->events->isEmpty())
+                    <h5 class="text-center">{{ $user->first_name }} {{ $user->last_name }} no tiene eventos asignados.</h5>
+                    @else
                     @foreach($competitor->events as $event)
                     <p class="d-flex justify-content-between align-items-center">
                        Evento: {{$event->edistance}} - Tiempo: {{sprintf('%02d:%02d', floor($event->etime_range / 60), $event->etime_range % 60)}}
@@ -74,9 +76,11 @@
                         <hr>
                     </p>
                          @endforeach
+                         @endif
 
                 </div>
             </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-labelledby="addEventButton" aria-hidden="true">

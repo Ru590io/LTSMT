@@ -15,6 +15,7 @@
 <body>
     <div class="container">
         <h1 class="text-center">Entrenamiento de Hoy</h1>
+        <h2 class="text-center mt-4 mb-3"> {{$user->first_name}} {{$user->last_name}} </h2>
         <div class="row justify-content-center mt-5">
 
                 <div class="d-flex justify-content-end">
@@ -41,7 +42,8 @@
                     </div>
                 </div>
                 <div class="d-grid gap-3">
-                    <a href="{{ route('atleta.weeks', ['user' => $user->id]) }}" class="btn btn-primary btn-lg">Lista de Semanas Asignadas</a>
+                    <a href="{{ url('/atletaweeks/list/' .  $user->id) }}" class="btn btn-primary btn-lg">Lista de Semanas Asignadas</a>
+
                 </div>
         </div>
     </div>

@@ -104,7 +104,7 @@ class CompetitionController extends Controller
 
     public function competitionshows($id)
     {
-        $competitors = Competitors::with('competition', 'users', 'events')->where('competition_id', $id)->paginate(5);
+        $competitors = Competitors::with('competition', 'users', 'events')->where('competition_id', $id)->get();
         $competition = Competition::with('users')->findOrFail($id);
         //$competition = Competition::with('users')->get();
         $users = User::where('role', 'Atleta')->get();

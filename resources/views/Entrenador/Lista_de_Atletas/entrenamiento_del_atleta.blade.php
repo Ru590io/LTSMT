@@ -1,26 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <title>Detalles de la Semana</title>
-    <link href="{{url('Css/styles.css')}}" rel="stylesheet">
-    <a href="/home" style="text-decoration: none;">
-        <div class="logo-container">
-            <div class="logo-text">LTSMT</div>
-        </div>
-    </a>
+@extends('layouts.app')
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-    <div class="container">
+@section('content')
 
         <nav class="navbar custom-navbar">
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,166 +26,139 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Detalles de la Semana</h1>
-        <h2 class="text-center mt-3">{{ $user->first_name }} {{ $user->last_name }}</h2>
-        <h2 class="text-center">Fecha 1 - Fecha 2</h2>
-        <div class="d-flex justify-content-between mb-3">
-            <button onclick="location.href='{{ url('athlete/athletetraininglist/' . $user->id) }}'" class="btn btn-primary">Regresar</button>
-            <button onclick="location.href='{{ route('athlete.trainingweekedit', ['user'=> $user->id]) }}'" class="btn btn-primary">Editar Entrenamiento del Atleta</button>
 
+
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+    <h1 class="text-center">Detalles de la Semana</h1>
+    <h2 class="text-center mt-3 mb-3">{{ $weeklySchedule->user->first_name }} {{ $weeklySchedule->user->last_name }}</h2>
+    <h2 class="text-center mt- mb-5">
+        <span class="date-span" data-date="{{ $weeklySchedule->wstart_date }}"></span> -
+        <span class="date-span" data-date="{{ $weeklySchedule->wend_date }}"></span>
+    </h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{{ url('athlete/athletetraininglist/' . $weeklySchedule->user->id) }}" class="btn btn-primary mb-3">Regresar</a>
+        <a class="btn btn-primary mb-3" href="editar_semana_de_entrenamiento">Todo: Editar Semana</a>
+    </div>
+    @foreach ($weeklySchedule->days as $day)
+    <div class="card mb-5">
+
+    <h2 class="card-header text-center">{{ ucfirst($day->day) }}</h2>
+    <div class="card-body">
+        <div>
+            <h3>AM:</h3>
+            @foreach($day->am as $am)
+                @foreach($am->descansos as $descanso)
+                    @include('partials._descanso', ['activity' => $descanso])
+                @endforeach
+                @foreach($am->fondos as $fondo)
+                    @include('partials._fondo', ['activity' => $fondo])
+                @endforeach
+                @if(count($am->repeticiones) > 0)
+                Repetición:<br>
+                Cal: 15:00 + driles + rectas 60m
+                @foreach($am->repeticiones as $repeticion)
+                    @include('partials._repeticion', ['activity' => $repeticion])
+                @endforeach
+                @endif
+            @endforeach
         </div>
-        {{-- <div class="text-center mb-3">
-            <!-- Athlete navigation -->
-            <a href="#" class="btn">&lt;</a> <!-- Previous athlete -->
-            <select class="form-select d-inline-block w-auto" id="athleteDropdown">
-                <!-- Dropdown for selecting athletes -->
-                <option value="athlete1">Axel Rosado</option>
-                <option value="athlete2">Guillermo Colón</option>
-                <!-- More athletes can be added here -->
-            </select>
-            <a href="#" class="btn">&gt;</a> <!-- Next athlete -->
+        <hr>
+        <div>
+            <h3>PM:</h3>
+            @foreach($day->pm as $pm)
+                @foreach($pm->descansos as $descanso)
+                    @include('partials._descanso', ['activity' => $descanso])
+                @endforeach
+                @foreach($pm->fondos as $fondo)
+                    @include('partials._fondo', ['activity' => $fondo])
+                @endforeach
+                @if(count($pm->repeticiones) > 0)
+                Repetición:<br>
+                Cal: 15:00 + driles + rectas 60m
+                @foreach($pm->repeticiones as $repeticion)
+                    @include('partials._repeticion', ['activity' => $repeticion])
+                @endforeach
+                @endif
+            @endforeach
         </div>
-        <div class="text-center mb-3">
-            <!-- Week navigation -->
-            <a href="#" class="btn">&lt;</a> <!-- Previous week -->
-            <select class="form-select d-inline-block w-auto" id="weekDropdown">
-                <!-- Dropdown for selecting the week -->
-                <option value="week1">6 Marzo 24 - 12 Marzo 24</option>
-                <!-- More weeks can be added here -->
-            </select>
-            <a href="#" class="btn">&gt;</a> <!-- Next week -->
-        </div> --}}
+    </div>
+</div>
+@endforeach
+<div class="d-grid gap-3 mt-5">
 
-        <div id="schedule">
-            <!-- Cards for each day -->
-            <!--Lunes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Todo: Eliminar Semana de entrenamiento</button>
+
+</div>
+
+</div>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-
-            <!--Martes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Martes</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
+                <div class="modal-body">
+                    ¿Estás seguro de querer eliminar esta semana de entrenamiento?
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="deleteButton" class="btn btn-danger" onclick="confirmDeletion()">Eliminar</button>
 
-            <!--Miercoles-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Miercoles</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Jueves-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Jueves</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Viernes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Viernes</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Sabado-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
-                </div>
-            </div>
-
-            <!--Domingo-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Domingo</h3></div>
-                <div class="card-body">
-                    <h3>AM:</h3>
-                        <div>rec. 2' 5 x 200m (29") </div>
-                        <div>rec. 2' + enf. 10' + flex.</div>
-                    <hr>
-                    <h3>PM:</h3>
-                    Descanso
-                    <hr>
-                    <div class="notes-section">
-                        <label for="lunes-notas"><h4>Notas:</h4></label>
-                        Baño de agua fria.
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function confirmDeletion() {
+            // Placeholder for deletion logic
+            console.log("Semana de entrenamiento eliminada");
+
+            // Close the modal after action
+            var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteWeekModal'));
+            deleteModal.hide();
+
+            // Additional code to remove the week from the UI or refresh the page might be needed
+        }
+        </script>
+        {{-- Prevent's Delete Spam --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Assuming your Delete button has an ID of 'deleteButton'
+                const deleteButton = document.getElementById('deleteButton');
+
+                deleteButton.addEventListener('click', function() {
+                    this.disabled = true;  // Disable the button on click
+                });
+            });
+            </script>
 
 
-</body>
-</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+// Select all elements with the class 'date-span'
+const dateElements = document.querySelectorAll('.date-span');
+
+// Iterate over each element and format its date
+dateElements.forEach(function(elem) {
+    const rawDateStr = elem.getAttribute('data-date');
+    const [year, month, day] = rawDateStr.split('-').map(Number);  // Split the date string and convert to numbers
+    const rawDate = new Date(year, month - 1, day - 1);  // Create a new Date object; months are 0-indexed in JavaScript
+
+    elem.textContent = formatDate(rawDate);
+});
+});
+
+function formatDate(date) {
+return date.toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
+}
+</script>
+@endsection

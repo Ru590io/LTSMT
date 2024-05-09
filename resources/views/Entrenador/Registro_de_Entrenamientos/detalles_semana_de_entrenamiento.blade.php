@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Entrenamiento 1</title>
+    <title>Detalles de la Semana</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
@@ -44,9 +44,11 @@
             </div>
         </nav>
         {{-- Título del entrenamiento: --}}
-        <h1 class="text-center">Entrenameinto 1</h1>
-        <div class="text-left mt-4">
+        <h1 class="text-center">Detalles de la Semana</h1>
+        <h2 class="text-center mt-3 mb-3">Nombre del Atleta</h2>
+        <div class="d-flex justify-content-between mb-3">
             <a href="lista_de_entrenamientos" class="btn btn-primary mb-3">Regresar</a>
+            <a class="btn btn-primary mb-3" href="editar_semana_de_entrenamiento">Editar Semana</a>
         </div>
         <div id="schedule">
             <!-- Cards for each day -->
@@ -178,9 +180,7 @@
             </div>
         </div>
         <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg" onclick="location.href='asignar_semana_de_entrenamiento';">Asignar a Atleta</button>
-            <button class="btn btn-primary btn-lg" onclick="location.href='editar_semana_de_entrenamiento';">Editar</button>
-            <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
 
         </div>
