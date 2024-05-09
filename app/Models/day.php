@@ -21,11 +21,11 @@ class day extends Model
         return $this->belongsTo(weeklyshedule::class, 'weeklyshedule_id');
     }
 
-    public function am(){
+    public function ams(){
         return $this->belongsToMany(Am::class, 'sessions', 'days_id', 'am_id')->withPivot('pm_id')->withTimestamps();
     }
 
-    public function pm(){
+    public function pms(){
         return $this->belongsToMany(Pm::class, 'sessions', 'days_id', 'pm_id')->withPivot('am_id')->withTimestamps();
     }
 

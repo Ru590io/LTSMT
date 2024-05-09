@@ -34,12 +34,12 @@ class WeeklysheduleController extends Controller
     {
         $users = User::where('role', 'Atleta')->get();
         $weeklyschedule = weeklyshedule::with([
-            'days.am.descansos',
-            'days.am.fondos',
-            'days.am.repeticiones',
-            'days.pm.descansos',
-            'days.pm.fondos',
-            'days.pm.repeticiones'
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones'
         ])->first();
         return view('Entrenador.Registro_de_Entrenamientos.new_crear_semana_de_entrenamiento', compact('weeklyschedule', 'users'));
 
@@ -79,19 +79,21 @@ class WeeklysheduleController extends Controller
     public function showweekly($id)
 {
     $weeklySchedule = WeeklyShedule::with([
-        'days.am.descansos',
-        'days.am.fondos',
-        'days.am.repeticiones',
-        'days.pm.descansos',
-        'days.pm.fondos',
-        'days.pm.repeticiones'
+        'days.ams.descansos',
+        'days.ams.fondos',
+        'days.ams.repeticiones',
+        'days.pms.descansos',
+        'days.pms.fondos',
+        'days.pms.repeticiones'
     ])->findOrFail($id);
 
     $users = User::where('role', 'Atleta')->get();
 
     return view('Entrenador.Registro_de_Entrenamientos.new_asignar_semana_de_entrenamiento', compact('weeklySchedule', 'users'));
 }
-
+/**
+ * @author Ruben
+ */
     public function createweekschedules(Request $request)
 {
 
@@ -123,7 +125,7 @@ class WeeklysheduleController extends Controller
         $pmSession->save();
 
         // Attach both AM and PM session IDs to the day
-        $dayModel->am()->attach($amSession->id, ['pm_id' => $pmSession->id]);
+        $dayModel->ams()->attach($amSession->id, ['pm_id' => $pmSession->id]);
 
         // Attach activity types to sessions
         $this->attachActivity($amSession, $day, 'am', $request->input($day . '-am'), $request);
@@ -212,7 +214,7 @@ public function updateweekly(Request $request, $id)
     $weeklySchedule->wend_date = $endDate->format('Y-m-d');
     $weeklySchedule->save();
 
-    return redirect()->route('week.athletes')->with('Exito', 'Horario Semanal Actualizado.');
+    return redirect()->route('week.view',  $weeklySchedule->id)->with('Exito', 'Horario Semanal Actualizado.');
 }
 
 public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
@@ -259,28 +261,226 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
     public function viewweek($id)
     {
         $weeklySchedule = weeklyshedule::with([
-            'days.am.descansos',
-            'days.am.fondos',
-            'days.am.repeticiones',
-            'days.pm.descansos',
-            'days.pm.fondos',
-            'days.pm.repeticiones',
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones',
             'user'
             ])->findOrFail($id);
         $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
     return view('Entrenador.Registro_de_Entrenamientos.new_detalles_de_la_semana_del_atleta', compact('weeklySchedule', 'user'));
     }
 
-    public function editweek($id)
-    {
-        $weeklyshedule = weeklyshedule::with('user')->get();
-        $user = User::with(['weeklyshedules'])->where('id', $id)->first();
-        return view('Entrenador.Registro_de_Entrenamientos.new_editar_semana_del_atleta', compact('user'));
+    public function editweek($id) {
+        $weeklySchedule = WeeklyShedule::with([
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones'
+        ])->findOrFail($id);
+
+
+        return view('Entrenador.Registro_de_Entrenamientos.new_editar_semana_del_atleta', compact('weeklySchedule'));
     }
 
-    public function updateweek(){
+    public function updateweek(Request $request, $id){
+        $weeklySchedule = WeeklyShedule::with([
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones'
+        ])->findOrFail($id);
 
-        return redirect()->route('week.view')->with('Exito', 'Horario Semanal Actualizado.');
+        // Iterate over each day of the schedule
+    foreach ($weeklySchedule->days as $day) {
+            //AM Descanso
+            foreach ($day->ams as $am) {
+                foreach ($am->descansos as $descanso) {
+                    $descansoKey = "Descanso_" . $descanso->id;
+                    if ($request->has($descansoKey)) {
+                        $descanso->update(['Descanso' => $request->input($descansoKey)]);
+                    }
+                }
+            }
+                // AM Fondos
+            foreach($day->ams as $am){
+                foreach ($am->fondos as $fondo) {
+                    $fondoDistanceKey = "Fdistancia_" . $fondo->id;
+                    $fondoZoneKey = "Fzona_" . $fondo->id;
+                    if ($request->has($fondoDistanceKey) && $request->has($fondoZoneKey)) {
+                        $fondo->update([
+                            'Fdistancia' => $request->input($fondoDistanceKey),
+                            'Fzona' => $request->input($fondoZoneKey)
+                        ]);
+                    }
+                }
+            }
+
+                // AM Repeticiones
+            foreach($day->ams as $am){
+                foreach ($am->repeticiones as $repeticion) {
+                    $repeticionSetsKey = "Rsets_" . $repeticion->id;
+                    $repeticionDistanceKey = "Rdistancia_" . $repeticion->id;
+                    $repeticionExpectedTimeKey = "Rtiempoesperado_" . $repeticion->id;
+                    $repeticionRecoveryTimeKey = "Rrecuperacion_" . $repeticion->id;
+                    if ($request->has($repeticionSetsKey) && $request->has($repeticionDistanceKey) &&
+                        $request->has($repeticionExpectedTimeKey) && $request->has($repeticionRecoveryTimeKey)) {
+                        $repeticion->update([
+                            'Rsets' => $request->input($repeticionSetsKey),
+                            'Rdistancia' => $request->input($repeticionDistanceKey),
+                            'Rtiempoesperado' => $request->input($repeticionExpectedTimeKey),
+                            'Rrecuperacion' => $request->input($repeticionRecoveryTimeKey)
+                        ]);
+                    }
+                }
+            }
+                //PM descanso
+            foreach ($day->pms as $pm) {
+                foreach ($pm->descansos as $descanso) {
+                    $descansoKey = "Descanso_" . $descanso->id;
+                    if ($request->has($descansoKey)) {
+                        $descanso->update(['Descanso' => $request->input($descansoKey)]);
+                    }
+                }
+            }
+                // AM Fondos
+            foreach($day->pms as $pm){
+                foreach ($pm->fondos as $fondo) {
+                    $fondoDistanceKey = "Fdistancia_" . $fondo->id;
+                    $fondoZoneKey = "Fzona_" . $fondo->id;
+                    if ($request->has($fondoDistanceKey) && $request->has($fondoZoneKey)) {
+                        $fondo->update([
+                            'Fdistancia' => $request->input($fondoDistanceKey),
+                            'Fzona' => $request->input($fondoZoneKey)
+                        ]);
+                    }
+                }
+            }
+
+                // AM Repeticiones
+            foreach($day->pms as $pm){
+                foreach ($pm->repeticiones as $repeticion) {
+                    $repeticionSetsKey = "Rsets_" . $repeticion->id;
+                    $repeticionDistanceKey = "Rdistancia_" . $repeticion->id;
+                    $repeticionExpectedTimeKey = "Rtiempoesperado_" . $repeticion->id;
+                    $repeticionRecoveryTimeKey = "Rrecuperacion_" . $repeticion->id;
+                    if ($request->has($repeticionSetsKey) && $request->has($repeticionDistanceKey) &&
+                        $request->has($repeticionExpectedTimeKey) && $request->has($repeticionRecoveryTimeKey)) {
+                        $repeticion->update([
+                            'Rsets' => $request->input($repeticionSetsKey),
+                            'Rdistancia' => $request->input($repeticionDistanceKey),
+                            'Rtiempoesperado' => $request->input($repeticionExpectedTimeKey),
+                            'Rrecuperacion' => $request->input($repeticionRecoveryTimeKey)
+                        ]);
+                    }
+                }
+            }
+
+
+
+        // Update notes for each day
+        $notesKey = "notes_" . $day->day;
+        if ($request->has($notesKey)) {
+            $day->notes = $request->input($notesKey);
+            $day->save();
+        }
+    }
+
+
+        return redirect()->route('week.view',  $weeklySchedule->id)->with('Exito', 'Horario Semanal Actualizado.');
+    }
+
+    public function updateweeks(Request $request, $id)
+    {
+
+            // Create weekly schedule
+            $weeklySchedule = WeeklyShedule::findorFail($id);
+            //$weeklySchedule->wname = $request->wname;
+            //$weeklySchedule->users_id = auth()->id();  // or any other user identification method
+            //$weeklySchedule->wstart_date = NULL;
+            //$weeklySchedule->wend_date = NULL;
+            $weeklySchedule->save();
+
+            // Days array for iteration
+            $days = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+
+            foreach ($days as $day) {
+                // Create Day model
+                $dayModel = new Day();
+                $dayModel->day = $day;
+                $dayModel->notes = $request->notes; //$request->input($day . '-notes', '');
+                $dayModel->weeklyShedule_id = $weeklySchedule->id;
+                $dayModel->save();
+
+                // Process AM session
+            $amSession = new Am();
+            $amSession->save();
+
+            // Create and attach PM session
+            $pmSession = new Pm();
+            $pmSession->save();
+
+            // Attach both AM and PM session IDs to the day
+            $dayModel->am()->attach($amSession->id, ['pm_id' => $pmSession->id]);
+
+            // Attach activity types to sessions
+            $this->attachActivityweek($amSession, $day, 'am', $request->input($day . '-am'), $request);
+            $this->attachActivityweek($pmSession, $day, 'pm', $request->input($day . '-pm'), $request);
+
+            }
+            return redirect()->route('week.view',  $weeklySchedule->id)->with('Exito', 'Horario Semanal Actualizado.');
+    }
+
+    public function attachActivityweek($session, $day, $timeOfDay, $type, Request $request) {
+        switch ($type) {
+            case 'Descanso':
+                $descanso = Descanso::Create(['Descanso' => request('Descanso')]);
+                $session->descansos()->attach($descanso->id);
+                break;
+            case 'Fondo':
+                $fondoKey = $day . '-' . $timeOfDay . '-Fdistancia';
+                $zonaKey = $day . '-' . $timeOfDay . '-Fzona';
+                $fondo = Fondo::Create([
+                    'Fdistancia' => $request->input($fondoKey),
+                    'Fzona' => $request->input($zonaKey)
+                ]);
+                $session->fondos()->attach($fondo->id);
+                break;
+            case 'Repeticion':
+                $sets = $request->input($day . '-' . $timeOfDay . '-Rsets', []);
+                $distancias = $request->input($day . '-' . $timeOfDay . '-Rdistancia', []);
+                $tiemposEsperados = $request->input($day . '-' . $timeOfDay . '-Rtiempoesperado', []);
+                $recuperaciones = $request->input($day . '-' . $timeOfDay . '-Rrecuperacion', []);
+
+                foreach ($sets as $index => $set) {
+                    $distancia = $distancias[$index] ?? null;
+                    $tiempoesperado = $this->convertTimeToSecondss($tiemposEsperados[$index] ?? '0:0');
+                    $recuperacion = $this->convertTimeToSecondss($recuperaciones[$index] ?? '0:0');
+
+                    $repeticion = Repeticiones::Create([
+                        'Rdistancia' => $distancia,
+                        'Rsets' => $set,
+                        'Rtiempoesperado' => $tiempoesperado,
+                        'Rrecuperacion' => $recuperacion
+                    ]);
+                    $session->repeticiones()->attach($repeticion->id);
+                }
+                break;
+        }
+    }
+
+    function convertTimeToSecondss($timeString) {
+        $timeParts = explode(':', $timeString);
+        if (count($timeParts) == 2) {
+            return (int)$timeParts[0] * 60 + (int)$timeParts[1];
+        }
+        return 0;
     }
 
     public function shows(WeeklyShedule $weeklyschedule, $id)

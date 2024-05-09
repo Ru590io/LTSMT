@@ -42,6 +42,7 @@
         <a class="btn btn-primary mb-3" href="editar_semana_de_entrenamiento">Editar Semana</a>
     </div>
     @foreach ($weeklySchedule->days as $day)
+
     <div class="card mb-5">
 
     <h2 class="card-header text-center">{{ ucfirst($day->day) }}</h2>
@@ -82,6 +83,11 @@
                 @endforeach
                 @endif
             @endforeach
+           </div>
+            <div class="mt-4">
+                <h4>Notes</h4>
+                <p>{{ $day->notes }}</p>
+            </div>
         </div>
     </div>
 </div>
