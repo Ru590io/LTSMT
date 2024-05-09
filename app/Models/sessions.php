@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class sessions extends Model
+class sessions extends Pivot
 {
     use HasFactory;
 
@@ -16,4 +17,19 @@ class sessions extends Model
     ];
 
     protected $table = 'sessions';
+
+    public function am()
+    {
+        return $this->belongsTo(Am::class, 'am_id');
+    }
+
+    public function pm()
+    {
+        return $this->belongsTo(Pm::class, 'pm_id');
+    }
+
+    public function day()
+    {
+        return $this->belongsTo(Day::class, 'days_id');
+    }
 }
