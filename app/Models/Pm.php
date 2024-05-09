@@ -15,7 +15,7 @@ class Pm extends Model
         'ppm',
     ];
 
-    public function am()
+    public function ams()
     {
         return $this->belongsToMany(Am::class, 'sessions', 'pm_id', 'am_id')->withPivot('days_id')->withTimestamps();
     }

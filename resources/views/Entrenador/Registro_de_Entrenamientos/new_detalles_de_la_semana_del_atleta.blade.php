@@ -15,7 +15,7 @@
         <div class="card-body">
             <div>
                 <h3>AM</h3>
-                @foreach($day->am as $am)
+                @foreach($day->ams as $am)
                     @foreach($am->descansos as $descanso)
                         @include('partials._descanso', ['activity' => $descanso])
                     @endforeach
@@ -29,7 +29,7 @@
             </div>
             <div>
                 <h3>PM</h3>
-                @foreach($day->pm as $pm)
+                @foreach($day->pms as $pm)
                     @foreach($pm->descansos as $descanso)
                         @include('partials._descanso', ['activity' => $descanso])
                     @endforeach
@@ -40,6 +40,10 @@
                         @include('partials._repeticion', ['activity' => $repeticion])
                     @endforeach
                 @endforeach
+            </div>
+            <div class="mt-4">
+                <h4>Notes</h4>
+                <p>{{ $day->notes }}</p>
             </div>
         </div>
     </div>
