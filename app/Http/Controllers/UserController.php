@@ -10,6 +10,7 @@ use App\Models\competition;
 use App\Models\competitors;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\weeklyshedule;
 use App\Rules\UniquePhoneNumber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -57,7 +58,7 @@ class UserController extends Controller
                      ->orderBy('first_name', 'asc')
                      ->orderBy('last_name', 'asc')
                      ->orderBy('phone_number', 'asc')
-                     ->paginate(5, ['first_name', 'id', 'last_name', 'phone_number']);
+                     ->get(['first_name', 'id', 'last_name', 'phone_number']);
 
         return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
     }
@@ -302,16 +303,27 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('Exito', 'Cuenta Inhabilitada.');
     }
 
-    public function trainingLogsList(User $user)
+    public function trainingLogsList($id)
     {
         //$this->authorize('view', $user);
-        return view('Entrenador.lista_de_atletas.new_semanas_del_atleta', compact('user'));
+        $user = User::findOrFail($id);
+        $weeklySchedules = $user->weeklyshedules()->paginate(5);
+        return view('Entrenador.lista_de_atletas.new_semanas_del_atleta', compact('user', 'weeklySchedules'));
     }
 
-    public function trainingLogsWeekDetails(User $user)
+    public function trainingLogsWeekDetails(User $user , $id)
     {
-        //$this->authorize('view', $user);
-        return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user'));
+        $weeklySchedule = weeklyshedule::with([
+            'days.am.descansos',
+            'days.am.fondos',
+            'days.am.repeticiones',
+            'days.pm.descansos',
+            'days.pm.fondos',
+            'days.pm.repeticiones',
+            'user'
+            ])->findOrFail($id);
+        $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
+        return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user', 'weeklySchedule'));
     }
     public function trainingLogsWeekEdit(User $user)
     {
@@ -643,10 +655,29 @@ public function storeEvents(Request $request, User $user, Competition $competiti
 }
 
     // View athlete weeks (athlete views)
-    public function athleteweeks(){
+    public function athleteweeks($id){
         //$users = User::orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('email', 'asc')->orderBy('phone_number', 'asc')->get(['id','first_name', 'last_name', 'email', 'phone_number']);
         $user = auth()->user();
-        return view('Atleta.lista_de_semanas_asignadas', compact('user'));
+        $user = User::findOrFail($id);
+        $weeklySchedules = $user->weeklyshedules()->paginate(5);
+        return view('Atleta.lista_de_semanas_asignadas', compact('user', 'weeklySchedules'));
+    }
+
+    // View athlete week details (athlete views)
+    public function athleteweeksdetails(User $user , $id){
+        //$users = User::orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('email', 'asc')->orderBy('phone_number', 'asc')->get(['id','first_name', 'last_name', 'email', 'phone_number']);
+        $user = auth()->user();
+        $weeklySchedule = weeklyshedule::with([
+            'days.am.descansos',
+            'days.am.fondos',
+            'days.am.repeticiones',
+            'days.pm.descansos',
+            'days.pm.fondos',
+            'days.pm.repeticiones',
+            'user'
+            ])->findOrFail($id);
+        $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
+        return view('Atleta.calendario_del_atleta', compact('user', 'weeklySchedule'));
     }
 
 

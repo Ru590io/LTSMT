@@ -173,10 +173,14 @@ class EventsController extends Controller
     }
 
     $eventsJson = $allEvents->toJson();
+    $eventsAreEmpty = $allEvents->isEmpty();
+
+    $eventsJson = $allEvents->toJson();
     return view('Entrenador.Estrategia_de_Carreras.ver_split_table_general', [
         'competitors' => $competitors,
         'eventsJson' => $eventsJson,
-        'competition' => Competition::orderBy('id', 'asc')->first()
+        'competition' => Competition::orderBy('id', 'asc')->first(),
+        'eventsAreEmpty' => $eventsAreEmpty // Pass this to the view
     ]);
     }
 

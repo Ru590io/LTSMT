@@ -157,14 +157,14 @@ table .highlight-column {
 }
 
 .navbar-nav .nav-link:hover, .navbar-nav .nav-link:focus {
-    color: #dfffe4; /* Brighter color on hover */
+    color: #ffffff; /* Brighter color on hover */
     background-color: #0A7302; /* Optional: add a background color */
     text-decoration: none; /* Remove underline */
 }
 
 /* Adding a subtle text shadow can also help make text pop out more */
 .navbar-nav .nav-link:hover {
-    text-shadow: 0 0 10px rgba(255,255,255,0.7); /* White glow for dark backgrounds */
+    text-shadow: 0 0 10px rgb(195, 255, 193); /* White glow for dark backgrounds */
 }
 .nav-link {
     display: block;

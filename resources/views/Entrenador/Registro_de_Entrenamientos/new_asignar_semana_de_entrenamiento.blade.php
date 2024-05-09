@@ -44,7 +44,7 @@
         </div> --}}
         <div class="mb-3">
             <label for="athleteSelector" class="form-label">Asignar a Atleta:</label>
-            <select class="form-control" id="athleteSelector" name="users_id">
+            <select class="form-control" id="athleteSelector" name="users_id" required>
                 <option value="">Seleccione un atleta</option> <!-- Opción vacía para la selección inicial -->
                 @foreach ($users as $user)
                     <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
@@ -53,7 +53,7 @@
         </div>
         <div class="mb-3">
             <label for="weekSelector" class="form-label">Seleccionar Semana:</label>
-            <select class="form-control" id="weekSelector" name="selectedWeek">
+            <select class="form-control" id="weekSelector" name="selectedWeek" required>
                 <!-- Las opciones se pueden cargar dinámicamente desde una base de datos -->
                 <option></option> <!-- Opción vacía para la búsqueda -->
             </select>

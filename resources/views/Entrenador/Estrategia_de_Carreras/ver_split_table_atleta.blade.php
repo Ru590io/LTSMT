@@ -44,12 +44,15 @@
             </div>
         </nav>
         <h1 class="text-center">Split Tables para Atleta</h1>
-        <h2 class="text-center mt-5">{{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
-        <div class="text-left mt-4">
+        <h2 class="text-center mt-3">{{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
+        <div class="text-left mt-3">
             <a href="{{ route('competitors.listing', $competitor->id) }}" class="btn btn-primary mb-3">Regresar</a>
         </div>
-        <div id="splitsContainer" class="mt-5">
+        <div id="splitsContainer" class="mt-3">
             <!-- Las tablas de splits y la información del atleta se generarán aquí -->
+            @if($competitor->events->isEmpty())
+            <h5 class="text-center">{{ $competitor->users->first_name }} {{ $competitor->users->last_name }} no tiene eventos asignados.</h5>
+            @endif
         </div>
     </div>
 

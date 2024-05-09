@@ -105,12 +105,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const confirmButton = document.getElementById('confirmButton');
-            const invalidateButton = document.getElementById('invalidateButton');
             const athleteDelete = document.getElementById('athleteDelete');
 
-            invalidateButton.addEventListener('click', function() {
-                invalidateButton.disabled = true;
-            });
 
             athleteDelete.addEventListener('submit', function() {
                 confirmButton.disabled = true;

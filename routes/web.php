@@ -102,7 +102,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
 
     //Lista de Atletas (new)
     Route::get('/athlete/athletetraininglist/{user}', [UserController::class, 'trainingLogsList'])->name('athlete.traininglist');
-    Route::get('/athlete/athletetraininglist/{user}/weekdetails', [UserController::class, 'trainingLogsWeekDetails'])->name('athlete.trainingweekdetails');
+    Route::get('/athlete/athletetraininglist/{id}/weekdetails', [UserController::class, 'trainingLogsWeekDetails'])->name('athlete.trainingweekdetails');
     Route::get('/athlete/athletetraininglist/{user}/weekdetails/edit', [UserController::class, 'trainingLogsWeekEdit'])->name('athlete.trainingweekedit');
 
     //Eventos
@@ -116,6 +116,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/competition/list/asignar/atleta/{id}/tabla', [EventsController::class, 'splittableatleta'])->name('table.atleta');
     Route::get('/competition/list/tabla/general/atleta', [EventsController::class, 'splittablegeneral'])->name('table.general');
 
+
     //Weeklyshedule
     Route::get('/schedule', [WeeklysheduleController::class, 'optionsweek'])->name('schedule');
     Route::get('/schedule/add', [WeeklysheduleController::class, 'createweek'])->name('schedule.add');
@@ -128,7 +129,6 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/schedule/add/show/week/athletes/view/edit/{id}', [WeeklysheduleController::class, 'editweek'])->name('week.edit');
     Route::put('/schedule/add/show/week/athletes/view/edit/{id}', [WeeklysheduleController::class, 'updateweek'])->name('week.update');
 
-
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {
@@ -140,7 +140,8 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
     Route::put('/atletainfo/athlete/{user}/update', [UserController::class, 'coachupdates'])->name('atleta.update');
     Route::get('/atletainfo/athlete/password', [PasswordResetController::class, 'atletaeditpassword'])->name('password.edits');
     Route::post('/atletainfo/athlete/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updated');
-    Route::get('/atletaweeks', [UserController::class, 'athleteweeks'])->name('atleta.weeks');
+    Route::get('/atletaweeks/list/{id}', [UserController::class, 'athleteweeks'])->name('atleta.weeks');
+    Route::get('/atletaweeks/list/weekdetails/{id}', [UserController::class, 'athleteweeksdetails'])->name('atleta.weeksdetails');
 });
 
 Route::post('/send-training-data', [LighttrainingController::class, 'sendTrainingData']);

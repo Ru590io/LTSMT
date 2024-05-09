@@ -148,7 +148,7 @@
                         <div class="time-of-day-section">
                             <h3>PM</h3>
                             <div class="options-section">
-                                <input type="radio" id="martes-pm-descanso" name="martes-pm" value="Descanso" onchange="toggleTrainingOptions('martes-pm', this.value)">
+                                <input type="radio" id="martes-pm-descanso" name="martes-pm" value="Descanso" onchange="toggleTrainingOptions('martes-pm', this.value)" checked>
                                 <label for="martes-pm-descanso">Descanso</label>
                                 <input type="radio" id="martes-pm-fondo" name="martes-pm" value="Fondo" onchange="toggleTrainingOptions('martes-pm', this.value)">
                                 <label for="martes-pm-fondo">Fondo</label>
@@ -344,16 +344,6 @@
                             </div>
                             <!-- Contenido dinámico para PM -->
                             <div class="dynamic-content" id="sábado-pm-options"></div>
-                            <div class="time-of-day-section">
-                                <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="viernes-pm-descanso" name="viernes-pm" value="Descanso" onchange="toggleTrainingOptions('viernes-pm', this.value)" checked>
-                                <label for="viernes-pm-descanso">Descanso</label>
-                                <input type="radio" id="viernes-pm-fondo" name="viernes-pm" value="Fondo" onchange="toggleTrainingOptions('viernes-pm', this.value)">
-                                <label for="viernes-pm-fondo">Fondo</label>
-                                <input type="radio" id="viernes-pm-repeticion" name="viernes-pm" value="Repeticion" onchange="toggleTrainingOptions('viernes-pm', this.value)">
-                                <label for="viernes-pm-repeticion">Repetición</label>
-                            </div>
                         </div>
                         <!-- Línea divisoria -->
                         <hr>
@@ -366,6 +356,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!--Domingo-->
             <div class="card mb-5">
@@ -415,15 +406,17 @@
                     </div>
                 </div>
             </div>
-            <div class="d-grid gap-3 mt-5">
-            <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
-            </div>
+
+        <div class="d-grid gap-3 mt-3">
+        <button type="button" id="copyTrainingWeekToClipboard" class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+        </div>
+
             @if($users->count() > 0)
-        <div class="d-grid gap-3 mt-5">
+        <div class="d-grid gap-3 mt-3">
             <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
         </div>
         @else
-        <div class="d-grid gap-3 mt-5">
+        <div class="d-grid gap-3 mt-3">
             <p>No hay atletas disponibles para asignar. Por favor, añade atletas antes de continuar.</p>
         </div>
         @endif
@@ -483,6 +476,7 @@
                  optionsContainer.innerHTML = ` <input type="hidden" name="Descanso" value="Descanso">
 
 
+
                 `;
             }
         }
@@ -534,16 +528,21 @@
     let baseName = containerId.replace('-repetition-container', '');
     let container = document.getElementById(containerId);
     if (container) {
-        let newRepetitionBlock = document.createElement('div');
-        newRepetitionBlock.classList.add('mt-2', 'repetition-block');
-        newRepetitionBlock.innerHTML = `
-            <input type="number" name="${baseName}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" required />
-            <input type="number" name="${baseName}-Rdistancia[]" style="width: 189px;" placeholder="Distancia (metros)" min="100" max="10000" step="100" required />
-            <input type="text" name="${baseName}-Rtiempoesperado[]" style="width: 189px;" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
-            <input type="text" name="${baseName}-Rrecuperacion[]" style="width: 189px;" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
-            <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">Remove</button>
-        `;
-        container.appendChild(newRepetitionBlock);
+        let repetitionBlocks = container.getElementsByClassName('repetition-block');
+        if (repetitionBlocks.length < 9) { // Modified: Set limit to 4 additional blocks
+            let newRepetitionBlock = document.createElement('div');
+            newRepetitionBlock.classList.add('mt-2', 'repetition-block');
+            newRepetitionBlock.innerHTML = `
+                <input type="number" name="${baseName}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" required />
+                <input type="number" name="${baseName}-Rdistancia[]" style="width: 189px;" placeholder="Distancia (metros)" min="100" max="10000" step="100" required />
+                <input type="text" name="${baseName}-Rtiempoesperado[]" style="width: 189px;" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+                <input type="text" name="${baseName}-Rrecuperacion[]" style="width: 189px;" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+                <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">Remove</button>
+            `;
+            container.appendChild(newRepetitionBlock);
+        } else {
+                alert('No se pueden agregar más de 10 repeticiones en total para esta sesión.'); // Added: Alert when limit is reached
+            }
     }
 }
 
@@ -552,52 +551,78 @@ function removeRepetition(button) {
 }
 
     </script>
+     <!--Copiar a portapapeles-->
+<script>
+window.onload = function() {
+    var copyButton = document.getElementById('copyTrainingWeekToClipboard');
+    if (copyButton) {
+        copyButton.addEventListener('click', handleCopyButtonClick);
+    }
 
-    <!--Copiar a portapapeles-->
-    <script>
-        function copyTrainingWeekToClipboard() {
-            var trainingWeek = '';
-            var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    // Initialize any other functionality here to ensure DOM is fully ready
+    initializeOtherFunctions();
+};
 
-            days.forEach(function(day) {
-                trainingWeek += day + '\\n';
-                ['am', 'pm'].forEach(function(timeOfDay) {
-                    var sessionRadio = document.querySelector('input[name="' + day.toLowerCase() + '-' + timeOfDay + '"]:checked');
-                    if (sessionRadio) {
-                        trainingWeek += timeOfDay.toUpperCase() + ': ' + sessionRadio.value + '\\n';
-                        if (sessionRadio.value !== 'Descanso') {
-                            var inputs = document.getElementById(day.toLowerCase() + '-' + timeOfDay + '-options').querySelectorAll('input, select');
-                            inputs.forEach(function(input) {
-                                if (input.type === 'number' || input.type === 'text') {
-                                    trainingWeek += input.placeholder + ': ' + input.value + '\\n';
-                                } else if (input.tagName.toLowerCase() === 'select') {
-                                    trainingWeek += 'Zona: ' + input.options[input.selectedIndex].text + '\\n';
+function handleCopyButtonClick() {
+    var trainingWeek = '';
+    var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+    days.forEach(function(day) {
+        trainingWeek += day + ':\n';
+        ['am', 'pm'].forEach(function(timeOfDay) {
+            var sessionRadioSelector = 'input[name="' + day.toLowerCase() + '-' + timeOfDay + '"]:checked';
+            var sessionRadio = document.querySelector(sessionRadioSelector);
+            if (sessionRadio) {
+                trainingWeek += timeOfDay.toUpperCase() + ': ';
+                if (sessionRadio.value === 'Descanso') {
+                    trainingWeek += 'Descanso\n';
+                } else {
+                    var optionsContainer = document.getElementById(day.toLowerCase() + '-' + timeOfDay + '-options');
+                    if (optionsContainer) {
+                        var inputs = optionsContainer.querySelectorAll('input, select');
+                        if (sessionRadio.value === 'Fondo') {
+                            var distance = inputs[0].value;
+                            var zone = inputs[1].value;
+                            trainingWeek += `Fondo\n- ${distance} Km, Zona: ${zone} + Flex\n`;
+                        } else if (sessionRadio.value === 'Repeticion') {
+                            trainingWeek += 'Repetición, Cal: 15:00 + driles + rectas 60m\n';
+                            inputs.forEach(function(input, index) {
+                                if (index % 4 === 0 && index > 0) trainingWeek += '\n';
+                                if (input.name.includes('Rsets')) {
+                                    trainingWeek += '- Sets: ' + input.value + ' + ';
+                                } else if (input.name.includes('Rdistancia')) {
+                                    trainingWeek += input.value + ' m + ';
+                                } else if (input.name.includes('Rtiempoesperado')) {
+                                    trainingWeek += 'Tiempo: ' + input.value + ' + ';
+                                } else if (input.name.includes('Rrecuperacion')) {
+                                    trainingWeek += 'Recuperación: ' + input.value;
                                 }
                             });
+                            trainingWeek += ' + Enfriamiento: 10:00 + flex\n';
                         }
                     }
-                });
-
-                var notes = document.getElementById(day.toLowerCase() + '-notas').value;
-                if (notes) {
-                    trainingWeek += 'Notas: ' + notes.trim() + '\\n';
                 }
-                trainingWeek += '\\n';
-            });
-
-            // Copia al portapapeles usando una función anónima para convertir los '\\n' a saltos de línea reales
-            navigator.clipboard.writeText(trainingWeek.split('\\n').join('\n')).then(function() {
-                alert('Semana de entrenamiento copiada al portapapeles.');
-            }, function(err) {
-                console.error('Error al copiar al portapapeles: ', err);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var copyButton = document.querySelector('.copy-to-clipboard');
-            copyButton.addEventListener('click', copyTrainingWeekToClipboard);
+                trainingWeek += '\n';
+            }
         });
+        // Append notes after AM and PM sessions are processed
+        var notesId = day.toLowerCase() + '-notes';
+        var notesInput = document.getElementById(notesId);
+        if (notesInput && notesInput.value.trim() !== '') {
+            trainingWeek += 'Notas: ' + notesInput.value.trim() + '\n\n';
+        }
+    });
+
+    navigator.clipboard.writeText(trainingWeek).then(function() {
+        alert('Semana de entrenamiento copiada al portapapeles.');
+    }, function(err) {
+        console.error('Error al copiar al portapapeles: ', err);
+    });
+}
+
     </script>
+
+
     <script>
         $(document).ready(function() {
             $('#athleteSelector').select2({
@@ -658,6 +683,33 @@ function removeRepetition(button) {
 
 
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure all form elements are reset correctly on page load
+        ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'].forEach(day => {
+            ['am', 'pm'].forEach(time => {
+                let key = `${day}-${time}`;
+                let selectedValue = document.querySelector(`input[name="${key}"]:checked`)?.value;
+                if (selectedValue) {
+                    toggleTrainingOptions(key, selectedValue);
+                } else {
+                    // Default to 'Descanso' if nothing is selected
+                    document.getElementById(`${key}-descanso`).checked = true;
+                    toggleTrainingOptions(key, 'Descanso');
+                }
+            });
+        });
+
+        // Call any other functions that need to run on page load
+        // For example, resetting form fields, setting up listeners, etc.
+        // Example: resetRadioGroup('lunes-am');
+        // Example: resetNotes('lunes-notes');
+    });
+</script>
+
+
+
         <script>
             /*document.addEventListener('DOMContentLoaded', function() {
                 $('#athleteSelector, #weekSelector').select2({
