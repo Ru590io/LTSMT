@@ -65,7 +65,7 @@
     dateElements.forEach(function(elem) {
         const rawDateStr = elem.getAttribute('data-date');
         const [year, month, day] = rawDateStr.split('-').map(Number);  // Split the date string and convert to numbers
-        const rawDate = new Date(year, month - 1, day - 1);  // Create a new Date object; months are 0-indexed in JavaScript
+        const rawDate = new Date(year, month - 1, day);  // Create a new Date object; months are 0-indexed in JavaScript
 
         elem.textContent = formatDate(rawDate);
     });

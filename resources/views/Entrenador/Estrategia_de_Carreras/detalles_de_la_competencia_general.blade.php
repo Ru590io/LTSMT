@@ -69,7 +69,8 @@
             @else
             <p>No competitors have been added to this competition yet.</p>
             @endif--}}
-            <a href="{{ route('table.general', $competition->id) }}" class="btn btn-primary btn-lg">Ver Split Tables</a>
+
+            <a href="{{route('table.general', $competition->id)}}" class="btn btn-primary btn-lg">Ver Split Tables</a>
         </div>
         <div class="d-grid gap-3 mt-3">
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeCompetitionModal">Remover Competencia</button>

@@ -78,7 +78,13 @@
                 @enderror
 
             </div>
-            <button type="submit" class="btn btn-primary" id="crearLightstrip" >Guardar Entrenamiento</button>
+
+                @if ($lightTrainingCount >= 5)
+                <button type="submit" disabled class="btn btn-primary" id="crearLightstrip" >Guardar Entrenamiento</button>
+                @else
+                <button type="submit" class="btn btn-primary" id="crearLightstrip" >Guardar Entrenamiento</button>
+                @endif
+
         </form>
     </div>
 

@@ -60,6 +60,9 @@
                     <a href="{{ route('competition.details', ['user' => $user->id, 'competition' => $competition->id]) }}" class="btn btn-primary btn-lg">{{ $competition->cname }}</a>
                 @endforeach
             @endif
+            <div class="d-flex justify-content-center mt-3">
+                {{ $user_competitions->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </div>
 

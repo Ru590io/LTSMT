@@ -14,8 +14,8 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Entrenamiento de Hoy</h1>
-        <h2 class="text-center mt-4 mb-3"> {{$user->first_name}} {{$user->last_name}} </h2>
+        <h1 class="text-center">Menú Principal</h1>
+        <h2 class="text-center mt-4 mb-3"> Bienvenido, {{$user->first_name}} {{$user->last_name}} </h2>
         <div class="row justify-content-center mt-5">
 
                 <div class="d-flex justify-content-end">
@@ -24,7 +24,7 @@
                 <div id="schedule">
                     <!-- Cards for each day -->
                     <!--Entrenamiento de Hoy-->
-                    <div class="card mb-5">
+                    {{-- <div class="card mb-5">
                         <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
                         <div class="card-body">
                             <h3>AM:</h3>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="d-grid gap-3">
                     <a href="{{ url('/atletaweeks/list/' .  $user->id) }}" class="btn btn-primary btn-lg">Lista de Semanas Asignadas</a>
 

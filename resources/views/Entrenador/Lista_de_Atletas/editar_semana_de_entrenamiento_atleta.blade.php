@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Editar Semana de Entrenamiento</title>
-    <link href="{{url('Css/styles.css')}}" rel="stylesheet">
-    <a href="/home" style="text-decoration: none;">
-        <div class="logo-container">
-            <div class="logo-text">LTSMT</div>
-        </div>
-    </a>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
+@extends('layouts.app')
 
-<body>
-    <div class="container">
+@section('content')
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    <form action="{{ route('athlete.trainingweekeditupdate', $weeklySchedule->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
         <nav class="navbar custom-navbar">
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,536 +33,158 @@
                 </ul>
             </div>
         </nav>
-        <h1 class="text-center">Editar Semana de Entrenamiento</h1>
-        <h2 class="text-center mt-5">Entrenamiento 1</h2>
-        <div class="text-left mt-4">
-            <a href="entrenamiento_del_atleta" class="btn btn-primary mb-3">Regresar</a>
-        </div>
-        <form id="weekForm">
-            <!--Lunes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Lunes</h3></div>
-                <div class="card-body">
-                    <!-- Sección AM -->
-                    <div class="time-of-day-section">
-                        <h3>AM</h3>
-                        <div class="options-section">
-                            <input type="radio" id="lunes-am-descanso" name="lunes-am" value="Descanso" onchange="toggleTrainingOptions('lunes-am', this.value)" checked>
-                            <label for="lunes-am-descanso">Descanso</label>
-                            <input type="radio" id="lunes-am-fondo" name="lunes-am" value="Fondo" onchange="toggleTrainingOptions('lunes-am', this.value)">
-                            <label for="lunes-am-fondo">Fondo</label>
-                            <input type="radio" id="lunes-am-repeticion" name="lunes-am" value="Repeticion" onchange="toggleTrainingOptions('lunes-am', this.value)">
-                            <label for="lunes-am-repeticion">Repetición</label>
+
+        <h1 class="text-center">Editar la Semana</h1>
+        <h2 class="text-center mt-3 mb-3">{{ $weeklySchedule->user->first_name }} {{ $weeklySchedule->user->last_name }}</h2>
+        <h2 class="text-center mt- mb-5">
+            <span class="date-span" data-date="{{ $weeklySchedule->wstart_date }}"></span> -
+            <span class="date-span" data-date="{{ $weeklySchedule->wend_date }}"></span>
+        </h2>
+
+        <a href="{{ route('athlete.trainingweekdetails', $weeklySchedule->id) }}" class="btn btn-primary mb-3">Regresar</a>
+
+        @foreach ($weeklySchedule->days as $day)
+        <div class="card mb-5">
+            <h2 class="text-center"><div class="card-header">{{ ucfirst($day->day) }}</div></h2>
+            <div class="card-body">
+                @foreach(['ams' => 'AM', 'pms' => 'PM'] as $part => $label)
+                <hr>
+                <div>
+                    <h3>{{ $label }}</h3>
+                    @foreach(['descansos' => 'Descansos', 'fondos' => 'Fondos', 'repeticiones' => 'Repeticiones'] as $activityType => $activityLabel)
+                    <div>
+                        <strong>{{ $activityLabel }}</strong>
+                        <div id="{{ $day->day }}_{{ $part }}_{{ $activityType }}_container">
+                            @if($day->$part->pluck($activityType)->collapse()->isNotEmpty())
+                                @foreach($day->$part as $session)
+                                    @foreach($session->$activityType as $activity)
+                                        @include("partials.edit_{$activityType}", [$activityType => $activity])
+                                    @endforeach
+                                @endforeach
+                            @endif
+                            {{--@if($activityType !== 'repeticiones' && $day->$part->pluck($activityType)->collapse()->isNotEmpty())
+                                <button type="button" onclick="toggleActivityType('{{ $day->day }}', '{{ $part }}', '{{ $activityType }}')">Add {{ $activityLabel }}</button>
+                            @elseif($activityType === 'repeticiones')
+                                <button type="button" onclick="toggleActivityType('{{ $day->day }}', '{{ $part }}', 'repeticiones')">Add Repeticion</button>
+                            @endif--}}
                         </div>
-                        <!-- Contenido dinámico para AM -->
-                        <div class="dynamic-content" id="lunes-am-options"></div>
                     </div>
-                    <!-- Línea divisoria -->
+
+                    @endforeach
+                </div>
+                @endforeach
+
+                <div class="mt-4">
                     <hr>
-                    <!-- Sección PM -->
-                    <div class="time-of-day-section">
-                        <h3>PM</h3>
-                        <div class="options-section">
-                            <input type="radio" id="lunes-pm-descanso" name="lunes-pm" value="Descanso" onchange="toggleTrainingOptions('lunes-pm', this.value)" checked>
-                            <label for="lunes-pm-descanso">Descanso</label>
-                            <input type="radio" id="lunes-pm-fondo" name="lunes-pm" value="Fondo" onchange="toggleTrainingOptions('lunes-pm', this.value)">
-                            <label for="lunes-pm-fondo">Fondo</label>
-                            <input type="radio" id="lunes-pm-repeticion" name="lunes-pm" value="Repeticion" onchange="toggleTrainingOptions('lunes-pm', this.value)">
-                            <label for="lunes-pm-repeticion">Repetición</label>
-                        </div>
-                        <!-- Contenido dinámico para PM -->
-                        <div class="dynamic-content" id="lunes-pm-options"></div>
-                    </div>
-                    <!-- Línea divisoria -->
-                    <hr>
-                    <!-- Notas -->
                     <div class="notes-section">
-                        <label for="lunes-notas">Notas:</label>
-                        <textarea class="form-control" id="lunes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
+                        <label for="notes_{{ $day->day }}">Notes:</label>
+                        <textarea name="notes_{{ $day->day }}" id="notes_{{ $day->day }}" class="form-control" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No más de 500 caracteres">{{ $day->notes }}</textarea>
                     </div>
-                </div>
-            </div>
 
 
-
-            <!--Martes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Martes</h3></div>
-                    <div class="card-body">
-                        <!-- Sección AM -->
-                        <div class="time-of-day-section">
-                            <h3>AM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="martes-am-descanso" name="martes-am" value="Descanso" onchange="toggleTrainingOptions('martes-am', this.value)" checked>
-                                <label for="martes-am-descanso">Descanso</label>
-                                <input type="radio" id="martes-am-fondo" name="martes-am" value="Fondo" onchange="toggleTrainingOptions('martes-am', this.value)">
-                                <label for="martes-am-fondo">Fondo</label>
-                                <input type="radio" id="martes-am-repeticion" name="martes-am" value="Repeticion" onchange="toggleTrainingOptions('martes-am', this.value)">
-                                <label for="martes-am-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para AM -->
-                            <div class="dynamic-content" id="martes-am-options"></div>
-                        <!-- Línea divisoria -->
-                        <hr>
-                        <!-- Sección PM -->
-                        <div class="time-of-day-section">
-                            <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="martes-pm-descanso" name="martes-pm" value="Descanso" onchange="toggleTrainingOptions('martes-pm', this.value)">
-                                <label for="martes-pm-descanso">Descanso</label>
-                                <input type="radio" id="martes-pm-fondo" name="martes-pm" value="Fondo" onchange="toggleTrainingOptions('martes-pm', this.value)">
-                                <label for="martes-pm-fondo">Fondo</label>
-                                <input type="radio" id="martes-pm-repeticion" name="martes-pm" value="Repeticion" onchange="toggleTrainingOptions('martes-pm', this.value)">
-                                <label for="martes-pm-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para PM -->
-                            <div class="dynamic-content" id="martes-pm-options"></div>
-                        </div>
-                        <!-- Línea divisoria -->
-                        <hr>
-
-                        <!-- Notas -->
-                        <div class="notes-section">
-                            <label for="martes-notas">Notas:</label>
-                            <textarea class="form-control" id="martes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!--Miércoles-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Miércoles</h3></div>
-                    <div class="card-body">
-                        <!-- Sección AM -->
-                        <div class="time-of-day-section">
-                            <h3>AM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="miércoles-am-descanso" name="miércoles-am" value="Descanso" onchange="toggleTrainingOptions('miércoles-am', this.value)" checked>
-                                <label for="miércoles-am-descanso">Descanso</label>
-                                <input type="radio" id="miércoles-am-fondo" name="miércoles-am" value="Fondo" onchange="toggleTrainingOptions('miércoles-am', this.value)">
-                                <label for="miércoles-am-fondo">Fondo</label>
-                                <input type="radio" id="miércoles-am-repeticion" name="miércoles-am" value="Repeticion" onchange="toggleTrainingOptions('miércoles-am', this.value)">
-                                <label for="miércoles-am-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para AM -->
-                            <div class="dynamic-content" id="miércoles-am-options"></div>
-
-                        <!-- Línea divisoria -->
-                        <hr>
-                        <!-- Sección PM -->
-                        <div class="time-of-day-section">
-                            <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="miércoles-pm-descanso" name="miércoles-pm" value="Descanso" onchange="toggleTrainingOptions('miércoles-pm', this.value)" checked>
-                                <label for="miércoles-pm-descanso">Descanso</label>
-                                <input type="radio" id="miércoles-pm-fondo" name="miércoles-pm" value="Fondo" onchange="toggleTrainingOptions('miércoles-pm', this.value)">
-                                <label for="miércoles-pm-fondo">Fondo</label>
-                                <input type="radio" id="miércoles-pm-repeticion" name="miércoles-pm" value="Repeticion" onchange="toggleTrainingOptions('miércoles-pm', this.value)">
-                                <label for="miércoles-pm-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para PM -->
-                            <div class="dynamic-content" id="miércoles-pm-options"></div>
-
-                        </div>
-                        <!-- Línea divisoria -->
-                        <hr>
-
-                        <!-- Notas -->
-                        <div class="notes-section">
-                            <label for="miércoles-notas">Notas:</label>
-                            <textarea class="form-control" id="miércoles-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!--Jueves-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Jueves</h3></div>
-                    <div class="card-body">
-                        <!-- Sección AM -->
-                        <div class="time-of-day-section">
-                            <h3>AM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="jueves-am-descanso" name="jueves-am" value="Descanso" onchange="toggleTrainingOptions('jueves-am', this.value)" checked>
-                                <label for="jueves-am-descanso">Descanso</label>
-                                <input type="radio" id="jueves-am-fondo" name="jueves-am" value="Fondo" onchange="toggleTrainingOptions('jueves-am', this.value)">
-                                <label for="jueves-am-fondo">Fondo</label>
-                                <input type="radio" id="jueves-am-repeticion" name="jueves-am" value="Repeticion" onchange="toggleTrainingOptions('jueves-am', this.value)">
-                                <label for="jueves-am-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para AM -->
-                            <div class="dynamic-content" id="jueves-am-options"></div>
-
-                        <!-- Línea divisoria -->
-                        <hr>
-                        <!-- Sección PM -->
-                        <div class="time-of-day-section">
-                            <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="jueves-pm-descanso" name="jueves-pm" value="Descanso" onchange="toggleTrainingOptions('jueves-pm', this.value)" checked>
-                                <label for="jueves-pm-descanso">Descanso</label>
-                                <input type="radio" id="jueves-pm-fondo" name="jueves-pm" value="Fondo" onchange="toggleTrainingOptions('jueves-pm', this.value)">
-                                <label for="jueves-pm-fondo">Fondo</label>
-                                <input type="radio" id="jueves-pm-repeticion" name="jueves-pm" value="Repeticion" onchange="toggleTrainingOptions('jueves-pm', this.value)">
-                                <label for="jueves-pm-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para PM -->
-                            <div class="dynamic-content" id="jueves-pm-options"></div>
-
-                        </div>
-                        <!-- Línea divisoria -->
-                        <hr>
-
-                        <!-- Notas -->
-                        <div class="notes-section">
-                            <label for="jueves-notas">Notas:</label>
-                            <textarea class="form-control" id="jueves-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!--Viernes-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Viernes</h3></div>
-                    <div class="card-body">
-                        <!-- Sección AM -->
-                        <div class="time-of-day-section">
-                            <h3>AM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="viernes-am-descanso" name="viernes-am" value="Descanso" onchange="toggleTrainingOptions('viernes-am', this.value)" checked>
-                                <label for="viernes-am-descanso">Descanso</label>
-                                <input type="radio" id="viernes-am-fondo" name="viernes-am" value="Fondo" onchange="toggleTrainingOptions('viernes-am', this.value)">
-                                <label for="viernes-am-fondo">Fondo</label>
-                                <input type="radio" id="viernes-am-repeticion" name="viernes-am" value="Repeticion" onchange="toggleTrainingOptions('viernes-am', this.value)">
-                                <label for="viernes-am-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para AM -->
-                            <div class="dynamic-content" id="viernes-am-options"></div>
-
-                        <!-- Línea divisoria -->
-                        <hr>
-                        <!-- Sección PM -->
-                        <div class="time-of-day-section">
-                            <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="viernes-pm-descanso" name="viernes-pm" value="Descanso" onchange="toggleTrainingOptions('viernes-pm', this.value)" checked>
-                                <label for="viernes-pm-descanso">Descanso</label>
-                                <input type="radio" id="viernes-pm-fondo" name="viernes-pm" value="Fondo" onchange="toggleTrainingOptions('viernes-pm', this.value)">
-                                <label for="viernes-pm-fondo">Fondo</label>
-                                <input type="radio" id="viernes-pm-repeticion" name="viernes-pm" value="Repeticion" onchange="toggleTrainingOptions('viernes-pm', this.value)">
-                                <label for="viernes-pm-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para PM -->
-                            <div class="dynamic-content" id="viernes-pm-options"></div>
-
-                        </div>
-                        <!-- Línea divisoria -->
-                        <hr>
-
-                        <!-- Notas -->
-                        <div class="notes-section">
-                            <label for="viernes-notas">Notas:</label>
-                            <textarea class="form-control" id="viernes-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!--Sábado-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Sábado</h3></div>
-                    <div class="card-body">
-                        <!-- Sección AM -->
-                        <div class="time-of-day-section">
-                            <h3>AM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="sábado-am-descanso" name="sábado-am" value="Descanso" onchange="toggleTrainingOptions('sábado-am', this.value)" checked>
-                                <label for="sábado-am-descanso">Descanso</label>
-                                <input type="radio" id="sábado-am-fondo" name="sábado-am" value="Fondo" onchange="toggleTrainingOptions('sábado-am', this.value)">
-                                <label for="sábado-am-fondo">Fondo</label>
-                                <input type="radio" id="sábado-am-repeticion" name="sábado-am" value="Repeticion" onchange="toggleTrainingOptions('sábado-am', this.value)">
-                                <label for="sábado-am-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para AM -->
-                            <div class="dynamic-content" id="sábado-am-options"></div>
-
-                        <!-- Línea divisoria -->
-                        <hr>
-                        <!-- Sección PM -->
-                        <div class="time-of-day-section">
-                            <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="sábado-pm-descanso" name="sábado-pm" value="Descanso" onchange="toggleTrainingOptions('sábado-pm', this.value)" checked>
-                                <label for="sábado-pm-descanso">Descanso</label>
-                                <input type="radio" id="sábado-pm-fondo" name="sábado-pm" value="Fondo" onchange="toggleTrainingOptions('sábado-pm', this.value)">
-                                <label for="sábado-pm-fondo">Fondo</label>
-                                <input type="radio" id="sábado-pm-repeticion" name="sábado-pm" value="Repeticion" onchange="toggleTrainingOptions('sábado-pm', this.value)">
-                                <label for="sábado-pm-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para PM -->
-                            <div class="dynamic-content" id="sábado-pm-options"></div>
-
-                        </div>
-                        <!-- Línea divisoria -->
-                        <hr>
-
-                        <!-- Notas -->
-                        <div class="notes-section">
-                            <label for="sábado-notas">Notas:</label>
-                            <textarea class="form-control" id="sábado-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--Domingo-->
-            <div class="card mb-5">
-                <div class="card-header"><h3 class="centered-text">Domingo</h3></div>
-                    <div class="card-body">
-                        <!-- Sección AM -->
-                        <div class="time-of-day-section">
-                            <h3>AM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="domingo-am-descanso" name="domingo-am" value="Descanso" onchange="toggleTrainingOptions('domingo-am', this.value)" checked>
-                                <label for="domingo-am-descanso">Descanso</label>
-                                <input type="radio" id="domingo-am-fondo" name="domingo-am" value="Fondo" onchange="toggleTrainingOptions('domingo-am', this.value)">
-                                <label for="domingo-am-fondo">Fondo</label>
-                                <input type="radio" id="domingo-am-repeticion" name="domingo-am" value="Repeticion" onchange="toggleTrainingOptions('domingo-am', this.value)">
-                                <label for="domingo-am-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para AM -->
-                            <div class="dynamic-content" id="domingo-am-options"></div>
-
-                        <!-- Línea divisoria -->
-                        <hr>
-                        <!-- Sección PM -->
-                        <div class="time-of-day-section">
-                            <h3>PM</h3>
-                            <div class="options-section">
-                                <input type="radio" id="domingo-pm-descanso" name="domingo-pm" value="Descanso" onchange="toggleTrainingOptions('domingo-pm', this.value)" checked>
-                                <label for="domingo-pm-descanso">Descanso</label>
-                                <input type="radio" id="domingo-pm-fondo" name="domingo-pm" value="Fondo" onchange="toggleTrainingOptions('domingo-pm', this.value)">
-                                <label for="domingo-pm-fondo">Fondo</label>
-                                <input type="radio" id="domingo-pm-repeticion" name="domingo-pm" value="Repeticion" onchange="toggleTrainingOptions('domingo-pm', this.value)">
-                                <label for="domingo-pm-repeticion">Repetición</label>
-                            </div>
-                            <!-- Contenido dinámico para PM -->
-                            <div class="dynamic-content" id="domingo-pm-options"></div>
-
-                        </div>
-
-                        <!-- Línea divisoria -->
-                        <hr>
-
-                        <!-- Notas -->
-                        <div class="notes-section">
-                            <label for="domingo-notas">Notas:</label>
-                            <textarea class="form-control" id="domingo-notas" rows="2" placeholder="Escribe notas extras aquí..."></textarea>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </form>
-        <div class="d-grid gap-3 mt-5">
-            <button id="updateButton" disabled class="btn btn-primary btn-lg">Guardar</button>
-            <button class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
-        </div>
-    </div>
-    <div class="modal fade" id="deleteWeekModal" tabindex="-1" aria-labelledby="deleteWeekModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteWeekModalLabel">Confirmación de Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar esta semana de entrenamiento?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteWeek()">Eliminar</button>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        function toggleTrainingOptions(timeOfDay, option) {
-    let optionsContainer = document.getElementById(timeOfDay + '-options');
-    optionsContainer.innerHTML = ''; // Limpia las opciones previas
+        @endforeach
+        <div class="d-grid gap-3 mt-3">
+            <button disabled id="guardarCambios" type="submit" class="btn btn-primary btn-lg">Guardar Cambios</button>
+        </div>
+    </form>
 
-    if (option === 'Fondo') {
-        optionsContainer.innerHTML = `
-            <input type="number" placeholder="Distancia (Kilometros)" />
-            <select>
-                <option value="">Zona</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        `;
-    } else if (option === 'Repeticion') {
-        const repetitionContainer = document.createElement('div');
-        repetitionContainer.classList.add('repetition-container');
-        repetitionContainer.innerHTML = `
-        <input type="number" placeholder="Cantidad de Sets" min="1" max="30" tittle="Ingrese valores entre 1 a 30" required />
+<script>
+    function toggleActivityType(day, sessionType, selectedActivityType) {
+    const activityTypes = ['descansos', 'fondos', 'repeticiones'];  // Define all activity types
+    const containerPrefix = `${day}_${sessionType}_`;
 
-        <input type="number" placeholder="Distancia (metros)" min="1" max="10000" title="Ingrese valores entre 1 a 10000" required />
+    activityTypes.forEach(activityType => {
+        const container = document.getElementById(containerPrefix + activityType + '_container');
+        if (activityType === selectedActivityType) {
+            //container.style.display = 'block';  // Show the container
+            if (activityType === 'repeticiones' && container.children.length === 0) {  // Special handling for repeticiones
+                container.innerHTML += getActivityForm(day, sessionType, activityType);  // Append, not replace
+            } /*else if (container.innerHTML === '') {
+                container.innerHTML = getActivityForm(day, sessionType, activityType);  // Populate only if empty
+            }*/
+        } else {
+            //container.style.display = 'none';  // Hide the container
+            if (activityType !== 'repeticiones' || activityType !== 'fondos' || activityType !== 'descansos') {  // Preserve repeticiones data
+                container.innerHTML = '';  // Clear the content for others
+            }
+        }
+    });
+}
 
-        <input type="text" placeholder="Tiempo Esperado (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
-
-        <input type="text" placeholder="Recuperación (mm:ss)" pattern="^([0-5]?[0-9]):([0-5]?[0-9])$" title="Formato MM:SS" required />
-        `;
-        optionsContainer.appendChild(repetitionContainer);
-    } else if (option === 'Descanso') {
-        optionsContainer.innerHTML = 'Descanso';
+function getActivityForm(day, sessionType, activityType) {
+    switch (activityType) {
+        case 'descansos':
+            return `<label>Name:</label><input type="text" name="${day}_${sessionType}_${activityType}_Descanso[]" placeholder="Enter name">`;
+        case 'fondos':
+            return `
+                <label>Distance (km):</label><input type="number" name="${day}_${sessionType}_${activityType}_Fdistancia[]" placeholder="Enter distance" min="1">
+                <label>Zone:</label><input type="number" name="${day}_${sessionType}_${activityType}_Fzona[]" placeholder="Enter zone" min="1" max="5">
+            `;
+        case 'repeticiones':
+            return `
+                <label>Sets:</label><input type="number" name="${day}_${sessionType}_${activityType}_Rsets[]" placeholder="Enter sets" min="1">
+                <label>Distance (m):</label><input type="number" name="${day}_${sessionType}_${activityType}_Rdistancia[]" placeholder="Enter distance" min="100">
+                <label>Expected Time:</label><input type="text" name="${day}_${sessionType}_${activityType}_Rtiempoesperado[]" placeholder="Enter expected time">
+                <label>Recovery Time:</label><input type="text" name="${day}_${sessionType}_${activityType}_Rrecuperacion[]" placeholder="Enter recovery time">
+            `;
     }
 }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+// Select all elements with the class 'date-span'
+const dateElements = document.querySelectorAll('.date-span');
 
-function addRepetition(button) {
-    const repetitionContainer = button.parentElement;
-    const newRepetitionBlock = repetitionContainer.cloneNode(true);
-    newRepetitionBlock.querySelector('.add-repetition').remove();
-    newRepetitionBlock.innerHTML += '<button type="button" class="btn btn-danger remove-repetition">-</button>';
-    repetitionContainer.parentNode.insertBefore(newRepetitionBlock, repetitionContainer.nextSibling);
-}
+// Iterate over each element and format its date
+dateElements.forEach(function(elem) {
+    const rawDateStr = elem.getAttribute('data-date');
+    const [year, month, day] = rawDateStr.split('-').map(Number);  // Split the date string and convert to numbers
+    const rawDate = new Date(year, month - 1, day);  // Create a new Date object; months are 0-indexed in JavaScript
 
-function removeRepetition(button) {
-    button.parentElement.remove();
-}
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('add-repetition')) {
-        addRepetition(event.target);
-    } else if (event.target.classList.contains('remove-repetition')) {
-        removeRepetition(event.target);
-    }
+    elem.textContent = formatDate(rawDate);
+});
 });
 
-    </script>
-    <script>
-        window.onload = function() {
-            // Reset each radio group to its default state
-            resetRadioGroup('lunes-am');
-            resetRadioGroup('lunes-pm');
-            resetRadioGroup('martes-am');
-            resetRadioGroup('martes-pm');
-            resetRadioGroup('miércoles-am');
-            resetRadioGroup('miércoles-pm');
-            resetRadioGroup('jueves-am');
-            resetRadioGroup('jueves-pm');
-            resetRadioGroup('viernes-am');
-            resetRadioGroup('viernes-pm');
-            resetRadioGroup('sabado-am');
-            resetRadioGroup('sabado-pm');
-            resetRadioGroup('domingo-am');
-            resetRadioGroup('domingo-pm');
+function formatDate(date) {
+return date.toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
+}
+</script>
 
-            // Reset notas para cada día
-            resetNotes('lunes-notas');
-            resetNotes('martes-notas');
-            resetNotes('miércoles-notas');
-            resetNotes('jueves-notas');
-            resetNotes('viernes-notas');
-            resetNotes('sábado-notas');
-            resetNotes('domingo-notas');
 
-        };
+{{-- Disables guardar button until changes are detected --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const saveButton = document.getElementById('guardarCambios');
+        const initialFormData = new FormData(form);
 
-        function resetRadioGroup(groupName) {
-            let radios = document.querySelectorAll('input[name="' + groupName + '"]');
-            for (let radio of radios) {
-                radio.checked = false;
+        function checkFormChanges() {
+            let isChanged = false;
+            const currentFormData = new FormData(form);
+
+            // Compare each entry in the initial form data with the current form data
+            for (let [key, value] of initialFormData) {
+                if (value !== currentFormData.get(key)) {
+                    isChanged = true;
+                    break;
+                }
             }
-            // Activar manualmente la opción 'Descanso' como default
-            document.getElementById(groupName + '-descanso').checked = true;
-            toggleTrainingOptions(groupName, 'Descanso');
-        };
 
-        function resetNotes(notesId) {
-            document.getElementById(notesId).value = '';
-        };
-
-
-    </script>
-
-    <!--Copiar a portapapeles-->
-    <script>
-        function copyTrainingWeekToClipboard() {
-            var trainingWeek = '';
-            var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-
-            days.forEach(function(day) {
-                trainingWeek += day + '\\n';
-                ['am', 'pm'].forEach(function(timeOfDay) {
-                    var sessionRadio = document.querySelector('input[name="' + day.toLowerCase() + '-' + timeOfDay + '"]:checked');
-                    if (sessionRadio) {
-                        trainingWeek += timeOfDay.toUpperCase() + ': ' + sessionRadio.value + '\\n';
-                        if (sessionRadio.value !== 'Descanso') {
-                            var inputs = document.getElementById(day.toLowerCase() + '-' + timeOfDay + '-options').querySelectorAll('input, select');
-                            inputs.forEach(function(input) {
-                                if (input.type === 'number' || input.type === 'text') {
-                                    trainingWeek += input.placeholder + ': ' + input.value + '\\n';
-                                } else if (input.tagName.toLowerCase() === 'select') {
-                                    trainingWeek += 'Zona: ' + input.options[input.selectedIndex].text + '\\n';
-                                }
-                            });
-                        }
-                    }
-                });
-
-                var notes = document.getElementById(day.toLowerCase() + '-notas').value;
-                if (notes) {
-                    trainingWeek += 'Notas: ' + notes.trim() + '\\n';
-                }
-                trainingWeek += '\\n';
-            });
-
-            // Copia al portapapeles usando una función anónima para convertir los '\\n' a saltos de línea reales
-            navigator.clipboard.writeText(trainingWeek.split('\\n').join('\n')).then(function() {
-                alert('Semana de entrenamiento copiada al portapapeles.');
-            }, function(err) {
-                console.error('Error al copiar al portapapeles: ', err);
-            });
+            // Enable or disable the save button based on whether there are changes
+            saveButton.disabled = !isChanged;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var copyButton = document.querySelector('.copy-to-clipboard');
-            copyButton.addEventListener('click', copyTrainingWeekToClipboard);
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('weekForm');
-        const updateButton = document.getElementById('updateButton');
-        const inputs = form.querySelectorAll('input, select, textarea');
-
-        // Store initial data
-        const initialValues = {};
-        inputs.forEach(input => {
-            initialValues[input.name] = input.value;
-        });
-
-        // Function to check form changes
-        function checkChanges() {
-            let formChanged = false;
-            inputs.forEach(input => {
-                if (initialValues[input.name] !== input.value) {
-                    formChanged = true;
-                }
-            });
-            updateButton.disabled = !formChanged;
-        }
-
-        // Event listeners for form changes
-        inputs.forEach(input => {
-            input.addEventListener('change', checkChanges);
-            input.addEventListener('input', checkChanges);
+        // Add input event listeners to each input and textarea within the form
+        form.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', checkFormChanges); // Using 'input' for real-time checking
         });
     });
     </script>
@@ -580,9 +192,4 @@ document.addEventListener('click', function(event) {
 
 
 
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-</html>
+@endsection

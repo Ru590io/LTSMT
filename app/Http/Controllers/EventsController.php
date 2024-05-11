@@ -47,10 +47,24 @@ class EventsController extends Controller
 
     public function compshows($id)
     {
-        $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);
+        // Fetch the competitor and related models, order the events by the numeric part of 'edistance'
+        $competitor = Competitors::with([
+            'competition',
+            'users',
+            'events' => function($query) {
+                // Extract numbers from 'edistance' and order by these values ascending
+                $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+            }
+        ])->findOrFail($id);
+
+        // Get all events, potentially for other uses not ordered
         $event = Event::with('competitors')->get();
+
+        // Return the view with ordered events under the competitor
         return view('Entrenador.Estrategia_de_Carreras.eventos_del_atleta', compact('competitor', 'event'));
     }
+
+
 
     public function asignarEvento(Request $request, $id) {
         //$this->authorize('assignAthlete', competitors::class);
@@ -147,7 +161,16 @@ class EventsController extends Controller
 
 
     public function splittableatleta($id){
-        $competitor = Competitors::with('competition', 'users', 'events')->findOrFail($id);
+        $competitor = Competitors::with([
+            'competition',
+            'users',
+            'events' => function($query) {
+                // Extract numbers from 'edistance' and order by these values ascending
+                $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+            }
+        ])->findOrFail($id);
+
+
         $events = $competitor->events->map(function ($event) {
             return [
                 'distance' => preg_replace('/[^0-9]/', '', $event->edistance),
@@ -158,12 +181,17 @@ class EventsController extends Controller
     return view('Entrenador.Estrategia_de_Carreras.ver_split_table_atleta', compact('competitor', 'events'));
     }
 
-    
+
     public function splittablegeneral($id){
-    $competitors = Competitors::with(['users', 'events'])
-                             ->where('competition_id', $id)
-                             ->get();
+    $competitors = Competitors::with(['users', 'events'=> function($query) {
+        // Extract numbers from 'edistance' and order by these values ascending
+        $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+    }
+]
+)->where('competition_id', $id)->get();
     $allEvents = collect();
+    $competition = competition::FindorFail($id);
+
     $competition = competition::FindorFail($id);
 
     foreach ($competitors as $competitor) {

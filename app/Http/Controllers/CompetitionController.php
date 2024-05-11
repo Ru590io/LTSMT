@@ -15,7 +15,7 @@ class CompetitionController extends Controller
     // Display a listing of the competition.
     public function competitionlist()
     {
-        $competitions = competition::orderBy('id', 'asc')->orderBy('cname', 'asc')->orderBy('ctime', 'asc')->paginate(5, ['id','cname', 'ctime']);
+        $competitions = competition::orderBy('cname', 'asc')->paginate(5, ['id','cname', 'ctime']);
 
         return view('Entrenador.Estrategia_de_Carreras.estrategia_de_carreras_general', compact('competitions'));
     }
@@ -104,10 +104,17 @@ class CompetitionController extends Controller
 
     public function competitionshows($id)
     {
-        $competitors = Competitors::with('competition', 'users', 'events')->where('competition_id', $id)->get();
+        $competitors = Competitors::with('competition', 'users', 'events')
+            ->join('users', 'competitors.users_id', '=', 'users.id')  // Adjust 'user_id' if the foreign key has a different name
+            ->where('competition_id', $id)
+            ->orderBy('users.first_name', 'asc')
+            ->select('competitors.*')  // Ensure only competitor fields are selected, not user fields
+            ->get();
+
         $competition = Competition::with('users')->findOrFail($id);
         //$competition = Competition::with('users')->get();
         $users = User::where('role', 'Atleta')->get();
+
     return view('Entrenador.Estrategia_de_Carreras.lista_de_competidores', compact('competition', 'users', 'competitors'));
     }
 
