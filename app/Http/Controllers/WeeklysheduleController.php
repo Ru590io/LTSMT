@@ -48,14 +48,14 @@ class WeeklysheduleController extends Controller
     public function listofweekatheletes(){
         //$users = User::with('weeklyshedules')->where('role', 'Atleta')->get();
         //$weeklyShedules = weeklyshedule::with('user')->where('role', 'Atleta')->get();
-        $users = User::whereHas('weeklyshedules')->with('weeklyshedules')->where('role', 'Atleta')->paginate(5);
+        $users = User::whereHas('weeklyshedules')->with('weeklyshedules')->where('role', 'Atleta')->orderBy('first_name', 'asc')->paginate(5);
     return view('Entrenador.Registro_de_Entrenamientos.new_atletas_con_semanas_asignadas', compact('users'/*, 'weeklyShedules'*/));
     }
 
     public function listofweeks($id) {
         $user = User::findOrFail($id);
         // Ensure that you are paginating the weekly schedules related to the specific user
-        $weeklySchedules = $user->weeklyshedules()->paginate(5);
+        $weeklySchedules = $user->weeklyshedules()->orderBy('wstart_date','desc')->paginate(5);
 
         return view('Entrenador.Registro_de_Entrenamientos.new_semanas_del_atleta', compact('user', 'weeklySchedules'));
     }
@@ -188,34 +188,38 @@ public function updateweekly(Request $request, $id)
     $dateRange = explode('/', $request->selectedWeek);
     $startDate = new DateTime($dateRange[0]);
     $endDate = new DateTime($dateRange[1]);
-    /*$request->validate([
-        'wstart_date' => 'required|date',
-        'wend_date' => [
-            'required',
-            'date',
-            function ($attribute, $value, $fail) use ($request) {
-                $startDate = Carbon::parse($request->wstart_date);
-                $endDate = Carbon::parse($value);
-                if (!$endDate->eq($startDate->addDays(7))) {
-                    $fail($attribute . ' debe ser exactamente 7 dias despues del principio de la semana.');
-                }
-            },
-        ],
-        'users_id' => 'required|exists:users,id',
-    ]);*/
 
+    // Adjust the start date to the previous Monday
+    $startDayOfWeek = $startDate->format('N'); // 'N' gives the day number with 1 (Monday) to 7 (Sunday)
+    if ($startDayOfWeek != 1) {
+        $daysToSubtract = $startDayOfWeek - 1;
+        $startDate->modify("-$daysToSubtract days");
+    }
 
+    // Adjust the end date to ensure it is the Sunday of the same week as the adjusted start date
+    $endDate = clone $startDate; // Clone the adjusted start date
+    $endDate->modify('+6 days'); // Add 6 days to get to Sunday of the same week
+
+    $existingSchedule = WeeklyShedule::where('users_id', $request->users_id)
+    ->where('wstart_date', $startDate->format('Y-m-d'))
+    ->where('wend_date', $endDate->format('Y-m-d'))
+    ->first();
+
+    if ($existingSchedule && $existingSchedule->id != $id) {
+    return redirect()->back()->with('error', 'Este Atleta ya tiene esta semana asignada.');
+    }
 
     $weeklySchedule = WeeklyShedule::findOrFail($id);
     $weeklySchedule->users_id = $request->users_id;
-    /*$weeklySchedule->wstart_date = $request->wstart_date;
-    $weeklySchedule->wend_date = $request->wend_date;*/
     $weeklySchedule->wstart_date = $startDate->format('Y-m-d');
     $weeklySchedule->wend_date = $endDate->format('Y-m-d');
     $weeklySchedule->save();
 
-    return redirect()->route('week.view',  $weeklySchedule->id)->with('Exito', 'Horario Semanal Actualizado.');
+    return redirect()->route('week.view', $weeklySchedule->id)->with('Exito', 'Horario Semanal Actualizado.');
 }
+
+
+
 
 public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
 {
@@ -331,11 +335,14 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
                     $repeticionRecoveryTimeKey = "Rrecuperacion_" . $repeticion->id;
                     if ($request->has($repeticionSetsKey) && $request->has($repeticionDistanceKey) &&
                         $request->has($repeticionExpectedTimeKey) && $request->has($repeticionRecoveryTimeKey)) {
+                            $expectedTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionExpectedTimeKey));
+                            $recoveryTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionRecoveryTimeKey));
                         $repeticion->update([
                             'Rsets' => $request->input($repeticionSetsKey),
                             'Rdistancia' => $request->input($repeticionDistanceKey),
-                            'Rtiempoesperado' => $request->input($repeticionExpectedTimeKey),
-                            'Rrecuperacion' => $request->input($repeticionRecoveryTimeKey)
+                            'Rtiempoesperado' => $expectedTimeInSeconds,
+                            'Rrecuperacion' => $recoveryTimeInSeconds
+
                         ]);
                     }
                 }
@@ -349,7 +356,7 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
                     }
                 }
             }
-                // AM Fondos
+                // PM Fondos
             foreach($day->pms as $pm){
                 foreach ($pm->fondos as $fondo) {
                     $fondoDistanceKey = "Fdistancia_" . $fondo->id;
@@ -363,7 +370,7 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
                 }
             }
 
-                // AM Repeticiones
+                // PM Repeticiones
             foreach($day->pms as $pm){
                 foreach ($pm->repeticiones as $repeticion) {
                     $repeticionSetsKey = "Rsets_" . $repeticion->id;
@@ -372,11 +379,14 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
                     $repeticionRecoveryTimeKey = "Rrecuperacion_" . $repeticion->id;
                     if ($request->has($repeticionSetsKey) && $request->has($repeticionDistanceKey) &&
                         $request->has($repeticionExpectedTimeKey) && $request->has($repeticionRecoveryTimeKey)) {
+                            $expectedTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionExpectedTimeKey));
+                            $recoveryTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionRecoveryTimeKey));
                         $repeticion->update([
                             'Rsets' => $request->input($repeticionSetsKey),
                             'Rdistancia' => $request->input($repeticionDistanceKey),
-                            'Rtiempoesperado' => $request->input($repeticionExpectedTimeKey),
-                            'Rrecuperacion' => $request->input($repeticionRecoveryTimeKey)
+                            'Rtiempoesperado' => $expectedTimeInSeconds,
+                            'Rrecuperacion' => $recoveryTimeInSeconds
+
                         ]);
                     }
                 }

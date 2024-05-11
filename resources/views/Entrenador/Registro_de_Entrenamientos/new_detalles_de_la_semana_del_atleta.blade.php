@@ -39,7 +39,7 @@
     </h2>
     <div class="d-flex justify-content-between mb-3">
         <a href="{{ route('week.listed', $weeklySchedule->user->id) }}" class="btn btn-primary mb-3">Regresar</a>
-        <a class="btn btn-primary mb-3" href="editar_semana_de_entrenamiento">Editar Semana</a>
+        <a class="btn btn-primary mb-3" href="{{ route('week.edit', $weeklySchedule->id) }}">Editar Semana</a>
     </div>
     @foreach ($weeklySchedule->days as $day)
 
@@ -49,7 +49,7 @@
     <div class="card-body">
         <div>
             <h3>AM:</h3>
-            @foreach($day->am as $am)
+            @foreach($day->ams as $am)
                 @foreach($am->descansos as $descanso)
                     @include('partials._descanso', ['activity' => $descanso])
                 @endforeach
@@ -68,7 +68,7 @@
         <hr>
         <div>
             <h3>PM:</h3>
-            @foreach($day->pm as $pm)
+            @foreach($day->pms as $pm)
                 @foreach($pm->descansos as $descanso)
                     @include('partials._descanso', ['activity' => $descanso])
                 @endforeach
@@ -83,11 +83,13 @@
                 @endforeach
                 @endif
             @endforeach
-           </div>
+
             <div class="mt-4">
-                <h4>Notes</h4>
+                <hr>
+                <h4>Notas:</h4>
                 <p>{{ $day->notes }}</p>
             </div>
+
         </div>
     </div>
 </div>
@@ -152,7 +154,7 @@ const dateElements = document.querySelectorAll('.date-span');
 dateElements.forEach(function(elem) {
     const rawDateStr = elem.getAttribute('data-date');
     const [year, month, day] = rawDateStr.split('-').map(Number);  // Split the date string and convert to numbers
-    const rawDate = new Date(year, month - 1, day - 1);  // Create a new Date object; months are 0-indexed in JavaScript
+    const rawDate = new Date(year, month-1, day );  // Create a new Date object; months are 0-indexed in JavaScript
 
     elem.textContent = formatDate(rawDate);
 });

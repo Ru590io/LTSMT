@@ -9,11 +9,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Asignar Semana</title>
     <link href="{{url('Css/styles.css')}}" rel="stylesheet">
-    <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
             <div class="logo-text">LTSMT</div>
         </div>
-    </a>
 </head>
 
 <body>

@@ -14,17 +14,21 @@ class LighttrainingController extends Controller
     public function index()
     {
         //$lighttraining = lighttraining::with('user')->get(); // Load the user relationship
-    return view('Entrenador.Sistema_de_Luces.crear_sistema_de_luces'/*, compact('lighttraining')*/);
+        $lightTrainingCount = LightTraining::count();
+
+    return view('Entrenador.Sistema_de_Luces.crear_sistema_de_luces', compact('lightTrainingCount'));
     }
 
     public function create()
     {
-        return view('Entrenador.Sistema_de_Luces.sistema_de_luces');
+        $lightTrainingCount = LightTraining::count(); //Counts the list of LightTrainings
+        return view('Entrenador.Sistema_de_Luces.sistema_de_luces', compact('lightTrainingCount'));
     }
 
     public function lighttraininglist()
     {
-        $lighttrainings = LightTraining::orderBy('id', 'asc')->orderBy('tname', 'asc')->orderBy('ttime', 'asc')->orderBy('tdistance', 'asc')->paginate(5,['id','tname', 'ttime', 'tdistance']);
+
+        $lighttrainings = LightTraining::orderBy('tname', 'asc')->paginate(5,['id','tname', 'ttime', 'tdistance']);
 
        return view('Entrenador.Sistema_de_Luces.lista_de_sistema_de_luces', compact('lighttrainings'));
     }
@@ -58,6 +62,7 @@ class LighttrainingController extends Controller
         $validatedData['ttime'] = $totalSeconds;
 
         LightTraining::create($validatedData);
+
 
         return redirect()->route('light.list')->with('Exito', 'Entrenamiento de Luz Creado.');
     }

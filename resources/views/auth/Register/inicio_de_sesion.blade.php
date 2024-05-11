@@ -47,7 +47,7 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
 
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus pattern="[a-zA-Z0-9._%+-]+@upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos.">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Escriba su correo electrónico" value="{{ old('uemail') }}" required autocomplete="uemail" autofocus pattern="[a-zA-Z0-9._%+-@]+upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos.">
                         @error('email')
 
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>

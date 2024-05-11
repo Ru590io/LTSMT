@@ -54,11 +54,11 @@ class UserController extends Controller
     public function athleteindexs()
     {
         $users = User::where('role', 'Atleta')
-                     ->orderBy('id', 'asc')
-                     ->orderBy('first_name', 'asc')
-                     ->orderBy('last_name', 'asc')
-                     ->orderBy('phone_number', 'asc')
-                     ->get(['first_name', 'id', 'last_name', 'phone_number']);
+                    //  ->orderBy('id', 'asc')
+                    ->orderBy('first_name', 'asc')->get();
+                    //  ->orderBy('last_name', 'asc')
+                    //  ->orderBy('phone_number', 'asc')
+                    //  ->get(['first_name', 'id', 'last_name', 'phone_number']);
 
         return view('Entrenador.Lista_de_Atletas.lista_de_atletas', compact('users'));
     }
@@ -258,7 +258,9 @@ class UserController extends Controller
 
     public function showdeleted(){
         //$users = User::onlyTrashed()->where('role', 'Atleta')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->get();
-        $users = User::onlyTrashed()->get();
+        $users = User::onlyTrashed()->orderBy('first_name', 'asc')->paginate(5);
+
+
         return view('Entrenador.Lista_de_Atletas.rehabilitar_cuentas', compact('users'));
     }
 
@@ -307,28 +309,160 @@ class UserController extends Controller
     {
         //$this->authorize('view', $user);
         $user = User::findOrFail($id);
-        $weeklySchedules = $user->weeklyshedules()->paginate(5);
+        $weeklySchedules = $user->weeklyshedules()->orderBy('wstart_date','desc')->paginate(5);
         return view('Entrenador.lista_de_atletas.new_semanas_del_atleta', compact('user', 'weeklySchedules'));
     }
 
     public function trainingLogsWeekDetails(User $user , $id)
     {
         $weeklySchedule = weeklyshedule::with([
-            'days.am.descansos',
-            'days.am.fondos',
-            'days.am.repeticiones',
-            'days.pm.descansos',
-            'days.pm.fondos',
-            'days.pm.repeticiones',
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones',
             'user'
             ])->findOrFail($id);
         $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
         return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user', 'weeklySchedule'));
     }
-    public function trainingLogsWeekEdit(User $user)
+    public function trainingLogsWeekEdit($id)
     {
         //$this->authorize('view', $user);
-        return view('Entrenador.lista_de_atletas.editar_semana_de_entrenamiento_atleta', compact('user'));
+        $weeklySchedule = WeeklyShedule::with([
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones'
+        ])->findOrFail($id);
+        $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
+        return view('Entrenador.lista_de_atletas.editar_semana_de_entrenamiento_atleta', compact('user', 'weeklySchedule'));
+    }
+
+    public function trainingLogsWeekEditUpdate(Request $request, $id){
+        $weeklySchedule = WeeklyShedule::with([
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones'
+        ])->findOrFail($id);
+
+        // Iterate over each day of the schedule
+    foreach ($weeklySchedule->days as $day) {
+            //AM Descanso
+            foreach ($day->ams as $am) {
+                foreach ($am->descansos as $descanso) {
+                    $descansoKey = "Descanso_" . $descanso->id;
+                    if ($request->has($descansoKey)) {
+                        $descanso->update(['Descanso' => $request->input($descansoKey)]);
+                    }
+                }
+            }
+                // AM Fondos
+            foreach($day->ams as $am){
+                foreach ($am->fondos as $fondo) {
+                    $fondoDistanceKey = "Fdistancia_" . $fondo->id;
+                    $fondoZoneKey = "Fzona_" . $fondo->id;
+                    if ($request->has($fondoDistanceKey) && $request->has($fondoZoneKey)) {
+                        $fondo->update([
+                            'Fdistancia' => $request->input($fondoDistanceKey),
+                            'Fzona' => $request->input($fondoZoneKey)
+                        ]);
+                    }
+                }
+            }
+
+                // AM Repeticiones
+            foreach($day->ams as $am){
+                foreach ($am->repeticiones as $repeticion) {
+                    $repeticionSetsKey = "Rsets_" . $repeticion->id;
+                    $repeticionDistanceKey = "Rdistancia_" . $repeticion->id;
+                    $repeticionExpectedTimeKey = "Rtiempoesperado_" . $repeticion->id;
+                    $repeticionRecoveryTimeKey = "Rrecuperacion_" . $repeticion->id;
+                    if ($request->has($repeticionSetsKey) && $request->has($repeticionDistanceKey) &&
+                        $request->has($repeticionExpectedTimeKey) && $request->has($repeticionRecoveryTimeKey)) {
+                            $expectedTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionExpectedTimeKey));
+                            $recoveryTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionRecoveryTimeKey));
+                        $repeticion->update([
+                            'Rsets' => $request->input($repeticionSetsKey),
+                            'Rdistancia' => $request->input($repeticionDistanceKey),
+                            'Rtiempoesperado' => $expectedTimeInSeconds,
+                            'Rrecuperacion' => $recoveryTimeInSeconds
+
+                        ]);
+                    }
+                }
+            }
+                //PM descanso
+            foreach ($day->pms as $pm) {
+                foreach ($pm->descansos as $descanso) {
+                    $descansoKey = "Descanso_" . $descanso->id;
+                    if ($request->has($descansoKey)) {
+                        $descanso->update(['Descanso' => $request->input($descansoKey)]);
+                    }
+                }
+            }
+                // PM Fondos
+            foreach($day->pms as $pm){
+                foreach ($pm->fondos as $fondo) {
+                    $fondoDistanceKey = "Fdistancia_" . $fondo->id;
+                    $fondoZoneKey = "Fzona_" . $fondo->id;
+                    if ($request->has($fondoDistanceKey) && $request->has($fondoZoneKey)) {
+                        $fondo->update([
+                            'Fdistancia' => $request->input($fondoDistanceKey),
+                            'Fzona' => $request->input($fondoZoneKey)
+                        ]);
+                    }
+                }
+            }
+
+                // PM Repeticiones
+            foreach($day->pms as $pm){
+                foreach ($pm->repeticiones as $repeticion) {
+                    $repeticionSetsKey = "Rsets_" . $repeticion->id;
+                    $repeticionDistanceKey = "Rdistancia_" . $repeticion->id;
+                    $repeticionExpectedTimeKey = "Rtiempoesperado_" . $repeticion->id;
+                    $repeticionRecoveryTimeKey = "Rrecuperacion_" . $repeticion->id;
+                    if ($request->has($repeticionSetsKey) && $request->has($repeticionDistanceKey) &&
+                        $request->has($repeticionExpectedTimeKey) && $request->has($repeticionRecoveryTimeKey)) {
+                            $expectedTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionExpectedTimeKey));
+                            $recoveryTimeInSeconds = $this->convertTimeToSeconds($request->input($repeticionRecoveryTimeKey));
+                        $repeticion->update([
+                            'Rsets' => $request->input($repeticionSetsKey),
+                            'Rdistancia' => $request->input($repeticionDistanceKey),
+                            'Rtiempoesperado' => $expectedTimeInSeconds,
+                            'Rrecuperacion' => $recoveryTimeInSeconds
+
+                        ]);
+                    }
+                }
+            }
+
+
+
+        // Update notes for each day
+        $notesKey = "notes_" . $day->day;
+        if ($request->has($notesKey)) {
+            $day->notes = $request->input($notesKey);
+            $day->save();
+        }
+    }
+
+
+        return redirect()->route('athlete.trainingweekdetails',  $weeklySchedule->id)->with('Exito', 'Horario Semanal Actualizado.');
+    }
+    //Function for update
+    function convertTimeToSeconds($timeString) {
+        $timeParts = explode(':', $timeString);
+        if (count($timeParts) == 2) {
+            return (int)$timeParts[0] * 60 + (int)$timeParts[1];
+        }
+        return 0;
     }
 
     //API///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -579,7 +713,7 @@ class UserController extends Controller
     $all_competitions = Competition::all();
 
     // Fetch competitions that the user is part of
-    $user_competitions = $user->competitions;
+    $user_competitions = $user->competitions()->orderBy('cname', 'asc')->paginate(5);
 
     return view('Entrenador.Lista_de_Atletas.estrategia_de_carrera_atleta', compact('user', 'all_competitions', 'user_competitions', 'competition'));
 }
@@ -592,10 +726,12 @@ public function competitionDetails(User $user, Competition $competition)
     $user_competitions = $user->competitions;
 
     // Assuming you need to fetch events related to the competitor in this competition
-    $competitor = Competitors::with(['competition', 'users', 'events'])
+    $competitor = Competitors::with(['competition', 'users', 'events' => function($query) {
+        $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+    }])
                   ->where('competition_id', $competition->id)
                   ->where('users_id', $user->id)
-                  ->first();
+                 ->first();
 
     $events = $competitor ? $competitor->events : collect(); // Ensure $events is not null
 
@@ -668,12 +804,12 @@ public function storeEvents(Request $request, User $user, Competition $competiti
         //$users = User::orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('email', 'asc')->orderBy('phone_number', 'asc')->get(['id','first_name', 'last_name', 'email', 'phone_number']);
         $user = auth()->user();
         $weeklySchedule = weeklyshedule::with([
-            'days.am.descansos',
-            'days.am.fondos',
-            'days.am.repeticiones',
-            'days.pm.descansos',
-            'days.pm.fondos',
-            'days.pm.repeticiones',
+            'days.ams.descansos',
+            'days.ams.fondos',
+            'days.ams.repeticiones',
+            'days.pms.descansos',
+            'days.pms.fondos',
+            'days.pms.repeticiones',
             'user'
             ])->findOrFail($id);
         $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();

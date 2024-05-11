@@ -46,7 +46,9 @@
         <div class="d-flex justify-content-between mb-4">
             <a href="/schedule" class="btn btn-primary">Regresar</a>
         </div>
-
+    @if($users->isEmpty())
+    <h5 class="text-center">No hay atletas con semanas registradas.</h5>
+    @else
     @foreach ($users as $user)
         <div class="d-grid gap-3" id="athletes-list">
         <a href="{{ route('week.listed', $user->id) }}" class="btn btn-primary btn-lg mb-3">
@@ -54,6 +56,7 @@
         </a>
         </div>
     @endforeach
+    @endif
     <div class="d-flex justify-content-center mt-3">
         {{ $users->links('pagination::bootstrap-4') }}
     </div>

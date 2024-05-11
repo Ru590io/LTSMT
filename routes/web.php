@@ -88,7 +88,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/athlete/{user}', [UserController::class, 'showAthleteDetails'])->name('athlete.details');
     Route::get('/athlete/athleteinfo/{user}', [UserController::class, 'viewAthleteInfo'])->name('athlete.info');
     Route::get('/athlete/athletetraining/{user}', [UserController::class, 'trainingLogs'])->name('athlete.training');
-    Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'raceStrategy'])->name('athlete.strategy');
+    //Route::get('/athlete/athletecompetitions/{user}', [UserController::class, 'raceStrategy'])->name('athlete.strategy');
     Route::delete('/athlete/athleteinfo/{user}/distroyAthlete', [UserController::class, 'destroyAthlete'])->name('athlete.delete');
 
 
@@ -104,6 +104,8 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/athlete/athletetraininglist/{user}', [UserController::class, 'trainingLogsList'])->name('athlete.traininglist');
     Route::get('/athlete/athletetraininglist/{id}/weekdetails', [UserController::class, 'trainingLogsWeekDetails'])->name('athlete.trainingweekdetails');
     Route::get('/athlete/athletetraininglist/{user}/weekdetails/edit', [UserController::class, 'trainingLogsWeekEdit'])->name('athlete.trainingweekedit');
+    Route::put('/athlete/athletetraininglist/{user}/weekdetails/edit', [UserController::class, 'trainingLogsWeekEditUpdate'])->name('athlete.trainingweekeditupdate');
+
 
     //Eventos
     Route::get('/competition/list/asignar/atleta/done/{id}', [EventsController::class, 'compshows'])->name('competitors.listing');
@@ -114,7 +116,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
 
     //Split_Tables
     Route::get('/competition/list/asignar/atleta/{id}/tabla', [EventsController::class, 'splittableatleta'])->name('table.atleta');
-    Route::get('/competition/list/tabla/general/atleta', [EventsController::class, 'splittablegeneral'])->name('table.general');
+    Route::get('/competition/list/tabla/general/{id}/atletas', [EventsController::class, 'splittablegeneral'])->name('table.general');
 
 
     //Weeklyshedule

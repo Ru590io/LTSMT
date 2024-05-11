@@ -19,7 +19,7 @@
                 <form>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" placeholder="Escriba su correo electrónico">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Escriba su correo electrónico" required pattern="[a-zA-Z0-9._%+-@]+upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos.">
                     </div>
                     <button type="submit" class="btn btn-primary">Someter</button>
                     <a href="login.html" class="btn btn-link">Regresar a Inicio de Sesión</a>

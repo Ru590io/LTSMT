@@ -58,7 +58,7 @@
 
                 <!-- Today's Training Box -->
             <!--Entrenamiento de Hoy-->
-            <div id="schedule">
+            {{-- <div id="schedule">
                 <div class="card mb-3">
                     <div class="card-header"><h3 class="centered-text">Todo: Entrenamiento de Hoy</h3></div>
                     <div class="card-body">
@@ -74,7 +74,7 @@
                             Baño de agua fria.
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!-- Additional Buttons -->
                 <div class="d-grid gap-3 mt-3">
                     {{-- <button onclick="location.href='{{ url('athlete/athletetraining/' . $user->id) }}'" id="trainingLogsButton" class="btn btn-primary btn-lg">Entrenamiento del Atleta</button> --}}

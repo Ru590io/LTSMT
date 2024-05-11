@@ -181,7 +181,7 @@
         </div>
         <div class="d-grid gap-3 mt-5">
 
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button>
+            {{-- <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button> --}}
 
         </div>
     </div>

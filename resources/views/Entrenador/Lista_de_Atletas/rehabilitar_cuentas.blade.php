@@ -45,15 +45,19 @@
         </nav>
         <h1 class="text-center mb-4">Atletas con Cuentas Desactivadas</h1>
         <a href="/lista" class="btn btn-primary mb-4">Regresar</a>
-        <div class="list-group">
+
             <!-- List of athletes with invalid accounts -->
-            @foreach ($users as $user)
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <h5>{{ $user->first_name }} {{ $user->last_name }}<h5>
-                <button class="btn btn-primary rehabilitarButton mb-2 mt-3" data-bs-toggle="modal" data-bs-target="#confirmRestoreModal" data-userid="{{ $user->id }}">Activar Cuenta</button>
+            <div class="list-group" id="inactiveAthletesList">
+                @foreach ($users as $user)
+                <div class="list-group-item d-flex justify-content-between align-items-center" data-name="{{ $user->first_name }} {{ $user->last_name }}">
+                    <h5>{{ $user->first_name }} {{ $user->last_name }}</h5>
+                    <button class="btn btn-primary rehabilitarButton mb-2 mt-3" data-bs-toggle="modal" data-bs-target="#confirmRestoreModal" data-userid="{{ $user->id }}">Activar Cuenta</button>
+                </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
+            <div class="d-flex justify-content-center mt-3">
+                {{ $users->links('pagination::bootstrap-4') }}
+            </div>
 
         <!-- Confirmation Modal -->
         <div class="modal fade" id="confirmRestoreModal" tabindex="-1" aria-labelledby="confirmRestoreModalLabel" aria-hidden="true">
@@ -98,6 +102,9 @@
             });
         });
     </script>
+
+</script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

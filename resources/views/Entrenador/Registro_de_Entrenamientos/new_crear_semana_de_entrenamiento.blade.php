@@ -407,10 +407,6 @@
                 </div>
             </div>
 
-        <div class="d-grid gap-3 mt-3">
-        <button type="button" id="copyTrainingWeekToClipboard" class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
-        </div>
-
             @if($users->count() > 0)
         <div class="d-grid gap-3 mt-3">
             <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
@@ -420,6 +416,11 @@
             <p>No hay atletas disponibles para asignar. Por favor, añade atletas antes de continuar.</p>
         </div>
         @endif
+
+
+        <div class="d-grid gap-3 mt-3">
+            <button type="button" id="copyTrainingWeekToClipboard" class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>
+            </div>
         </form>
     </div>
 

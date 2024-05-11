@@ -51,8 +51,13 @@
                 </div>
                 <!-- Big Buttons -->
                 <div class="d-grid gap-3">
+                    @if ($lightTrainingCount >= 5)
+                    <p class="alert alert-info text-center">No se pueden crear más eventos. Limite de 5 Eventos alcanzado.</p>
+                    <button disabled class="btn btn-primary btn-lg disabled">Crear Entrenamiento de Luces</button>
+                @else
                     <a href="/light/add" class="btn btn-primary btn-lg">Crear Entrenamiento de Luces</a>
-                    <a href="{{ route('light.list') }}" class="btn btn-primary btn-lg">Entrenamientos de Luces Registrados</a>
+                @endif
+                <a href="{{ route('light.list') }}" class="btn btn-primary btn-lg">Entrenamientos de Luces Registrados</a>
                 </div>
 
         </div>

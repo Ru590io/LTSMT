@@ -61,7 +61,9 @@
         </a>
     </div>
     @endforeach --}}
-
+    @if($weeklySchedules->isEmpty())
+    <h5 class="text-center">No hay semanas registradas para este atleta.</h5>
+    @else
     @foreach ($weeklySchedules as $weeklyshedule)
         <div class="d-grid gap-3" id="athletes-list">
             <a href="{{ route('athlete.trainingweekdetails', $weeklyshedule->id) }}" class="btn btn-primary btn-lg mb-3">
@@ -70,6 +72,7 @@
             </a>
         </div>
     @endforeach
+    @endif
 
     <div class="d-flex justify-content-center mt-3">
         {{ $weeklySchedules->links('pagination::bootstrap-4') }}
@@ -88,7 +91,7 @@
     dateElements.forEach(function(elem) {
         const rawDateStr = elem.getAttribute('data-date');
         const [year, month, day] = rawDateStr.split('-').map(Number);  // Split the date string and convert to numbers
-        const rawDate = new Date(year, month - 1, day - 1);  // Create a new Date object; months are 0-indexed in JavaScript
+        const rawDate = new Date(year, month - 1, day);  // Create a new Date object; months are 0-indexed in JavaScript
 
         elem.textContent = formatDate(rawDate);
     });

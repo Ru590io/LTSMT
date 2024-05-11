@@ -216,3 +216,27 @@ colors{
     --neutral-900: #232622;
 
 }
+
+/*Small input files for Registration edit (calendar)*/
+.small-input {
+    width: 80px; /* Smaller input width */
+}
+
+/*For smaller hr*/
+hr.short-hr {
+    width: 75%; /* Adjust width as needed */
+    margin: 10px auto; /* Center the hr */
+    height: 0px; /* Adjust thickness */
+    background-color: black; /* Set the color of the hr */
+    border: none;
+}
+
+.alert-info {
+    background-color: #fe6473 !important; /* Bootstrap's danger color for example */
+    color: white !important; /* Ensuring text is white for better readability */
+    border-color: #fe6473 !important; /* Matching border color */
+    font-weight: bold;
+    /* width: 50%;
+    height: 50%; */
+}
+
