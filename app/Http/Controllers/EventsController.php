@@ -158,9 +158,13 @@ class EventsController extends Controller
     return view('Entrenador.Estrategia_de_Carreras.ver_split_table_atleta', compact('competitor', 'events'));
     }
 
-    public function splittablegeneral(){
-    $competitors = Competitors::with(['competition', 'users', 'events'])->get();
+    
+    public function splittablegeneral($id){
+    $competitors = Competitors::with(['users', 'events'])
+                             ->where('competition_id', $id)
+                             ->get();
     $allEvents = collect();
+    $competition = competition::FindorFail($id);
 
     foreach ($competitors as $competitor) {
         foreach ($competitor->events as $event) {
@@ -179,7 +183,7 @@ class EventsController extends Controller
     return view('Entrenador.Estrategia_de_Carreras.ver_split_table_general', [
         'competitors' => $competitors,
         'eventsJson' => $eventsJson,
-        'competition' => Competition::orderBy('id', 'asc')->first(),
+        'competition' => $competition,
         'eventsAreEmpty' => $eventsAreEmpty // Pass this to the view
     ]);
     }

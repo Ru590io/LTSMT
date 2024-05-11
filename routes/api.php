@@ -83,6 +83,7 @@ Route::post('password/reset', [PasswordResetController::class, 'apireset']);
 Route::post('/login', [AuthController::class, 'apiLogin'])->middleware('guest');
 
 
+
 Route::middleware('auth:sanctum', 'role:Entrenador')->group(function () {
 
 //AM//
@@ -108,6 +109,9 @@ Route::get('light/{id}', [LighttrainingController::class, 'specificlighttraining
 Route::put('updatinglight/{id}', [LighttrainingController::class, 'updatelighttraining']);
 
 Route::delete('deletelight/{id}', [LighttrainingController::class, 'erase']);
+
+//LightTraining send data to ESP
+
 
 //Auth//
 Route::post('/coachlogout', [AuthController::class, 'apilogout']);
@@ -172,6 +176,10 @@ Route::middleware('auth:api', 'role:Atleta')->group(function () {
     Route::post('/athletelogout', [AuthController::class, 'apilogout']);
     Route::apiResource('users', UserController::class);
 });
+
+
+//LightTraining send data to ESP
+Route::get('/training-data', [LighttrainingController::class, 'sendlighttrainingdata']);
 /*
 //PM//
 Route::apiResource('pm', PmController::class);

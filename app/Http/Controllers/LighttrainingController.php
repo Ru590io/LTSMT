@@ -125,6 +125,17 @@ class LighttrainingController extends Controller
     return $this->sendPostRequestToESP($validatedData['ttime'], $validatedData['tdistance']);
     }
 
+    public function sendlighttrainingdata(){
+        $lightTraining = LightTraining::select('tdistance', 'ttime')->get();
+
+        if ($lightTraining->isEmpty()) {
+            return response()->json(['error' => 'No hay Data disponible'], 404);
+        }
+
+        // Since you might have multiple records, you should return them all
+        return response()->json($lightTraining);
+    }
+
     /*API*////////////////////////////////////////////////////////////////////////////////////////////
     public function seetraining()
     {
