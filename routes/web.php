@@ -27,23 +27,11 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-//Route::get('/lista_de_atletas', [UserController::class, 'indexs_lista_de_atletas'])->name('lista_de_atletas');
-
 Route::get('/', function () {
     return redirect('/login');
 })->middleware('guest');
 
 Auth::routes();
-
-// For Coach specific pages
-/*Route::middleware(['auth', 'role:Entrenador'])->group(function () {
-    Route::get('/coach/dashboard', [CoachController::class, 'index'])->name('coach.dashboard');
-});
-
-// For Athlete specific pages
-Route::middleware(['auth', 'role:Atleta'])->group(function () {
-    Route::get('/athlete/dashboard', [AthleteController::class, 'index'])->name('athlete.dashboard');
-});*/
 
 Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     //Informacion de Entrenador
@@ -57,7 +45,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     //Home de Entrenador
     Route::get('/home', [UserController::class, 'homepage'])->name('home');
 
-    //Compartir pagina, Ccodigo de Acceso y Restaurar Atletas
+    //Compartir pagina, Codigo de Acceso y Restaurar Atletas
     Route::get('/lista', [UserController::class, 'athleteindexs'])->name('users.index');
     Route::get('lista/{user}', [UserController::class, 'showathlete'])->name('user.lista');
     Route::get('/generate_code', [AccessCodeController::class, 'shareweb'])->name('generate_code');
@@ -72,6 +60,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/light/list', [LighttrainingController::class, 'lighttraininglist'])->name('light.list');
     Route::delete('/light/list/{lighttraining}/destroy', [LighttrainingController::class, 'destroy'])->name('light.delete');
     Route::get('/light/list/{lighttraining}',[LighttrainingController::class, 'show'])->name('light.show');
+    //Route::get('/training-data', [LighttrainingController::class, 'sendlighttrainingdata']);
 
     //Competitions
     Route::get('/competition', [CompetitionController::class, 'competitionlist'])->name('competition.list');
@@ -130,7 +119,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/schedule/add/show/week/athletes/view/{id}', [WeeklysheduleController::class, 'viewweek'])->name('week.view');
     Route::get('/schedule/add/show/week/athletes/view/edit/{id}', [WeeklysheduleController::class, 'editweek'])->name('week.edit');
     Route::put('/schedule/add/show/week/athletes/view/edit/{id}', [WeeklysheduleController::class, 'updateweek'])->name('week.update');
-
+    Route::delete('/schedule/add/show/week/athletes/view/{id}/destroy', [WeeklysheduleController::class, 'deleteWeeklySchedule'])->name('weekly.delete');
 });
 
 Route::middleware(['auth', 'role:Atleta'])->group(function () {

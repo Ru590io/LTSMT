@@ -46,7 +46,13 @@ class UserController extends Controller
 
     public function creates()
     {
-        return view('auth.Register.entrenadorregistro');
+        $user = User::where('role', 'Entrenador');
+        if($user->count() == 0){
+            return view('auth.Register.entrenadorregistro');
+        }
+        else{
+            return back()->withErrors('No hay nada que ver aqui.');
+        }
     }
 
     //Ver todos usarios//

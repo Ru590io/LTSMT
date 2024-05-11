@@ -16,8 +16,16 @@
 
 <body>
     <div class="container">
-
         <h1 class="text-center mb-5">Asignar Semana</h1>
+        @if(session()->has('Exito'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{session('Exito')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+        @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
         {{-- method (post?) can be added down here? (method="post") --}}
     <form id="trainingForm" method="POST" action="{{ route('week.assign', $weeklySchedule->id) }}">
         @csrf

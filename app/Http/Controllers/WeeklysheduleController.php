@@ -112,7 +112,7 @@ class WeeklysheduleController extends Controller
             // Create Day model
             $dayModel = new Day();
             $dayModel->day = $day;
-            $dayModel->notes = $request->notes; //$request->input($day . '-notes', '');
+            $dayModel->notes = $request->input($day . '-notes');
             $dayModel->weeklyShedule_id = $weeklySchedule->id;
             $dayModel->save();
 
@@ -189,6 +189,7 @@ public function updateweekly(Request $request, $id)
     $startDate = new DateTime($dateRange[0]);
     $endDate = new DateTime($dateRange[1]);
 
+
     // Adjust the start date to the previous Monday
     $startDayOfWeek = $startDate->format('N'); // 'N' gives the day number with 1 (Monday) to 7 (Sunday)
     if ($startDayOfWeek != 1) {
@@ -211,6 +212,7 @@ public function updateweekly(Request $request, $id)
 
     $weeklySchedule = WeeklyShedule::findOrFail($id);
     $weeklySchedule->users_id = $request->users_id;
+
     $weeklySchedule->wstart_date = $startDate->format('Y-m-d');
     $weeklySchedule->wend_date = $endDate->format('Y-m-d');
     $weeklySchedule->save();
@@ -289,6 +291,24 @@ public function atletaupdate(Request $request, WeeklyShedule $weeklyschedule)
 
 
         return view('Entrenador.Registro_de_Entrenamientos.new_editar_semana_del_atleta', compact('weeklySchedule'));
+    }
+
+    public function deleteWeeklySchedule($id) {
+        $weeklySchedule = WeeklyShedule::with('user')->findOrFail($id);
+        $weeklySchedule->delete(); // Soft delete the schedule
+
+        // Soft delete related days and sessions
+        foreach ($weeklySchedule->days as $day) {
+            $day->delete(); // Soft delete each day
+            foreach ($day->ams as $am) {
+                $am->delete(); // Soft delete each AM session
+            }
+            foreach ($day->pms as $pm) {
+                $pm->delete(); // Soft delete each PM session
+            }
+        }
+
+        return redirect()->route('week.listed', $weeklySchedule->user->id)->with('Exito', 'Horario Semanal eliminado!');
     }
 
     public function updateweek(Request $request, $id){

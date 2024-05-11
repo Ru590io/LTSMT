@@ -181,6 +181,7 @@ class EventsController extends Controller
     return view('Entrenador.Estrategia_de_Carreras.ver_split_table_atleta', compact('competitor', 'events'));
     }
 
+
     public function splittablegeneral($id){
     $competitors = Competitors::with(['users', 'events'=> function($query) {
         // Extract numbers from 'edistance' and order by these values ascending
@@ -189,6 +190,7 @@ class EventsController extends Controller
 ]
 )->where('competition_id', $id)->get();
     $allEvents = collect();
+    $competition = competition::FindorFail($id);
 
     $competition = competition::FindorFail($id);
 

@@ -31,6 +31,12 @@
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
+    @if(session()->has('Exito'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session('Exito')}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     <h1 class="text-center">Detalles de la Semana</h1>
     <h2 class="text-center mt-3 mb-3">{{ $weeklySchedule->user->first_name }} {{ $weeklySchedule->user->last_name }}</h2>
     <h2 class="text-center mt- mb-5">
@@ -110,12 +116,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ¿Estás seguro de querer eliminar esta semana de entrenamiento?
+                    ¿Estás seguro de quiere eliminar esta semana de entrenamiento?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="deleteButton" class="btn btn-danger" onclick="confirmDeletion()">Eliminar</button>
-
+                    <form class="form" action="{{ route('weekly.delete', $weeklySchedule->id) }}" method="post" id="deleteAthleteForm">
+                        @csrf
+                        @method('delete')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>

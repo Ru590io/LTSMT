@@ -118,7 +118,7 @@
                     <!-- Notas -->
                     <div class="notes-section">
                         <label for="lunes-notas">Notas:</label>
-                        <textarea class="form-control" name="notes" id="lunes-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                        <input class="form-control" name="lunes-notes" id="lunes-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></input>
                     </div>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="martes-notas">Notas:</label>
-                            <textarea class="form-control" id="martes-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="martes-notes" name="martes-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -211,7 +211,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="miércoles-notas">Notas:</label>
-                            <textarea class="form-control" id="miércoles-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="miércoles-notes" name="miércoles-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -258,7 +258,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="jueves-notas">Notas:</label>
-                            <textarea class="form-control" id="jueves-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="jueves-notes" name="jueves-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -305,7 +305,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="viernes-notas">Notas:</label>
-                            <textarea class="form-control" id="viernes-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="viernes-notes" name="viernes-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                     </div>
                 </div>
             </div>
@@ -351,7 +351,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="sábado-notas">Notas:</label>
-                            <textarea class="form-control" id="sábado-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="sábado-notes" name="sábado-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
                     </div>
                 </div>
@@ -400,7 +400,7 @@
                         <!-- Notas -->
                         <div class="notes-section">
                             <label for="domingo-notas">Notas:</label>
-                            <textarea class="form-control" id="domingo-notes" name="notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
+                            <textarea class="form-control" id="domingo-notes" name="domingo-notes" rows="2" placeholder="Escribe notas extras aquí..." maxlength="500" title="No mas de 500 caracteres"></textarea>
                         </div>
 
                     </div>
@@ -413,10 +413,9 @@
         </div>
         @else
         <div class="d-grid gap-3 mt-3">
-            <p>No hay atletas disponibles para asignar. Por favor, añade atletas antes de continuar.</p>
+            <h5 class="text-center">No hay atletas disponibles para asignar. Por favor, añade atletas antes de continuar.</h5>
         </div>
         @endif
-
 
         <div class="d-grid gap-3 mt-3">
             <button type="button" id="copyTrainingWeekToClipboard" class="btn btn-primary btn-lg copy-to-clipboard">Copiar Semana a Portapapeles</button>

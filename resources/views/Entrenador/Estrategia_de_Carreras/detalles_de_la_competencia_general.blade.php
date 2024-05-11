@@ -69,6 +69,7 @@
             @else
             <p>No competitors have been added to this competition yet.</p>
             @endif--}}
+
             <a href="{{route('table.general', $competition->id)}}" class="btn btn-primary btn-lg">Ver Split Tables</a>
         </div>
         <div class="d-grid gap-3 mt-3">

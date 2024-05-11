@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->foreignId('weeklyshedule_id')->constrained(table: 'weeklyshedule', indexName: 'days_weeklyshedule_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
