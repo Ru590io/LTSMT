@@ -8,13 +8,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <title>Asignar Semana de Entrenamiento</title>
-    <link href="{{url('Css/styles.css')}}" rel="stylesheet">
+    <link href="{{asset('Css/styles.css')}}" rel="stylesheet">
     <a href="/home" style="text-decoration: none;">
         <div class="logo-container">
             <div class="logo-text">LTSMT</div>
         </div>
     </a>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>

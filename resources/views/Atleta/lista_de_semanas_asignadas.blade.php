@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Lista de Atletas</title>
-    <link href="/Css/styles.css" rel="stylesheet">
+    <link href="{{asset('Css/styles.css')}}" rel="stylesheet">
     <a href="/atlhome" style="text-decoration: none;">
         <div class="logo-container">
             <div class="logo-text">LTSMT</div>
