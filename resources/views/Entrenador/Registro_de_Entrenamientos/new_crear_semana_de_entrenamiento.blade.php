@@ -583,29 +583,28 @@ function handleCopyButtonClick() {
                         if (sessionRadio.value === 'Fondo') {
                             var distance = inputs[0].value;
                             var zone = inputs[1].value;
-                            trainingWeek += `Fondo\n- ${distance} Km, Zona: ${zone} + Flex\n`;
+                            trainingWeek += `Fondo\n- ${distance} Km, Zona: ${zone} + Enfriamiento: 10:00 + flex\n`;
                         } else if (sessionRadio.value === 'Repeticion') {
-                            trainingWeek += 'Repetición, Cal: 15:00 + driles + rectas 60m\n';
+                            trainingWeek += 'Repetición: \n';
                             inputs.forEach(function(input, index) {
-                                if (index % 4 === 0 && index > 0) trainingWeek += '\n';
-                                if (input.name.includes('Rsets')) {
-                                    trainingWeek += '- Sets: ' + input.value + ' + ';
-                                } else if (input.name.includes('Rdistancia')) {
-                                    trainingWeek += input.value + ' m + ';
-                                } else if (input.name.includes('Rtiempoesperado')) {
-                                    trainingWeek += 'Tiempo: ' + input.value + ' + ';
-                                } else if (input.name.includes('Rrecuperacion')) {
-                                    trainingWeek += 'Recuperación: ' + input.value;
+                                if (input.type !== 'button') { // Ignore button inputs
+                                    if (input.name.includes('Rsets')) {
+                                        trainingWeek += '- Sets: ' + input.value + ', ';
+                                    } else if (input.name.includes('Rdistancia')) {
+                                        trainingWeek += 'Distancia: ' + input.value + ' m, ';
+                                    } else if (input.name.includes('Rtiempoesperado')) {
+                                        trainingWeek += 'Tiempo Esperado: ' + input.value + ', ';
+                                    } else if (input.name.includes('Rrecuperacion')) {
+                                        trainingWeek += 'Recuperación: ' + input.value + ' + Enfriamiento: 10:00 + flex\n';
+                                    }
                                 }
                             });
-                            trainingWeek += ' + Enfriamiento: 10:00 + flex\n';
                         }
                     }
                 }
                 trainingWeek += '\n';
             }
         });
-        // Append notes after AM and PM sessions are processed
         var notesId = day.toLowerCase() + '-notes';
         var notesInput = document.getElementById(notesId);
         if (notesInput && notesInput.value.trim() !== '') {
@@ -619,6 +618,7 @@ function handleCopyButtonClick() {
         console.error('Error al copiar al portapapeles: ', err);
     });
 }
+
 
     </script>
 
