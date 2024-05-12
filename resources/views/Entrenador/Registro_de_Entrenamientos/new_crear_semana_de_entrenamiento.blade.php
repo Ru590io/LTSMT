@@ -431,10 +431,10 @@
             if (option === 'Fondo') {
                 optionsContainer.innerHTML = `
 
-                    <input type="number" name="${timeOfDay}-Fdistancia" style="width: 189px;" placeholder="Distancia (Kilometros)" min="1" max="30"
+                    Distancia: <input type="number" name="${timeOfDay}-Fdistancia" class="small-input" placeholder="1-30" min="1" max="30"
                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
                     oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
-                    title="Kilometros entre 1 a 30." required />Km  Zona:
+                    title="Kilometros entre 1 a 30." required />Km,  Zona:
                     <select name="${timeOfDay}-Fzona">
 
                         <option value="2">2</option>
@@ -446,23 +446,23 @@
             } else if (option === 'Repeticion') {
                 optionsContainer.innerHTML = `
 
-                <input type="number" name="${timeOfDay}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30"
+            Sets: <input type="number" name="${timeOfDay}-Rsets[]" class="small-input" placeholder="1-30" min="1" max="30"
             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
             oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
             title="Sets entre 1 a 30." required />
 
 
-            <input type="number" name="${timeOfDay}-Rdistancia[]" style="width: 189px;" id="distance" placeholder="Distancia (metros)" min="100" max="10000" step="100"
+            , Distancia: <input type="number" name="${timeOfDay}-Rdistancia[]" class="small-input" id="distance" placeholder="100+" min="100" max="10000" step="100"
             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5); this.setCustomValidity('');"
-            title="Distancia entre 100 y 10000" required />m
+            title="Distancia entre 100 y 10000, de 100 en 100." required />
 
-            <input type="text" name="${timeOfDay}-Rtiempoesperado[]" style="width: 189px;" id="timeExpected" placeholder="Tiempo Esperado (mm:ss)"
+            m, Tiempo Esperado: <input type="text" name="${timeOfDay}-Rtiempoesperado[]" class="small-input" id="timeExpected" placeholder="mm:ss"
             pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
             oninput="if (/[^0-9:]/.test(this.value)) this.value = this.value.replace(/[^0-9:]/g, ''); this.setCustomValidity('');"
             title="Por favor, siga el formato (MM:SS) para el tiempo esperado." required />
 
 
-            <input type="text" name="${timeOfDay}-Rrecuperacion[]" style="width: 189px;" id="timeExpected" placeholder="Recuperación (mm:ss)"
+            , Recuperación: <input type="text" name="${timeOfDay}-Rrecuperacion[]" class="small-input" id="timeExpected" placeholder="mm:ss"
             pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5"
             oninput="if (/[^0-9:]/.test(this.value)) this.value = this.value.replace(/[^0-9:]/g, ''); this.setCustomValidity('');"
             title="Por favor, siga el formato (MM:SS) para la recuperación." required />
@@ -533,11 +533,11 @@
             let newRepetitionBlock = document.createElement('div');
             newRepetitionBlock.classList.add('mt-2', 'repetition-block');
             newRepetitionBlock.innerHTML = `
-                <input type="number" name="${baseName}-Rsets[]" style="width: 189px;" placeholder="Cantidad de Sets" min="1" max="30" required />
-                <input type="number" name="${baseName}-Rdistancia[]" style="width: 189px;" placeholder="Distancia (metros)" min="100" max="10000" step="100" required />
-                <input type="text" name="${baseName}-Rtiempoesperado[]" style="width: 189px;" placeholder="Tiempo Esperado (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
-                <input type="text" name="${baseName}-Rrecuperacion[]" style="width: 189px;" placeholder="Recuperación (mm:ss)" pattern="[0-9]{1,2}:[0-5][0-9]" required />
-                <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">Remove</button>
+                Sets: <input type="number" name="${baseName}-Rsets[]" class="small-input" placeholder="1-30" min="1" max="30" required />
+                , Distancia: <input type="number" name="${baseName}-Rdistancia[]" class="small-input" placeholder="100+" min="100" max="10000" step="100" required />
+                m, Tiempo Esperado: <input type="text" name="${baseName}-Rtiempoesperado[]" class="small-input" placeholder="mm:ss" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+                , Recuperación: <input type="text" name="${baseName}-Rrecuperacion[]" class="small-input" placeholder="mm:ss" pattern="[0-9]{1,2}:[0-5][0-9]" required />
+                <button type="button" class="btn btn-danger" onclick="removeRepetition(this)">-</button>
             `;
             container.appendChild(newRepetitionBlock);
         } else {

@@ -52,7 +52,7 @@
             <h5 class="text-center">No hay Entrenamiento de Luces registrados.</h5>
             @else
             @foreach ($lighttrainings as $lighttraining)
-            <a href="{{ route('light.show', ['lighttraining' => $lighttraining->id]) }}" class="btn btn-primary btn-lg"> {{ $lighttraining->tname }}:  {{ $lighttraining->tdistance }} metros  {{sprintf('%02d:%02d', floor($lighttraining->ttime / 60), $lighttraining->ttime % 60)}}</a>
+            <a href="{{ route('light.show', ['lighttraining' => $lighttraining->id]) }}" class="btn btn-primary btn-lg"> {{ $lighttraining->tname }} - Distancia: {{ $lighttraining->tdistance }}m, Tiempo: {{sprintf('%02d:%02d', floor($lighttraining->ttime / 60), $lighttraining->ttime % 60)}}</a>
             @endforeach
             @endif
         </div>

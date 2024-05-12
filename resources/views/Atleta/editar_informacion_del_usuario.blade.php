@@ -43,7 +43,7 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
                         <!-- Debe terminar en @upr.edu -->
-                        <input type="email" class="form-control" id="email" name="email" value= "{{$user->email }}" pattern="[a-zA-Z0-9._%+-]+@upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos." required>
+                        <input type="email" class="form-control" id="email" name="email" value= "{{$user->email }}" pattern="[a-zA-Z0-9._%+-@]+upr\.edu$" maxlength="60" title="Debe ser un correo electrónico de la UPR, sin acentos." required>
                     </div>
                         @error('email')
 

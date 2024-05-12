@@ -94,7 +94,7 @@
 @endforeach
 <div class="d-grid gap-3 mt-5">
 
-    {{-- <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de entrenamiento</button> --}}
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWeekModal">Eliminar Semana de Entrenamiento</button>
 
 </div>
 
@@ -112,8 +112,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="deleteButton" class="btn btn-danger" onclick="confirmDeletion()">Eliminar</button>
-
+                    <form class="form" action="{{ route('athletemenuweekly.delete', $weeklySchedule->id) }}" method="post" id="deleteAthleteForm">
+                        @csrf
+                        @method('delete')
+                    <button type="submit" class="btn btn-danger" >Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>
