@@ -47,6 +47,17 @@
 
 
         <h1 class="text-center">Menú Principal</h1>
+        @if(session()->has('Exito'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{session('Exito')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+        @if (session('status'))
+        <div class="alert alert-info">
+            {{ session('status') }}
+        </div>
+        @endif
         <div class="row justify-content-center mt-5">
             <div class="col ">
                 <div class="d-flex justify-content-end">

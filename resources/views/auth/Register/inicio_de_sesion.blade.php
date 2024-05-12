@@ -33,7 +33,7 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                @if ($errors->any())
+                {{--@if ($errors->any())
                 <div class="alert alert-danger">
                 <ul>
                 @foreach ($errors->all() as $error)
@@ -41,12 +41,12 @@
                 @endforeach
                 </ul>
                 </div>
-                @endif
-                {{--@if ($errors->has('throttle'))
+                @endif--}}
+                @if ($errors->has('throttle'))
                 <div class="alert alert-warning">
                     {{ $errors->first('throttle') }}
                 </div>
-                @endif--}}
+                @endif
                 <!-- Login form -->
                 <form class= "form mt-5" action="{{route('login')}}" method="post">
                     @csrf

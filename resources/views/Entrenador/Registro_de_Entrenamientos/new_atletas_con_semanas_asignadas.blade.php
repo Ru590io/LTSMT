@@ -43,6 +43,17 @@
             </div>
         </nav>
         <h1 class="text-center">Atletas con Semanas Asignadas</h1>
+        @if(session()->has('Exito'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{session('Exito')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+        @if (session('status'))
+        <div class="alert alert-info">
+            {{ session('status') }}
+        </div>
+        @endif
         <div class="d-flex justify-content-between mb-4">
             <a href="/schedule" class="btn btn-primary">Regresar</a>
         </div>

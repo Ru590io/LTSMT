@@ -44,6 +44,12 @@
             </div>
         </nav>
         <h1 class="text-center mb-4">Atletas con Cuentas Desactivadas</h1>
+        @if(session()->has('Exito'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{session('Exito')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
         <a href="/lista" class="btn btn-primary mb-4">Regresar</a>
 
             <!-- List of athletes with invalid accounts -->

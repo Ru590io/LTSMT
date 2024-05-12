@@ -52,6 +52,17 @@
         <h1 class="text-center">Detalles de la Competencia</h1>
         <h2 class="text-center mt-5">{{$competition->cname}} - {{ $user->first_name}} {{ $user->last_name}}</h2>
         <div class="d-flex justify-content-between mt-4 mb-3">
+            @if(session()->has('Exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('Exito')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             <a href="{{ url('athlete/athletecompetitions/' . $user->id) }}" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" id="addEventButton" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Eventos</button>
         </div>
