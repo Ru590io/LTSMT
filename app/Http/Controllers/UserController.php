@@ -74,6 +74,11 @@ class UserController extends Controller
         return view('Entrenador.Lista_de_Atletas.registro_del_atleta', compact('user'));
     }
 
+    /**
+     * @author Ruben Marrero
+     * @param $user - Usuario
+     *
+     */
     public function entrenadorindexs(User $user)
     {
         $this->authorize('view', $user);
@@ -248,9 +253,9 @@ class UserController extends Controller
         }
 
         if (auth()->user()->role === 'Entrenador') {
-            return redirect()->route('coach.index', ['user' => $user->id])->with('Exito', 'Informacion Actualizada.');
+            return redirect()->route('coach.index', ['user' => $user->id])->with('Exito', 'Información Actualizada.');
         } elseif (auth()->user()->role === 'Atleta') {
-            return redirect()->route('atleta.index', ['user' => $user->id])->with('Exito', 'Informacion Actualizada.');
+            return redirect()->route('atleta.index', ['user' => $user->id])->with('Exito', 'Información Actualizada.');
         }
         //return redirect()->route('coach.index')->with('Exito', 'Informacion Actualizada.');
 
@@ -275,7 +280,7 @@ class UserController extends Controller
         $user = User::onlyTrashed()->findOrFail($userId);
         //if ($user) {
             $user->restore();
-        return redirect()->route('users.index')->with('success', 'Atleta Restaurado.');
+        return redirect()->route('users.index')->with('Exito', 'Atleta Reactivado.');
         //}
        // else {
         //    return redirect()->back()->with('error', 'Atleta no se encontro.');
@@ -801,6 +806,7 @@ public function storeEvents(Request $request, User $user, Competition $competiti
         //$users = User::orderBy('id', 'asc')->orderBy('first_name', 'asc')->orderBy('last_name', 'asc')->orderBy('email', 'asc')->orderBy('phone_number', 'asc')->get(['id','first_name', 'last_name', 'email', 'phone_number']);
         $user = auth()->user();
         $user = User::findOrFail($id);
+        $this->authorize('view', $user);
         $weeklySchedules = $user->weeklyshedules()->paginate(5);
         return view('Atleta.lista_de_semanas_asignadas', compact('user', 'weeklySchedules'));
     }
@@ -818,6 +824,7 @@ public function storeEvents(Request $request, User $user, Competition $competiti
             'days.pms.repeticiones',
             'user'
             ])->findOrFail($id);
+            $this->authorize('view', $weeklySchedule->user);
         $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
         return view('Atleta.calendario_del_atleta', compact('user', 'weeklySchedule'));
     }

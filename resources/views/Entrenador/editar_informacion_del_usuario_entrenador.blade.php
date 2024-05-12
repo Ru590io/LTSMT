@@ -44,6 +44,12 @@
             </div>
         </nav>
         <h1 class="text-center">Editar Información del Entrenador</h1>
+        @if(session()->has('Exito'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{session('Exito')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
 

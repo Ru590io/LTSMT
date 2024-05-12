@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class AccessCodeController extends Controller
 {
+    /**
+     * @author Rubén Marrero
+     * Generacion de codigo de acceso para registrar Atletas 
+     */
     public function generateAccessCode()
 {
     $code = new AccessCode();

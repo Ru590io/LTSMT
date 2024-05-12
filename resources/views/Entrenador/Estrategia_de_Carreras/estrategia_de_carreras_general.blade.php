@@ -49,6 +49,17 @@
             <a href="/competition/add" class="btn btn-primary">Crear Competencia</a>
         </div>
         <div class="d-grid gap-3" id="competitionList">
+            @if(session()->has('Exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('Exito')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             @if($competitions->isEmpty())
             <h5 class="text-center">No hay competencias registradas.</h5>
             @else

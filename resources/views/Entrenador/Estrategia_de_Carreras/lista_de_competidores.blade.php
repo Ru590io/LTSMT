@@ -50,6 +50,17 @@
         <h1 class="text-center">Lista de Competidores</h1>
         <h2 class="text-center">{{$competition->cname}}</h2>
         <div class="d-flex justify-content-between mb-4">
+            @if(session()->has('Exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('Exito')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             <a href="{{ route('competition.show', ['competition' => $competition->id]) }}" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Competidores</button>
         </div>

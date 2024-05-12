@@ -133,7 +133,7 @@ class WeeklysheduleController extends Controller
 
         }
         return redirect()->route('week.show', $weeklySchedule->id)
-                     ->with('success', 'Schedule created successfully!');
+                     ->with('Exito', 'Horario creado!');
         //return redirect()->route('schedule')->with('success', 'Schedule created successfully!');
 }
 

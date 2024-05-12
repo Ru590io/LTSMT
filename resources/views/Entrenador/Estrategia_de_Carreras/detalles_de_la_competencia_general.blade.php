@@ -53,6 +53,17 @@
             <a href="{{route('competition.edit', ['competition' => $competition->id])}}" class="btn btn-primary">Editar Detalles de Competencia</a>
         </div>
         <div class="card mb-4">
+            @if(session()->has('Exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('Exito')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
             <div class="card-body">
                 <p id="competitionDateTime"> Fecha y Hora: {{$competition->cdate}}, {{$competition->ctime}}</p>

@@ -49,6 +49,17 @@
             <a href="/generate_code" class="btn btn-primary">Compartir Aplicación Web</a>
         </div>
         <div class="d-grid gap-3" id="athletes-list">
+            @if(session()->has('Exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('Exito')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             @if($users->isEmpty())
             <h5 class="text-center">No hay atletas registrados.</h5>
             @else

@@ -48,6 +48,17 @@
             <a href="/light" class="btn btn-primary">Regresar</a>
         </div>
         <div class="d-grid gap-3 mt-4" id="trainingList">
+            @if(session()->has('Exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('Exito')}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             @if($lighttrainings->isEmpty())
             <h5 class="text-center">No hay Entrenamiento de Luces registrados.</h5>
             @else
