@@ -101,6 +101,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/athlete/athletetraininglist/{id}/weekdetails', [UserController::class, 'trainingLogsWeekDetails'])->name('athlete.trainingweekdetails');
     Route::get('/athlete/athletetraininglist/{user}/weekdetails/edit', [UserController::class, 'trainingLogsWeekEdit'])->name('athlete.trainingweekedit');
     Route::put('/athlete/athletetraininglist/{user}/weekdetails/edit', [UserController::class, 'trainingLogsWeekEditUpdate'])->name('athlete.trainingweekeditupdate');
+    Route::delete('/athlete/athletetraininglist/{user}/weekdetails/delete', [UserController::class, 'deleteWeeklyScheduleOnAthleteMenu'])->name('athletemenuweekly.delete');
 
     /**
      * @author Rubén Marrero

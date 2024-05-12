@@ -476,6 +476,27 @@ class UserController extends Controller
         return 0;
     }
 
+
+    //Delete weeks in athlete menu
+    public function deleteWeeklyScheduleOnAthleteMenu($id) {
+        $weeklySchedule = WeeklyShedule::with('user')->findOrFail($id);
+        $weeklySchedule->delete(); // Soft delete the schedule
+
+        // Soft delete related days and sessions
+        foreach ($weeklySchedule->days as $day) {
+            $day->delete(); // Soft delete each day
+            foreach ($day->ams as $am) {
+                $am->delete(); // Soft delete each AM session
+            }
+            foreach ($day->pms as $pm) {
+                $pm->delete(); // Soft delete each PM session
+            }
+        }
+
+        return redirect()->route('athlete.traininglist', $weeklySchedule->user->id)->with('Exito', 'Horario Semanal eliminado!');
+    }
+
+
     //API///////////////////////////////////////////////////////////////////////////////////////////////////
      // GET /users
      public function indexss()

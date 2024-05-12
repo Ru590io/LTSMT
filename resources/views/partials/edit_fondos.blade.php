@@ -1,7 +1,7 @@
 <div>
     <label for="fondo_distance_{{ $fondos->id }}">Distancia:</label>
-    <input type="number" id="fondo_distance_{{ $fondos->id }}" name="Fdistancia_{{ $fondos->id }}" value="{{ $fondos->Fdistancia }}"
-           min="1" max="30" style="width: 189px;" placeholder="Distancia (Kilometros)"
+    <input type="number" class="small-input" id="fondo_distance_{{ $fondos->id }}" name="Fdistancia_{{ $fondos->id }}" value="{{ $fondos->Fdistancia }}"
+           min="1" max="30" placeholder="1-30"
            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2); this.setCustomValidity('');"
            oninvalid="this.setCustomValidity('Por favor, ingrese un número entre 1 y 30.')"
            title="Kilometros entre 1 a 30." required /> Km

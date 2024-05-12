@@ -157,8 +157,10 @@ function updateEventDistance() {
         // Display a message if no events are available for the selected category
         const noEventsMessage = document.createElement('h5');
         noEventsMessage.className = 'text-center';
-        noEventsMessage.textContent = 'No hay eventos asignados para ' + selectedDistance + 'm.';
-        splitsContainer.appendChild(noEventsMessage);
+        if(selectedDistance != 'all' ){
+            noEventsMessage.textContent = 'No hay eventos asignados para ' + selectedDistance + 'm.';
+            splitsContainer.appendChild(noEventsMessage);
+        }
     } else {
         // If events are available, generate the split tables
         filteredEvents.forEach(event => {
