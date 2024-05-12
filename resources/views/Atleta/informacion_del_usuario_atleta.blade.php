@@ -10,7 +10,7 @@
             <div class="logo-text">LTSMT</div>
         </div>
     </a>
-    <link href="{{url('Css/styles.css')}}" rel="stylesheet">
+    <link href="{{asset('Css/styles.css')}}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
