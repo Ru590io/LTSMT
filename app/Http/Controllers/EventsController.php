@@ -53,7 +53,7 @@ class EventsController extends Controller
             'users',
             'events' => function($query) {
                 // Extract numbers from 'edistance' and order by these values ascending
-                $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+                $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
             }
         ])->findOrFail($id);
 
