@@ -44,12 +44,7 @@
             </div>
         </nav>
         <h1 class="text-center">Lista de Atletas</h1>
-        <div class="d-flex justify-content-between mb-4">
-            <a href="/home" class="btn btn-primary">Regresar</a>
-            <a href="/generate_code" class="btn btn-primary">Compartir Aplicación Web</a>
-        </div>
-        <div class="d-grid gap-3" id="athletes-list">
-            @if(session()->has('Exito'))
+        @if(session()->has('Exito'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('Exito')}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -60,6 +55,12 @@
                 {{ session('status') }}
             </div>
             @endif
+        <div class="d-flex justify-content-between mb-4">
+            <a href="/home" class="btn btn-primary">Regresar</a>
+            <a href="/generate_code" class="btn btn-primary">Compartir Aplicación Web</a>
+        </div>
+        <div class="d-grid gap-3" id="athletes-list">
+
             @if($users->isEmpty())
             <h5 class="text-center">No hay atletas registrados.</h5>
             @else

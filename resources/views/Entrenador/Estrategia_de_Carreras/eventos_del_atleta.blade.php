@@ -52,18 +52,19 @@
         </nav>
         <h1 class="text-center">Eventos del Atleta</h1>
         <h2 class="text-center mt-2">{{ $competitor->competition->cname }} - {{ $competitor->users->first_name }} {{ $competitor->users->last_name }}</h2>
+        @if(session()->has('Exito'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{session('Exito')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+        @if (session('status'))
+        <div class="alert alert-info">
+            {{ session('status') }}
+        </div>
+        @endif
         <div class="d-flex justify-content-between mt-4 mb-3">
-            @if(session()->has('Exito'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{session('Exito')}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            @if (session('status'))
-            <div class="alert alert-info">
-                {{ session('status') }}
-            </div>
-            @endif
+
             <a href="{{route('competition.listatleta', $competitor->competition->id)}}" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal" id="addEventButton">Añadir Eventos</button>
 
@@ -77,11 +78,13 @@
                 @else
                 @foreach($competitor->events as $event)
                 <p class="d-flex justify-content-between align-items-center">
-                   Evento: {{$event->edistance}} - Tiempo: {{sprintf('%02d:%02d', floor($event->etime_range / 60), $event->etime_range % 60)}}
-                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmRemoveEventModal" data-eventid="{{$event->id}}"> Eliminar</button>
+                    Evento: {{$event->edistance}}  - Tiempo: {{sprintf('%02d:%02d', floor($event->etime_range / 60), $event->etime_range % 60)}}
+                    <button class="btn btn-danger delete-event-btn" data-bs-toggle="modal" data-bs-target="#confirmRemoveEventModal" data-eventid="{{$event->id}}">Eliminar</button>
                     <hr>
                 </p>
-                     @endforeach
+            @endforeach
+
+
                      @endif
 
             </div>
@@ -123,7 +126,7 @@
                                         <option value="5000m">5000m</options>
                                         <option value="10000m">10000m</options>
                                     </select>
-                                    <input type="text" class="form-control me-2" placeholder="mm:ss" name="events[0][etime_range]" id="etime_range" required>
+                                    <input type="text" class="form-control me-2" placeholder="mm:ss" name="events[0][etime_range]" id="etime_range" placeholder="mm:ss" pattern="[0-9]{1,2}:[0-5][0-9]" maxlength="5" title="Formato: (MM:SS), Valor Máximo: 99:59" required>
                                     <button type="button" class="btn btn-success add-event">+</button>
                                    <button type="button" class="btn btn-danger remove-event" style="display: none;">-</button>
                                 </div>
@@ -132,7 +135,7 @@
                     </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" form="addCompetitorForm" class="btn btn-primary" id="guardarCambiosButton">Guardar Cambios</button>
+                        <button type="submit" form="addCompetitorForm" class="btn btn-primary" id="guardarCambiosButton">Añadir</button>
                     </div>
                 </form>
             </div>
@@ -176,11 +179,13 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         @if($competitor->events->isNotEmpty())
-                        <form class= "form" action="{{ route('event.delete', ['event' => $event->id]) }}" method="post" id="deleteEventForm">
+                        <form class="form" action="#" method="post" id="deleteEventForm">
                             @csrf
                             @method('delete')
-                            <button type="submit" id="removeEvent" class="btn btn-danger"> Remover </button>
+                            <button type="submit" class="btn btn-danger">Remover</button>
                         </form>
+
+
                         @else
                         <p>No events to display.</p>
                         @endif
@@ -284,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         </script>
 
+        {{-- Disables the remove athlete button --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const removeAthleteButton = document.getElementById('removeAthlete');
@@ -296,6 +302,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         </script>
+{{-- Tells Modal the ID of the event we want to delete --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Attach a click event listener to each delete button
+        document.querySelectorAll('.delete-event-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const eventId = this.getAttribute('data-eventid'); // Get the event ID from the clicked button
+                const deleteForm = document.getElementById('deleteEventForm'); // Get the delete form
+                const actionUrl = '{{ route("event.delete", ["event" => "event_id"]) }}'.replace('event_id', eventId); // Replace placeholder with actual ID
+                deleteForm.action = actionUrl; // Set the form action
+            });
+        });
+    });
+    </script>
+
 
 
 

@@ -21,14 +21,14 @@
                 <form>
                     <div class="mb-3">
                         <label for="firstname" class="form-label">Nombre</label>
-                        <input type="text" name="first_name" class="form-control" id="first_name" class="Escriba su nombre" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus pattern="[a-zA-Z\sáéíóúñ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres.">
+                        <input type="text" name="first_name" class="form-control" id="first_name" class="Escriba su nombre" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus pattern="^[A-ZÁÉÍÓÚÑ][a-zA-Z\sáéíóúñÁÉÍÓÚÑ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres, debe emezar con una letra mayúscula">
                         @error('first_name')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="lastname" class="form-label">Apellido</label>
-                        <input type="text" name="last_name" class="form-control" id="last_name" class="Escriba sus apellidos" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus pattern="[a-zA-Z\sáéíóúñ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres.">
+                        <input type="text" name="last_name" class="form-control" id="last_name" class="Escriba sus apellidos" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus pattern="^[A-ZÁÉÍÓÚÑ][a-zA-Z\sáéíóúñÁÉÍÓÚÑ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres, debe emezar con una letra mayúscula">
                         @error('last_name')
                                 <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
                         @enderror

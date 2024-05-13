@@ -44,12 +44,7 @@
             </div>
         </nav>
         <h1 class="text-center">Lista de Competencias</h1>
-        <div class="d-flex justify-content-between mb-4">
-            <a href="/home" class="btn btn-primary">Regresar</a>
-            <a href="/competition/add" class="btn btn-primary">Crear Competencia</a>
-        </div>
-        <div class="d-grid gap-3" id="competitionList">
-            @if(session()->has('Exito'))
+        @if(session()->has('Exito'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('Exito')}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -58,6 +53,12 @@
             @if (session('status'))
             <div class="alert alert-info">
                 {{ session('status') }}
+        <div class="d-flex justify-content-between mb-4">
+            <a href="/home" class="btn btn-primary">Regresar</a>
+            <a href="/competition/add" class="btn btn-primary">Crear Competencia</a>
+        </div>
+        <div class="d-grid gap-3" id="competitionList">
+
             </div>
             @endif
             @if($competitions->isEmpty())

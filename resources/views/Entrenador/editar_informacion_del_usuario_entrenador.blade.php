@@ -61,7 +61,7 @@
                     <div class="mb-3">
                         <label for="first_name" class="form-label">Nombre</label>
                         <!-- Solo letras y espacios, máximo 50 caracteres -->
-                        <input type="text" class="form-control" id="first_name" name="first_name" value= "{{ $user->first_name }}" pattern="[a-zA-Z\sáéíóúñ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres." required>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value= "{{ $user->first_name }}" pattern="^[A-ZÁÉÍÓÚÑ][a-zA-Z\sáéíóúñÁÉÍÓÚÑ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres, debe emezar con una letra mayúscula" required>
                         @error('first_name')
 
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}" pattern="[a-zA-Z\sáéíóúñ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres." required>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}" pattern="^[A-ZÁÉÍÓÚÑ][a-zA-Z\sáéíóúñÁÉÍÓÚÑ]{1,25}" maxlength="25" title="Solo letras y espacios, hasta 25 caracteres, debe emezar con una letra mayúscula" required>
                     </div>
                         @error('last_name')
 

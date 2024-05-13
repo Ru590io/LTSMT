@@ -19,6 +19,9 @@
 </head>
 
 <body>
+
+
+
     <div class="container">
 
         <nav class="navbar custom-navbar">
@@ -422,6 +425,7 @@
             </div>
         </form>
     </div>
+
 
     <script>
         function toggleTrainingOptions(timeOfDay, option) {

@@ -48,18 +48,19 @@
         </nav>
         <h1 class="text-center">Competencias del Atleta</h1>
         <h2 class="text-center mt-5">{{ $user->first_name }} {{ $user->last_name }}</h2>
-        <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary">Regresar</a>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitionModal">Agregar Competencia</button>
-        </div>
-        <div class="d-grid gap-3">
-            @if($user_competitions->isEmpty())
+        @if($user_competitions->isEmpty())
                 <h5 class="text-center">{{ $user->first_name }} {{ $user->last_name }} no está inscrito en una competencia actualmente.</h5>
                 @else
                 @foreach($user_competitions as $competition)
                     <a href="{{ route('competition.details', ['user' => $user->id, 'competition' => $competition->id]) }}" class="btn btn-primary btn-lg">{{ $competition->cname }}</a>
                 @endforeach
             @endif
+        <div class="d-flex justify-content-between mt-4 mb-3">
+            <a href="{{ route('athlete.details', ['user'=> $user->id]) }}" class="btn btn-primary">Regresar</a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitionModal">Agregar Competencia</button>
+        </div>
+        <div class="d-grid gap-3">
+
             <div class="d-flex justify-content-center mt-3">
                 {{ $user_competitions->links('pagination::bootstrap-4') }}
             </div>

@@ -47,13 +47,7 @@
         <h1 class="text-center mb-5">Detalles de la Competencia</h1>
         <h2 class="text-center mt-5"> {{$competition->cname}} <h2>
         <h2 class="text-center mt-5" id="competitionName"></h2>
-        <div class="d-flex justify-content-between mt-4 mb-3">
-            <a href="/competition" class="btn btn-primary">Regresar</a>
-        {{--@foreach ($competitions as $competition)--}}
-            <a href="{{route('competition.edit', ['competition' => $competition->id])}}" class="btn btn-primary">Editar Detalles de Competencia</a>
-        </div>
-        <div class="card mb-4">
-            @if(session()->has('Exito'))
+        @if(session()->has('Exito'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('Exito')}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -64,6 +58,13 @@
                 {{ session('status') }}
             </div>
             @endif
+        <div class="d-flex justify-content-between mt-4 mb-3">
+            <a href="/competition" class="btn btn-primary">Regresar</a>
+        {{--@foreach ($competitions as $competition)--}}
+            <a href="{{route('competition.edit', ['competition' => $competition->id])}}" class="btn btn-primary">Editar Detalles de Competencia</a>
+        </div>
+        <div class="card mb-4">
+
             <div class="card-header"><h3 class="centered-text">Información de la Competencia</h3></div>
             <div class="card-body">
                 <p id="competitionDateTime"> Fecha y Hora: {{$competition->cdate}}, {{$competition->ctime}}</p>

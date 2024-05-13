@@ -44,11 +44,7 @@
             </div>
         </nav>
         <h1 class="text-center">Lista de Entrenamiento de Luces</h1>
-        <div class="text-left mt-4">
-            <a href="/light" class="btn btn-primary">Regresar</a>
-        </div>
-        <div class="d-grid gap-3 mt-4" id="trainingList">
-            @if(session()->has('Exito'))
+        @if(session()->has('Exito'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('Exito')}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -59,6 +55,11 @@
                 {{ session('status') }}
             </div>
             @endif
+        <div class="text-left mt-4">
+            <a href="/light" class="btn btn-primary">Regresar</a>
+        </div>
+        <div class="d-grid gap-3 mt-4" id="trainingList">
+
             @if($lighttrainings->isEmpty())
             <h5 class="text-center">No hay Entrenamiento de Luces registrados.</h5>
             @else
