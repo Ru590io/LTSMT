@@ -51,10 +51,10 @@ class EventsController extends Controller
         $competitor = Competitors::with([
             'competition',
             'users',
-            'events' => function($query) {
+            'events' /*=> function($query) {
                 // Extract numbers from 'edistance' and order by these values ascending
                 $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
-            }
+            }*/
         ])->findOrFail($id);
 
         // Get all events, potentially for other uses not ordered

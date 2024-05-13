@@ -117,7 +117,7 @@
                                     <select class="form-select me-2" name="events[0][edistance]" id="edistance">
                                         <option value="800m">800m</option>
                                         <option value="1500m">1500m</option>
-                                        <option value="3000obs">3000m Obstáculos</options>
+                                        <option value="3000m">3000m</options>
                                         <option value="5000m">5000m</options>
                                         <option value="10000m">10000m</options>
                                     </select>
