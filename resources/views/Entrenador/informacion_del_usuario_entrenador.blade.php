@@ -44,19 +44,20 @@
             </div>
         </nav>
         <h1 class="text-center">Información del Entrenador</h1>
+        @if(session()->has('Exito'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{session('Exito')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+        @if (session('status'))
+        <div class="alert alert-info">
+            {{ session('status') }}
+        </div>
+        @endif
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                @if(session()->has('Exito'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{session('Exito')}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-                @if (session('status'))
-                <div class="alert alert-info">
-                    {{ session('status') }}
-                </div>
-                @endif
+
                 <div class="d-flex justify-content-between">
                     <a href="/home" class="btn btn-primary mb-3">Regresar</a> {{-- 🡸 --}}
                     <a href="{{route('entrenador.edit', ['user' => $user])}}" class="btn btn-primary mb-3">Editar Información</a>

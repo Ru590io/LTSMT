@@ -14,6 +14,17 @@
 </head>
 <body>
     <div class="container">
+        @if(session()->has('Exito'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{session('Exito')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if (session('status'))
+                <div class="alert alert-info">
+                    {{ session('status') }}
+                </div>
+                @endif
         <h1 class="text-center">Información del Atleta</h1>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">

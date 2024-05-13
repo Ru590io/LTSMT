@@ -28,6 +28,12 @@
         </nav>
 
 
+    <h1 class="text-center">Detalles de la Semana</h1>
+    <h2 class="text-center mt-3 mb-3">{{ $weeklySchedule->user->first_name }} {{ $weeklySchedule->user->last_name }}</h2>
+    <h2 class="text-center mt- mb-5">
+        <span class="date-span" data-date="{{ $weeklySchedule->wstart_date }}"></span> -
+        <span class="date-span" data-date="{{ $weeklySchedule->wend_date }}"></span>
+    </h2>
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
@@ -37,12 +43,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    <h1 class="text-center">Detalles de la Semana</h1>
-    <h2 class="text-center mt-3 mb-3">{{ $weeklySchedule->user->first_name }} {{ $weeklySchedule->user->last_name }}</h2>
-    <h2 class="text-center mt- mb-5">
-        <span class="date-span" data-date="{{ $weeklySchedule->wstart_date }}"></span> -
-        <span class="date-span" data-date="{{ $weeklySchedule->wend_date }}"></span>
-    </h2>
     <div class="d-flex justify-content-between mb-3">
         <a href="{{ route('week.listed', $weeklySchedule->user->id) }}" class="btn btn-primary mb-3">Regresar</a>
         <a class="btn btn-primary mb-3" href="{{ route('week.edit', $weeklySchedule->id) }}">Editar Semana</a>

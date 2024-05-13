@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('content')
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
 
     <form action="{{ route('week.update', $weeklySchedule->id) }}" method="POST">
         @csrf
@@ -40,6 +36,10 @@
             <span class="date-span" data-date="{{ $weeklySchedule->wstart_date }}"></span> -
             <span class="date-span" data-date="{{ $weeklySchedule->wend_date }}"></span>
         </h2>
+        @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
 
         <a href="{{ route('week.view', $weeklySchedule->id) }}" class="btn btn-primary mb-3">Regresar</a>
 

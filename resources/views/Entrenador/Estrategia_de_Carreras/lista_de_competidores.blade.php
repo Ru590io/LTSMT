@@ -49,8 +49,7 @@
         </nav>
         <h1 class="text-center">Lista de Competidores</h1>
         <h2 class="text-center">{{$competition->cname}}</h2>
-        <div class="d-flex justify-content-between mb-4">
-            @if(session()->has('Exito'))
+                    @if(session()->has('Exito'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('Exito')}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -61,6 +60,8 @@
                 {{ session('status') }}
             </div>
             @endif
+        <div class="d-flex justify-content-between mb-4">
+
             <a href="{{ route('competition.show', ['competition' => $competition->id]) }}" class="btn btn-primary">Regresar</a>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCompetitorModal">Añadir Competidores</button>
         </div>
@@ -103,7 +104,6 @@
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}">{{$user->first_name}} {{$user->last_name}}</option>
                             @endforeach
-                            <!-- más atletas -->
                         </select>
                     </div>
             </div>
@@ -147,7 +147,7 @@
     });
 </script>
 
-<!-- Additional event handling script if necessary -->
+<!-- Prevents the empty field input to the database from the modal to add athletes -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const eventsSection = document.getElementById('eventsSection');
