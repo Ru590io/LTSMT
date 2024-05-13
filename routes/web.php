@@ -178,9 +178,9 @@ Route::post('/registers', [UserController::class, 'coachstores'])->name('registe
  * Inicio de Sesion
  */
 
-Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('https');
+Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('https');
+Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
 
 /**
  * @author Rubén Marrero
