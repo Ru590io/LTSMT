@@ -154,7 +154,7 @@
                         <form class="form" action="#" method="post" id="deleteEventForm">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger">Remover</button>
+                            <button type="submit" id="removeEvent" class="btn btn-danger">Remover</button>
                         </form>
 
                         @else
@@ -260,18 +260,6 @@
                         });
                     </script>
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const removeAthleteButton = document.getElementById('removeAthlete');
-                            const deleteAthleteForm = document.getElementById('deleteAthleteForm');
-
-                            if (removeAthleteButton && deleteAthleteForm) {
-                                deleteAthleteForm.addEventListener('submit', function() {
-                                    removeAthleteButton.disabled = true;
-                                });
-                            }
-                        });
-                    </script>
 
                     {{-- Tells Modal the ID of the event we want to delete --}}
                     <script>

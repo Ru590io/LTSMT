@@ -182,7 +182,7 @@
                         <form class="form" action="#" method="post" id="deleteEventForm">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-danger">Remover</button>
+                            <button type="submit" id="removeEvent" class="btn btn-danger">Remover</button>
                         </form>
 
 
