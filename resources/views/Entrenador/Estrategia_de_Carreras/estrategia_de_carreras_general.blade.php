@@ -53,6 +53,7 @@
             @if (session('status'))
             <div class="alert alert-info">
                 {{ session('status') }}
+            </div>
             @endif
         <div class="d-flex justify-content-between mb-4">
             <a href="/home" class="btn btn-primary">Regresar</a>
@@ -60,7 +61,6 @@
         </div>
         <div class="d-grid gap-3" id="competitionList">
 
-            </div>
             @if($competitions->isEmpty())
             <h5 class="text-center">No hay competencias registradas.</h5>
             @else

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-
+@section('content')
     <form action="{{ route('week.update', $weeklySchedule->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -36,7 +36,7 @@
             <span class="date-span" data-date="{{ $weeklySchedule->wstart_date }}"></span> -
             <span class="date-span" data-date="{{ $weeklySchedule->wend_date }}"></span>
         </h2>
-        @section('content')
+
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif

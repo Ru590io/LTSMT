@@ -291,20 +291,20 @@ class UserController extends Controller
     public function showAthleteDetails(User $user)
     {
         //$this->authorize('view', $user);
-        return view('Entrenador.lista_de_atletas.registro_del_atleta', compact('user'));
+        return view('Entrenador.Lista_de_Atletas.registro_del_atleta', compact('user'));
     }
     public function viewAthleteInfo(User $user)
     {
         //$this->authorize('view', $user);
        $user->phone_number = Crypt::decryptString($user->phone_number);
-        return view('Entrenador.lista_de_atletas.informacion_del_atleta', compact('user'));
+        return view('Entrenador.Lista_de_Atletas.informacion_del_atleta', compact('user'));
     }
     public function trainingLogs(User $user)
     {
         //$this->authorize('view', $user);
-        return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user'));
+        return view('Entrenador.Lista_de_Atletas.entrenamiento_del_atleta', compact('user'));
     }
-   
+
     public function destroyAthlete(User $user)
     {
         $user->delete();
@@ -317,7 +317,7 @@ class UserController extends Controller
         //$this->authorize('view', $user);
         $user = User::findOrFail($id);
         $weeklySchedules = $user->weeklyshedules()->orderBy('wstart_date','desc')->paginate(5);
-        return view('Entrenador.lista_de_atletas.new_semanas_del_atleta', compact('user', 'weeklySchedules'));
+        return view('Entrenador.Lista_de_Atletas.new_semanas_del_atleta', compact('user', 'weeklySchedules'));
     }
 
     public function trainingLogsWeekDetails(User $user , $id)
@@ -332,7 +332,7 @@ class UserController extends Controller
             'user'
             ])->findOrFail($id);
         $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
-        return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user', 'weeklySchedule'));
+        return view('Entrenador.Lista_de_Atletas.entrenamiento_del_atleta', compact('user', 'weeklySchedule'));
     }
     public function trainingLogsWeekEdit($id)
     {
@@ -346,7 +346,7 @@ class UserController extends Controller
             'days.pms.repeticiones'
         ])->findOrFail($id);
         $user = User::with('weeklyshedules')->whereHas('weeklyshedules')->where('role', 'Atleta')->get();
-        return view('Entrenador.lista_de_atletas.editar_semana_de_entrenamiento_atleta', compact('user', 'weeklySchedule'));
+        return view('Entrenador.Lista_de_Atletas.editar_semana_de_entrenamiento_atleta', compact('user', 'weeklySchedule'));
     }
 
     public function trainingLogsWeekEditUpdate(Request $request, $id){
