@@ -166,7 +166,7 @@ class EventsController extends Controller
             'users',
             'events' => function($query) {
                 // Extract numbers from 'edistance' and order by these values ascending
-                $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+                $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
             }
         ])->findOrFail($id);
 
@@ -185,7 +185,7 @@ class EventsController extends Controller
     public function splittablegeneral($id){
     $competitors = Competitors::with(['users', 'events'=> function($query) {
         // Extract numbers from 'edistance' and order by these values ascending
-        $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+        $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
     }
 ]
 )->where('competition_id', $id)->get();
