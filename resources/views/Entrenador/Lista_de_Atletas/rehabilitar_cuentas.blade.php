@@ -54,6 +54,9 @@
 
             <!-- List of athletes with invalid accounts -->
             <div class="list-group" id="inactiveAthletesList">
+                @if($users->isEmpty())
+                <h5 class="text-center">No Hay Cuentas Desactivadas.</h5>
+                @else
                 @foreach ($users as $user)
                 <div class="list-group-item d-flex justify-content-between align-items-center" data-name="{{ $user->first_name }} {{ $user->last_name }}">
                     <h5>{{ $user->first_name }} {{ $user->last_name }}</h5>
@@ -61,6 +64,7 @@
                 </div>
                 @endforeach
             </div>
+            @endif
             <div class="d-flex justify-content-center mt-3">
                 {{ $users->links('pagination::bootstrap-4') }}
             </div>
