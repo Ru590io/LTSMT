@@ -125,7 +125,7 @@ class CompetitionController extends Controller
     }*/
 
     public function assignarAtleta(Request $request) {
-        $this->authorize('assignAthlete', Competition::class);  // Ensure only coaches can perform this action
+        //$this->authorize('assignAthlete', Competition::class);  // Ensure only coaches can perform this action
         $competition = Competition::findOrFail($request->competition_id);
         $user = User::findOrFail($request->users_id);
 
