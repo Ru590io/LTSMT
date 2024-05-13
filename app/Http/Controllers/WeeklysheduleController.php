@@ -113,7 +113,7 @@ class WeeklysheduleController extends Controller
             $dayModel = new Day();
             $dayModel->day = $day;
             $dayModel->notes = $request->input($day . '-notes');
-            $dayModel->weeklyShedule_id = $weeklySchedule->id;
+            $dayModel->weeklyshedule_id = $weeklySchedule->id;
             $dayModel->save();
 
             // Process AM session

@@ -304,11 +304,7 @@ class UserController extends Controller
         //$this->authorize('view', $user);
         return view('Entrenador.lista_de_atletas.entrenamiento_del_atleta', compact('user'));
     }
-    public function raceStrategy(User $user)
-    {
-        //$this->authorize('view', $user);
-        return view('Entrenador.lista_de_atletas.estrategia_de_carrera_atleta', compact('user'));
-    }
+   
     public function destroyAthlete(User $user)
     {
         $user->delete();
