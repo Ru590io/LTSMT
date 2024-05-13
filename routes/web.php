@@ -24,7 +24,7 @@ use App\Http\Controllers\WeeklysheduleController;
 |
 */
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/login')->middleware('https');
 });
 
 Route::get('/', function () {
@@ -37,7 +37,7 @@ Auth::routes();
  * @author Rubén Marrero
  * Rutas de Entrenador
  */
-Route::middleware(['auth', 'role:Entrenador'])->group(function () {
+Route::middleware(['auth', 'role:Entrenador', 'https'])->group(function () {
 
     //Informacion de Entrenador
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -143,7 +143,7 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
  * @author Rubén Marrero
  * Rutas de Atletas
  */
-Route::middleware(['auth', 'role:Atleta'])->group(function () {
+Route::middleware(['auth', 'role:Atleta', 'https'])->group(function () {
     //Informacion del Atleta
     Route::post('/logouts', [AuthController::class, 'athletelogout'])->name('atlogout');
     Route::get('/atlhome', [UserController::class, 'athletehome'])->name('home.atleta');
@@ -169,18 +169,18 @@ Route::post('/register', [UserController::class, 'stores'])->name('register')->m
  * Registro de Entrenador
  *
  */
-Route::get('/registers', [UserController::class, 'creates'])->name('registers')->middleware('guest');
+Route::get('/registers', [UserController::class, 'creates'])->name('registers')->middleware('guest', 'https');
 
-Route::post('/registers', [UserController::class, 'coachstores'])->name('registers')->middleware('guest');
+Route::post('/registers', [UserController::class, 'coachstores'])->name('registers')->middleware('guest', 'https');
 
 /**
  * @author Rubén Marrero
  * Inicio de Sesion
  */
 
-Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest');
+Route::get('/login', [AuthController::class, 'viewlogin'])->name('login')->middleware('guest', 'https');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest', 'https');
 
 /**
  * @author Rubén Marrero
