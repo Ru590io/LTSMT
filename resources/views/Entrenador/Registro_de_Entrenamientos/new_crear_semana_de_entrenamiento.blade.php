@@ -589,7 +589,7 @@ function handleCopyButtonClick() {
                             var zone = inputs[1].value;
                             trainingWeek += `Fondo\n- ${distance} Km, Zona: ${zone} + Enfriamiento: 10:00 + flex\n`;
                         } else if (sessionRadio.value === 'Repeticion') {
-                            trainingWeek += 'Repetición: \n';
+                            trainingWeek += 'Repetición:\n- Cal: 15:00 + driles + rectas 60m \n';
                             inputs.forEach(function(input, index) {
                                 if (input.type !== 'button') { // Ignore button inputs
                                     if (input.name.includes('Rsets')) {
