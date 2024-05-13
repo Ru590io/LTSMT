@@ -755,7 +755,7 @@ public function competitionDetails(User $user, Competition $competition)
 
     // Assuming you need to fetch events related to the competitor in this competition
     $competitor = Competitors::with(['competition', 'users', 'events' => function($query) {
-        $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS UNSIGNED) ASC");
+        $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
     }])
                   ->where('competition_id', $competition->id)
                   ->where('users_id', $user->id)
