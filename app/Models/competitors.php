@@ -22,7 +22,7 @@ class competitors extends Pivot
     }
 
     public function competition() {
-        return $this->belongsTo(Competition::class, 'competition_id');
+        return $this->belongsTo(competition::class, 'competition_id');
     }
 
     public function events(){
