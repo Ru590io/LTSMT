@@ -188,7 +188,7 @@ class EventsController extends Controller
         $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
     }
 ]
-)->where('competition_id', $id)->get();
+)->where('competition_id', $id)->whereNull('users.deleted_at')->get();
     $allEvents = collect();
     $competition = competition::FindorFail($id);
 
@@ -196,9 +196,9 @@ class EventsController extends Controller
 
     foreach ($competitors as $competitor) {
         foreach ($competitor->events as $event) {
-            $name = $competitor->users ? $competitor->users->first_name . ' ' . $competitor->users->last_name : 'User Deleted';
+            //$name = $competitor->users ? $competitor->users->first_name . ' ' . $competitor->users->last_name : 'User Deleted';
             $allEvents->push([
-                'name' => $name,
+                'name' => $competitor->users->first_name . ' ' . $competitor->users->last_name,
                 'distance' => preg_replace('/[^0-9]/', '', $event->edistance),
                 'time' => $event->etime_range
             ]);
