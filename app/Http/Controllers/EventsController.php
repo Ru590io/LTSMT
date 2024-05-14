@@ -188,7 +188,11 @@ class EventsController extends Controller
         $query->orderByRaw("CAST(SUBSTRING(edistance, 1, LENGTH(edistance) - 1) AS INTEGER) ASC");
     }
 ]
-)->where('competition_id', $id)->whereNull('users.deleted_at')->get();
+)->join('users', 'competitors.users_id', '=', 'users.id') // Join the 'users' table correctly
+->where('competitors.competition_id', $id) // Make sure to specify the table for 'competition_id' if needed
+->whereNull('users.deleted_at') // Apply the condition to exclude soft-deleted users
+->get();
+
     $allEvents = collect();
     $competition = competition::FindorFail($id);
 
