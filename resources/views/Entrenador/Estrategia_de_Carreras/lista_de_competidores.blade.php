@@ -75,9 +75,7 @@
 
                 @foreach($competitors as $competitor)
                 <button class="btn btn-primary btn-lg competitor-btn" onclick="location.href='{{ route('competitors.listing', $competitor->id) }}'">
-                    <td>
-                        {{ optional($competitor->users)->first_name ? $competitor->users->first_name . ' ' . $competitor->users->last_name : 'Deleted User' }}
-                    </td>
+                        {{$competitor->users->first_name}} {{$competitor->users->last_name }}
                 </button>
                 <!-- Más botones de competidores pueden ser añadidos aquí -->
                 @endforeach
