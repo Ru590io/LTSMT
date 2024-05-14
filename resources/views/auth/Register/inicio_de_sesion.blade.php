@@ -70,17 +70,17 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6 offset-md-4">
-                            <div class="form-check">
+                            {{--<div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                 <label class="form-check-label" for="remember">
                                     {{ __('Recuerdame') }}
                                 </label>
-                            </div>
+                            </div>--}}
                         </div>
                     </div>
                     <button type="submit" id="loginButton" class="btn btn-primary">Iniciar Sesión</button>
-                    <a href="/register" class="btn btn-primary">Registrarse</a>
+                    {{--<a href="/register" class="btn btn-primary">Registrarse</a>--}}
                     @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Se le olvido la contraseña?') }}

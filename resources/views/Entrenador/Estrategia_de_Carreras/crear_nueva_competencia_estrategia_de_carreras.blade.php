@@ -79,7 +79,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="cplace" class="form-label">Lugar</label>
-                        <input type="text" class="form-control" id="cplace" name="cplace" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" title="Puede incluir letras, números, espacios, y los caracteres ,.-" required>
+                        <input type="text" class="form-control" id="cplace" name="cplace" pattern="[A-Za-z0-9\s,.-áéíóúñ]{1,255}" maxlength="255" title="Puede incluir letras, números, espacios, un maximo de 255 caracteres y los caracteres ,.-" required>
                         @error('cplace')
 
                         <span class="d-block fs-6 text-danger mt-2">{{$message}}</span>

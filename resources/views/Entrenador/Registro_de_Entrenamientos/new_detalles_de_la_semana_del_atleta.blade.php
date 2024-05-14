@@ -123,7 +123,7 @@
                     <form class="form" action="{{ route('weekly.delete', $weeklySchedule->id) }}" method="post" id="deleteAthleteForm">
                         @csrf
                         @method('delete')
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" id="deleteButton" class="btn btn-danger">Eliminar</button>
                     </form>
                 </div>
             </div>
