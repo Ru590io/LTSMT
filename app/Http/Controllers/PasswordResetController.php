@@ -80,19 +80,19 @@ class PasswordResetController extends Controller
 
     public function editpassword(User $user){
         $this->authorize('view', $user);
-       // $user = auth()->user();
+       $user = auth()->user();
         return view('auth.Register.reestablecer_contraseña', compact('user'));
     }
 
     public function atletaeditpassword(User $user){
         $this->authorize('view', $user);
-        //$user = auth()->user();
+        $user = auth()->user();
         return view('auth.Register.reestablecer_contraseña_atleta', compact('user'));
     }
 
     public function entrenadorreset(Request $request, User $user)
     {
-        //$user = auth()->user();  // Get the authenticated user
+        $user = auth()->user();  // Get the authenticated user
         $message = [
             'password.regex' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
         ];
@@ -110,9 +110,9 @@ class PasswordResetController extends Controller
             event(new PasswordReset($user));
 
             if (auth()->user()->role === 'Entrenador') {
-                return redirect()->route('coach.index', ['user' => $user->id])->with('status', 'contranseña actualizada.');
+                return redirect()->route('coach.index', $user->id)->with('status', 'contranseña actualizada.');
             } elseif (auth()->user()->role === 'Atleta') {
-                return redirect()->route('atleta.index', ['user' => $user->id])->with('status', 'contranseña actualizada.');
+                return redirect()->route('atleta.index', $user->id)->with('status', 'contranseña actualizada.');
             }
            // return redirect()->route('coach.index')->with('status', 'contranseña actualizada.');
     }
