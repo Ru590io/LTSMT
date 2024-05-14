@@ -44,8 +44,8 @@ Route::middleware(['auth', 'role:Entrenador'])->group(function () {
     Route::get('/entrenadorinfo/{user}', [UserController::class, 'entrenadorindexs'])->name('coach.index');
     Route::get('/entrenadorinfo/coach/{user}/edit', [UserController::class, 'entrenadoredits'])->name('entrenador.edit');
     Route::put('/entrenadorinfo/coach/{user}/update', [UserController::class, 'coachupdates'])->name('entrenador.update');
-    Route::get('/entrenadorinfo/coach/password', [PasswordResetController::class, 'editpassword'])->name('password.edit');
-    Route::post('/entrenadorinfo/coach/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updates');
+    Route::get('/entrenadorinfo/coach/password/{user}', [PasswordResetController::class, 'editpassword'])->name('password.edit');
+    Route::post('/entrenadorinfo/coach/password/{user}', [PasswordResetController::class, 'entrenadorreset'])->name('password.updates');
 
     //Home de Entrenador
     Route::get('/home', [UserController::class, 'homepage'])->name('home');
@@ -150,8 +150,8 @@ Route::middleware(['auth', 'role:Atleta'])->group(function () {
     Route::get('/atletainfo/{user}', [UserController::class, 'atletaindex'])->name('atleta.index');
     Route::get('/atletainfo/athlete/{user}/edit', [UserController::class, 'athletedits'])->name('atleta.edit');
     Route::put('/atletainfo/athlete/{user}/update', [UserController::class, 'coachupdates'])->name('atleta.update');
-    Route::get('/atletainfo/athlete/password', [PasswordResetController::class, 'atletaeditpassword'])->name('password.edits');
-    Route::post('/atletainfo/athlete/password', [PasswordResetController::class, 'entrenadorreset'])->name('password.updated');
+    Route::get('/atletainfo/athlete/password/{user}', [PasswordResetController::class, 'atletaeditpassword'])->name('password.edits');
+    Route::post('/atletainfo/athlete/password/{user}', [PasswordResetController::class, 'entrenadorreset'])->name('password.updated');
     Route::get('/atletaweeks/list/{id}', [UserController::class, 'athleteweeks'])->name('atleta.weeks');
     Route::get('/atletaweeks/list/weekdetails/{id}', [UserController::class, 'athleteweeksdetails'])->name('atleta.weeksdetails');
 });

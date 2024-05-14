@@ -21,7 +21,7 @@
                 </div>
                 @endif
                 @if (session('status'))
-                <div class="alert alert-info">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('status') }}
                 </div>
                 @endif
@@ -49,7 +49,7 @@
             </div>
         </div>
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <a href="/atletainfo/athlete/password" class="btn btn-primary">Cambiar Contraseña</a>
+                    <a href="{{route('password.edits', ['user' => $user])}}" class="btn btn-primary">Cambiar Contraseña</a>
                     <!-- Logout Button Trigger -->
                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal" id="logoutButton">Terminar Sesión</button>
                 </div>

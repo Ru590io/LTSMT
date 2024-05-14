@@ -51,7 +51,7 @@
         </div>
         @endif
         @if (session('status'))
-        <div class="alert alert-info">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('status') }}
         </div>
         @endif
@@ -78,7 +78,7 @@
             </div>
         </div>
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <a href="/entrenadorinfo/coach/password" class="btn btn-primary mt-3">Cambiar Contraseña</a>
+                    <a href="{{route('password.edit', ['user' => $user])}}" class="btn btn-primary mt-3">Cambiar Contraseña</a>
                         <button class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal">Terminar Sesión </button>
                 </div>
             </div>

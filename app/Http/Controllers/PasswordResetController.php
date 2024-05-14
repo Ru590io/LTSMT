@@ -79,16 +79,18 @@ class PasswordResetController extends Controller
     }
 
     public function editpassword(User $user){
+        $this->authorize('view', $user);
         $user = auth()->user();
         return view('auth.Register.reestablecer_contraseña', compact('user'));
     }
 
     public function atletaeditpassword(User $user){
+        $this->authorize('view', $user);
         $user = auth()->user();
         return view('auth.Register.reestablecer_contraseña_atleta', compact('user'));
     }
 
-    public function entrenadorreset(Request $request)
+    public function entrenadorreset(Request $request, User $user)
     {
         $user = auth()->user();  // Get the authenticated user
         $message = [
