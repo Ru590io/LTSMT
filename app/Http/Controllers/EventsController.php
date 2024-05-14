@@ -196,8 +196,9 @@ class EventsController extends Controller
 
     foreach ($competitors as $competitor) {
         foreach ($competitor->events as $event) {
+            $name = $competitor->users ? $competitor->users->first_name . ' ' . $competitor->users->last_name : 'User Deleted';
             $allEvents->push([
-                'name' => $competitor->users->first_name . ' ' . $competitor->users->last_name,
+                'name' => $name,
                 'distance' => preg_replace('/[^0-9]/', '', $event->edistance),
                 'time' => $event->etime_range
             ]);

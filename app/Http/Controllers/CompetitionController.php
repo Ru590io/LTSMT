@@ -104,7 +104,7 @@ class CompetitionController extends Controller
 
     public function competitionshows($id)
     {
-        $competitors = Competitors::with('competition', 'users', 'events')
+       /* $competitors = Competitors::with('competition', 'users', 'events')
             ->join('users', 'competitors.users_id', '=', 'users.id')  // Adjust 'user_id' if the foreign key has a different name
             ->where('competition_id', $id)
             ->orderBy('users.first_name', 'asc')
@@ -113,7 +113,19 @@ class CompetitionController extends Controller
 
         $competition = Competition::with('users')->findOrFail($id);
         //$competition = Competition::with('users')->get();
-        $users = User::where('role', 'Atleta')->get();
+        $users = User::where('role', 'Atleta')->get();*/
+        $competitors = Competitors::with(['competition', 'events', 'users'
+            //$query->withTrashed();  // Include soft-deleted users
+        ])
+        ->where('competition_id', $id)
+        ->orderBy('users.first_name', 'asc')
+        ->get();
+
+        $competition = Competition::with(['users'
+            //$query->withTrashed();  // Include soft-deleted users in competition too, if needed
+            ])->findOrFail($id);
+
+    $users = User::where('role', 'Atleta')->get();
 
     return view('Entrenador.Estrategia_de_Carreras.lista_de_competidores', compact('competition', 'users', 'competitors'));
     }
