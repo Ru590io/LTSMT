@@ -21,7 +21,7 @@
 
                 <!--Need to update password.update route-->
 
-                <form id="passwordForm" class= "form mt-3" action="{{route('password.updates')}}" method="post">
+                <form id="passwordForm" class= "form mt-3" action="{{route('password.updates', ['user' => $user->id])}}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="password" class="form-label">Nueva Contraseña</label>
