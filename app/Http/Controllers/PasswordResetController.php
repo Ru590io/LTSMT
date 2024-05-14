@@ -110,9 +110,9 @@ class PasswordResetController extends Controller
             event(new PasswordReset($user));
 
             if (auth()->user()->role === 'Entrenador') {
-                return redirect()->route('coach.index', $user->id)->with('status', 'contranseña actualizada.');
+                return redirect()->route('coach.index', $user->id)->with('status', 'contraseña actualizada.');
             } elseif (auth()->user()->role === 'Atleta') {
-                return redirect()->route('atleta.index', $user->id)->with('status', 'contranseña actualizada.');
+                return redirect()->route('atleta.index', $user->id)->with('status', 'contraseña actualizada.');
             }
            // return redirect()->route('coach.index')->with('status', 'contranseña actualizada.');
     }
