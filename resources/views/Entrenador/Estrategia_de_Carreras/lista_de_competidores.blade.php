@@ -74,7 +74,11 @@
             <input type="text" id="searchInput" onkeyup="filterList()" placeholder="Buscar competidores..." class="form-control mb-3">
 
                 @foreach($competitors as $competitor)
-                <button class="btn btn-primary btn-lg competitor-btn" onclick="location.href='{{ route('competitors.listing', $competitor->id) }}'">  <td>{{ $competitor->users ? $competitor->users->first_name : 'Deleted User' }} {{ $competitor->users->first_name }} {{$competitor->users->last_name}}</button>
+                <button class="btn btn-primary btn-lg competitor-btn" onclick="location.href='{{ route('competitors.listing', $competitor->id) }}'">
+                    <td>
+                        {{ optional($competitor->users)->first_name ? $competitor->users->first_name . ' ' . $competitor->users->last_name : 'Deleted User' }}
+                    </td>
+                </button>
                 <!-- Más botones de competidores pueden ser añadidos aquí -->
                 @endforeach
             @endif
