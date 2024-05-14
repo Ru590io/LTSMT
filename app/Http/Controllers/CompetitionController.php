@@ -114,11 +114,11 @@ class CompetitionController extends Controller
         $competition = Competition::with('users')->findOrFail($id);
         //$competition = Competition::with('users')->get();
         $users = User::where('role', 'Atleta')->get();*/
-        $competitors = Competitors::with(['competition', 'events', 'users'
-            //$query->withTrashed();  // Include soft-deleted users
-        ])
+        $competitors = Competitors::with(['competition', 'events', 'users'])
+        ->join('users', 'competitors.users_id', '=', 'users.id')
         ->where('competition_id', $id)
         ->orderBy('users.first_name', 'asc')
+        ->select('competitors.*')
         ->get();
 
         $competition = Competition::with(['users'
